@@ -343,3 +343,8 @@ body {
 #cursor-me {
 	transition: 0s;
 }
+
+#mobileWindowRect {
+	outline: 5px solid dodgerblue;
+	fill: none;
+}
