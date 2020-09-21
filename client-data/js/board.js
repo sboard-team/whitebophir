@@ -505,6 +505,7 @@ function createModal(htmlContent, id) {
     });
 
     function setScrollFromHash() {
+        return;
         var coords = window.location.hash.slice(1).split(',');
         var x = coords[0] | 0;
         var y = coords[1] | 0;
