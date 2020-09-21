@@ -64,6 +64,7 @@ class BoardTemplate extends Template {
         params['boardUriComponent'] = boardUriComponent;
         params['board'] = decodeURIComponent(boardUriComponent);
         params['v'] = config.STATIC_VERSION;
+        params['landing'] = config.LANDING_URL;
         return params;
     }
 }
