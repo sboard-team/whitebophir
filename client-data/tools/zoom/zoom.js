@@ -45,6 +45,7 @@
     var animation = null;
     const testLogEl = document.getElementById('testLog');
     const diffForMoving = 40;
+    const isIosMobile = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i));
     const body = document;
     body.addEventListener("touchend", touchend);
     body.addEventListener("touchcancel", touchend);
@@ -149,23 +150,30 @@
         if (evt.ctrlKey) ctrl_pressed = false;
     }
 
+    if(isIosMobile) {
+        alert('Я с айфона/айпада');
+    }
 
     function onwheel(evt) {
         evt.preventDefault();
-        if (evt.ctrlKey && ctrl_pressed) {
-            var scale = Tools.getScale();
-            var x = evt.pageX / scale;
-            var y = evt.pageY / scale;
-            setOrigin(x, y, evt, false);
-            animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.2);
-        } else if (evt.ctrlKey && !ctrl_pressed) {
-            var scale = Tools.getScale();
-            var x = evt.pageX / scale;
-            var y = evt.pageY / scale;
-            setOrigin(x, y, evt, false);
-            animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.01);
+        if(isIosMobile) {
+            console.log('sf');
         } else {
-            window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
+            if (evt.ctrlKey && ctrl_pressed) {
+                var scale = Tools.getScale();
+                var x = evt.pageX / scale;
+                var y = evt.pageY / scale;
+                setOrigin(x, y, evt, false);
+                animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.2);
+            } else if (evt.ctrlKey && !ctrl_pressed) {
+                var scale = Tools.getScale();
+                var x = evt.pageX / scale;
+                var y = evt.pageY / scale;
+                setOrigin(x, y, evt, false);
+                animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.01);
+            } else {
+                window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
+            }
         }
     }
 
