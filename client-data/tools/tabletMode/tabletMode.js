@@ -8,6 +8,7 @@
             y: 0,
             width: 0,
             height: 0,
+            userID: null,
         };
 
         setInterval(function () {
@@ -16,7 +17,7 @@
             message.y = Math.max(document.documentElement.scrollTop / Tools.getScale() >> 0, 5);
             message.width = (windowWidth > Tools.server_config.MAX_BOARD_SIZE_X ? Tools.server_config.MAX_BOARD_SIZE_X - 10 : windowWidth) >> 0;
             message.height = window.innerHeight / Tools.getScale() >> 0;
-            // console.log(message);
+            message.userID = Tools.params.user.id;
             Tools.send(message, 'tabletMode');
         }, 500);
     }
@@ -29,12 +30,14 @@
     }
 
     function draw(data) {
-        mobileWindowEl.setAttribute('x', data.x);
-        mobileWindowEl.setAttribute('y', data.y);
-        mobileWindowEl.setAttribute('width', data.width);
-        mobileWindowEl.setAttribute('height', data.height);
-        clearTimeout(resetTimeoutID);
-        resetTimeoutID = setTimeout(resetMobileWindowEl, 3000);
+        if (data.userID === Tools.params.user.id) {
+            mobileWindowEl.setAttribute('x', data.x);
+            mobileWindowEl.setAttribute('y', data.y);
+            mobileWindowEl.setAttribute('width', data.width);
+            mobileWindowEl.setAttribute('height', data.height);
+            clearTimeout(resetTimeoutID);
+            resetTimeoutID = setTimeout(resetMobileWindowEl, 3000);
+        }
     }
 
     var cursorTool = {
