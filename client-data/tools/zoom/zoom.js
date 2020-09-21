@@ -56,7 +56,6 @@
     body.addEventListener('gesturechange', gesture);
     body.addEventListener('gestureend', gesture);
 
-    var testI = 0;
     function gesture(evt) {
         evt.preventDefault();
         if (!isIosMobile) {
@@ -66,17 +65,6 @@
                 lastScaleOnMac = 1;
             }
         }
-        // testI++;
-        //if (testI === 50) {
-        //     testLogEl.innerText = '';
-        //     testI = 0;
-        // }
-        // testLogEl.innerText = testLogEl.innerText + JSON.stringify({type: evt.type, screenX: evt.screenX, screenY: evt.screenY, scale: evt.scale}) + '\n';
-        // if (evt.type === 'gestureend') {
-        //     lastScaleOnMac = 1;
-        // } else {
-        //     lastScaleOnMac = evt.scale;
-        // }
         evt.stopPropagation();
     }
     function zoom(origin, scale) {
@@ -129,10 +117,6 @@
         if (evt.ctrlKey) ctrl_pressed = false;
     }
 
-    if(isIosMobile) {
-        alert('Я с айфона/айпада');
-    }
-
     function onwheel(evt) {
         evt.preventDefault();
         if (evt.ctrlKey && ctrl_pressed) {
@@ -161,7 +145,6 @@
                     evt.touches[0].pageX - evt.touches[1].pageX,
                     evt.touches[0].pageY - evt.touches[1].pageY);
             }
-
             if ((diffFromTouches >> 0) - Math.hypot(evt.touches[0].pageX - evt.touches[1].pageX, evt.touches[0].pageY - evt.touches[1].pageY) >> 0 > diffForMoving ||
                 (diffFromTouches >> 0) - Math.hypot(evt.touches[0].pageX - evt.touches[1].pageX, evt.touches[0].pageY - evt.touches[1].pageY) >> 0 < -diffForMoving) {
                 var x0 = touches[0].clientX, x1 = touches[1].clientX,
