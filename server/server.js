@@ -100,7 +100,7 @@ function handleRequest(request, response) {
 				db.boardExists(name).then(boardExists => {
 					if (!boardExists) {
 						log('board not exists and go to cabinet', { 'board': name });
-						response.writeHead(301, { 'Location': config.CABINET_URL });
+						response.writeHead(301, { 'Location': config.CABINET_URL + 'boards/' +name + '/deleted' });
 						response.end();
 					} else {
 						// If there is no dot and no directory, parts[1] is the board name
