@@ -625,7 +625,7 @@ function createModal(htmlContent, id) {
             Tools.params = {
                 "status": true,
                 "board": {"name": "Dev Board"},
-                "user": {"name": "John", "surname": "Smith", "full_name": "John Smith"},
+                "user": {"id": "187999", "name": "John", "surname": "Smith", "full_name": "John Smith"},
                 "permissions": {"edit": true, "invite": true, "image": true, "pdf": true},
                 "invite_link": "https:\/\/back.sboard.su\/cabinet\/boards\/join\/56dfgdfbh67="
             };
