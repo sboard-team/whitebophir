@@ -44,8 +44,8 @@
     var pressed = false;
     var animation = null;
     const testLogEl = document.getElementById('testLog');
-    const diffForMoving = 40;
     const isIosMobile = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i));
+    const diffForMoving = isIosMobile ? 90 : 40;
     const body = document;
     body.addEventListener("touchend", touchend);
     body.addEventListener("touchcancel", touchend);
