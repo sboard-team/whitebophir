@@ -679,6 +679,12 @@ function createModal(htmlContent, id) {
     window.addEventListener("popstate", setScrollFromHash, false);
     window.addEventListener("DOMContentLoaded", setScrollFromHash, false);
     window.addEventListener("DOMContentLoaded", checkBoard, false);
+    window.addEventListener('orientationchange', function () {
+        setTimeout(function () {
+            Tools.setScale(Tools.getScale());
+            resizeBoard();
+        }, 650);
+    });
 })();
 
 //List of hook functions that will be applied to messages before sending or drawing them
