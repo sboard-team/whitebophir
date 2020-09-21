@@ -635,11 +635,21 @@ function createModal(htmlContent, id) {
         fetch(
             Tools.server_config.API_URL + 'boards/' + Tools.boardName + '/info',
             {
+                headers: new Headers({
+                    'Accept': 'application/json',
+                }),
                 method: 'GET',
                 credentials: 'include',
             }
         )
             .then(response => {
+                if (response.status === 401) {
+                    throw new Error('Unauthenticated user')
+                } else if (response.status === 403) {
+                    throw new Error('Forbidden');
+                } else if (response.status !== 200) {
+                    throw new Error('Unknown error');
+                }
                 return response.json();
             })
             .then(data => {
@@ -647,7 +657,13 @@ function createModal(htmlContent, id) {
                 showBoard();
             })
             .catch(function (error) {
-                window.location.href = Tools.server_config.CABINET_URL;
+                if (error.message === 'Unauthenticated user') {
+                    window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/reopen';
+                } else if (error.message === 'Forbidden') {
+                    window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/forbidden';
+                } else {
+                    window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/unknown';
+                }
             })
     }
 
