@@ -4,6 +4,7 @@ const path = require("path");
 const url = require("url");
 const accept_language_parser = require('accept-language-parser');
 const client_config = require("./client_configuration");
+const config = require("./configuration.js");
 
 /**
  * Associations from language to translation dictionnaries
@@ -62,6 +63,7 @@ class BoardTemplate extends Template {
         const boardUriComponent = parts[1];
         params['boardUriComponent'] = boardUriComponent;
         params['board'] = decodeURIComponent(boardUriComponent);
+        params['v'] = config.STATIC_VERSION;
         return params;
     }
 }

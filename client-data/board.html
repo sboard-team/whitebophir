@@ -2,28 +2,29 @@
 <html lang="{{language}}">
 
 <head>
-	<meta charset="utf-8" />
+	<meta charset="utf-8"/>
 	<title>Онлайн доска для совместных занятий</title>
 	<link rel="shortcut icon" href="/favicon.png" type="image/png"/>
-	<link rel="stylesheet" type="text/css" href="../board.css" />
-	<link rel="stylesheet" href="boardDesign.css">
-	<script src="../socket.io/socket.io.js"></script>
-	<meta name="description" content="{{translations.tagline}}" />
+	<link rel="stylesheet" type="text/css" href="../board.css?v={{v}}"/>
+	<link rel="stylesheet" href="boardDesign.css?v={{v}}">
+	<script src="../socket.io/socket.io.js?v={{v}}"></script>
+	<meta name="description" content="{{translations.tagline}}"/>
 	<meta name="keywords"
-		  content="{{translations.collaborative_whiteboard}},online,draw,paint,shared,realtime,wbo,whitebophir" />
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0 maximum-scale=1" />
-	<meta property="og:title" content="{{board}} board on WBO" />
-	<meta property="og:url" content="{{baseUrl}}/boards/{{boardUriComponent}}" />
-	<meta property="og:image" content="{{baseUrl}}/preview/{{boardUriComponent}}" />
+		  content="{{translations.collaborative_whiteboard}},online,draw,paint,shared,realtime,wbo,whitebophir"/>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0 maximum-scale=1"/>
+	<meta property="og:title" content="{{board}} board on WBO"/>
+	<meta property="og:url" content="{{baseUrl}}/boards/{{boardUriComponent}}"/>
+	<meta property="og:image" content="{{baseUrl}}/preview/{{boardUriComponent}}"/>
 	<link rel="shortcut icon" href="/favicon.png" type="image/png"/>
-	<link rel="canonical" href="{{boardUriComponent}}?lang={{language}}" />
+	<link rel="canonical" href="{{boardUriComponent}}?lang={{language}}"/>
 	{{#languages}}
-	<link rel="alternate" hreflang="{{.}}" href="{{../boardUriComponent}}?lang={{.}}" />
+	<link rel="alternate" hreflang="{{.}}" href="{{../boardUriComponent}}?lang={{.}}"/>
 	{{/languages}}
-	<link rel="stylesheet" href="subjx.css">
-	<link rel="stylesheet" href="range.css">
-	<script src="../polyfill.min.js"></script>
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="subjx.css?v={{v}}">
+	<link rel="stylesheet" href="range.css?v={{v}}">
+	<script src="../polyfill.min.js?v={{v}}"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+		  rel="stylesheet">
 </head>
 
 <body style="display: flex; justify-content: center;">
@@ -494,31 +495,34 @@
 	<div id="scaleValue" class="scale-value unselectable">
 		100%
 	</div>
-	<div data-tooltip="Увеличить масштаб (ctrl + '+')" id="plusScale" class="tooltip-top tooltip-toLeft plus-scale defolt-icon">
+	<div data-tooltip="Увеличить масштаб (ctrl + '+')" id="plusScale"
+		 class="tooltip-top tooltip-toLeft plus-scale defolt-icon">
 		<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path d="M19.2188 9.21875H10.7812V0.78125C10.7812 0.349766 10.4315 0 10 0C9.56852 0 9.21875 0.349766 9.21875 0.78125V9.21875H0.78125C0.349766 9.21875 0 9.56852 0 10C0 10.4315 0.349766 10.7812 0.78125 10.7812H9.21875V19.2188C9.21875 19.6502 9.56852 20 10 20C10.4315 20 10.7812 19.6502 10.7812 19.2188V10.7812H19.2188C19.6502 10.7812 20 10.4315 20 10C20 9.56852 19.6502 9.21875 19.2188 9.21875Z" fill="#828282"/>
+			<path d="M19.2188 9.21875H10.7812V0.78125C10.7812 0.349766 10.4315 0 10 0C9.56852 0 9.21875 0.349766 9.21875 0.78125V9.21875H0.78125C0.349766 9.21875 0 9.56852 0 10C0 10.4315 0.349766 10.7812 0.78125 10.7812H9.21875V19.2188C9.21875 19.6502 9.56852 20 10 20C10.4315 20 10.7812 19.6502 10.7812 19.2188V10.7812H19.2188C19.6502 10.7812 20 10.4315 20 10C20 9.56852 19.6502 9.21875 19.2188 9.21875Z"
+				  fill="#828282"/>
 		</svg>
 	</div>
 </div>
 
 <script type="application/json" id="translations">{{{ json translations }}}</script>
 <script type="application/json" id="configuration">{{{ json configuration }}}</script>
-<script src="../js/path-data-polyfill.js"></script>
-<script src="../js/board.js"></script>
-<script src="../tools/text/text.js"></script>
-<script src="../tools/pencil/wbo_pencil_point.js"></script>
-<script src="../tools/pencil/pencil.js"></script>
-<script src="../tools/cursor/cursor.js"></script>
-<script src="../tools/shapes/shapes.js"></script>
-<script src="../tools/line/line.js"></script>
-<script src="../tools/grid/grid.js"></script>
-<script src="../tools/zoom/zoom.js"></script>
-<script src="../tools/eraser/eraser.js"></script>
-<script src="../tools/document/document.js"></script>
-<script src="../js/subjx.js"></script>
-<script src="../tools/transform/transform.js"></script>
-<script src="../tools/tabletMode/tabletMode.js"></script>
-<script src="../tools/hand/hand.js"></script>
+
+<script src="../js/path-data-polyfill.js?v={{v}}"></script>
+<script src="../js/board.js?v={{v}}"></script>
+<script src="../tools/text/text.js?v={{v}}"></script>
+<script src="../tools/pencil/wbo_pencil_point.js?v={{v}}"></script>
+<script src="../tools/pencil/pencil.js?v={{v}}"></script>
+<script src="../tools/cursor/cursor.js?v={{v}}"></script>
+<script src="../tools/shapes/shapes.js?v={{v}}"></script>
+<script src="../tools/line/line.js?v={{v}}"></script>
+<script src="../tools/grid/grid.js?v={{v}}"></script>
+<script src="../tools/zoom/zoom.js?v={{v}}"></script>
+<script src="../tools/eraser/eraser.js?v={{v}}"></script>
+<script src="../tools/document/document.js?v={{v}}"></script>
+<script src="../js/subjx.js?v={{v}}"></script>
+<script src="../tools/transform/transform.js?v={{v}}"></script>
+<script src="../tools/tabletMode/tabletMode.js?v={{v}}"></script>
+<script src="../tools/hand/hand.js?v={{v}}"></script>
 
 </body>
 

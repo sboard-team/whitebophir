@@ -14,9 +14,6 @@ var app = require('http').createServer(handler)
 	, dotenv = require('dotenv')
 	, db = require('./db/db.js');
 
-const envFie = path.resolve(__dirname, '../.env');
-dotenv.config({path: envFie});
-
 var MIN_NODE_VERSION = 8.0;
 
 if (parseFloat(process.versions.node) < MIN_NODE_VERSION) {
