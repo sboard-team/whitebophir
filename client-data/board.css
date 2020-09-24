@@ -359,7 +359,15 @@ body {
 	transition: 0s;
 }
 
+#textToolInput {
+	position: fixed;
+	min-width: 300px;
+	max-width: 100%;
+	padding: 20px;
+	border: 2px solid black;
+}
+
 #mobileWindowRect {
-	outline: 5px solid dodgerblue;
+	outline: 3px solid dodgerblue;
 	fill: none;
 }

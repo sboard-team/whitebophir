@@ -30,7 +30,7 @@
     }
 
     function draw(data) {
-        if (data.userID === Tools.params.user.id) {
+        if (Tools.params && Tools.params.user && data.userID === Tools.params.user.id) {
             mobileWindowEl.setAttribute('x', data.x);
             mobileWindowEl.setAttribute('y', data.y);
             mobileWindowEl.setAttribute('width', data.width);

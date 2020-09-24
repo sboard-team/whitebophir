@@ -243,7 +243,7 @@ Tools.isMobile = function () {
 
 (function hotkeys() {
 	if (!Tools.isMobile()) {
-		document.addEventListener('keydown', function (e) {
+		document.addEventListener('keyup', function (e) {
 			if (e.keyCode === 86) { // v
 				Tools.change('Transform');
 			} else if (e.keyCode === 72) {
@@ -758,9 +758,8 @@ function resizeCanvas(m) {
 
 function resizeBoard() {
     // Update board container size
-    var board = document.getElementById("board");
-    board.style.width = Tools.svg.width.baseVal.value * Tools.getScale() + "px";
-    board.style.height = Tools.svg.height.baseVal.value * Tools.getScale() + "px";
+    Tools.board.style.width = Tools.svg.width.baseVal.value * Tools.getScale() + "px";
+    Tools.board.style.height = Tools.svg.height.baseVal.value * Tools.getScale() + "px";
 }
 
 function updateUnreadCount(m) {
@@ -773,7 +772,6 @@ Tools.messageHooks = [resizeCanvas, updateUnreadCount];
 var scaleTimeout = null;
 const scaleValueEl = document.getElementById('scaleValue');
 const htmlBodyEl = document.getElementsByTagName('body')[0];
-const test = document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X;
 Tools.setScale = function setScale(scale) {
     if (isNaN(scale)) {
         scale = document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X;

@@ -29,7 +29,6 @@
 
 <body style="display: flex; justify-content: center;">
 <div id="board" class="js-elements sjx-hidden">
-	<div id="testLog"></div>
 	<svg id="canvas" width="500" height="500" version="1.1" xmlns="http://www.w3.org/2000/svg">
 		<defs id="defs"></defs>
 		<rect id="mobileWindowRect" x="0" y="0" width="0" height="0"></rect>
@@ -327,7 +326,7 @@
 			</svg>
 		</div>
 	</div>
-	<div data-tooltip="Текст" class="disabled-icon tool">
+	<div data-tooltip="Текст" class="tool">
 		<div id="Tool-Text" class="main-tool">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path d="M16.875 0H3.125C1.40188 0 0 1.40188 0 3.125V4.21875C0 4.65023 0.349766 5 0.78125 5C1.21273 5 1.5625 4.65023 1.5625 4.21875V3.125C1.5625 2.26344 2.26344 1.5625 3.125 1.5625H16.875C17.7366 1.5625 18.4375 2.26344 18.4375 3.125V4.21875C18.4375 4.65023 18.7873 5 19.2188 5C19.6502 5 20 4.65023 20 4.21875V3.125C20 1.40188 18.5981 0 16.875 0Z" fill="#828282"/>
@@ -509,7 +508,6 @@
 
 <script src="../js/path-data-polyfill.js?v={{v}}"></script>
 <script src="../js/board.js?v={{v}}"></script>
-<script src="../tools/text/text.js?v={{v}}"></script>
 <script src="../tools/pencil/wbo_pencil_point.js?v={{v}}"></script>
 <script src="../tools/pencil/pencil.js?v={{v}}"></script>
 <script src="../tools/cursor/cursor.js?v={{v}}"></script>
@@ -522,6 +520,9 @@
 <script src="../js/subjx.js?v={{v}}"></script>
 <script src="../tools/transform/transform.js?v={{v}}"></script>
 <script src="../tools/tabletMode/tabletMode.js?v={{v}}"></script>
+<script src="../js/mathlive.min.js?v={{v}}"></script>
+<script type="module" src="../js/html-to-image.js?v={{v}}"></script>
+<script type="module" src="../tools/text/text.js?v={{v}}"></script>
 <script src="../tools/hand/hand.js?v={{v}}"></script>
 
 </body>
