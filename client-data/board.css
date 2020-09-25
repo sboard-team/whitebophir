@@ -359,7 +359,7 @@ body {
 	transition: 0s;
 }
 
-#textToolInput {
+#formulaToolInput {
 	position: fixed;
 	min-width: 300px;
 	max-width: 100%;
