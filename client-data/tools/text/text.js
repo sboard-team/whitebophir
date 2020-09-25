@@ -23,14 +23,14 @@
  *
  * @licend
  */
+import * as htmlToImage from '../../js/html-to-image.js';
 
 (function () { //Code isolation
 	var board = Tools.board;
 
-	var input = document.createElement("input");
+	var input = document.createElement("div");
 	input.id = "textToolInput";
-	input.type = "text";
-	input.setAttribute("autocomplete", "off");
+	var mathlive = null;
 
 	var curText = {
 		"x": 0,
@@ -53,14 +53,21 @@
 		Tools.setSize(curText.rawSize);
 	}
 
+	async function renderPNG() {
+		return htmlToImage.toPng(document.getElementById('textToolInput').querySelector('.ML__mathlive'), {
+			backgroundColor: '#fff',
+		});
+	}
+
 	function onQuit() {
+		renderPNG().then(console.log);
 		stopEdit();
+		mathlive.$perform ( "hideVirtualKeyboard" );
+		console.log(mathlive);
 		Tools.setSize(curText.oldSize);
 	}
 
 	function clickHandler(x, y, evt, isTouchEvent) {
-		alert('Эта функция находится в разработке!');
-		return;
 		//if(document.querySelector("#menu").offsetWidth>Tools.menu_width+3) return;
 		if (evt.target === input) return;
 		if (evt.target.tagName === "text") {
@@ -74,7 +81,6 @@
 		curText.color = Tools.getColor();
 		curText.x = x;
 		curText.y = y + curText.size / 2;
-
 		stopEdit();
 		startEdit();
 		evt.preventDefault();
@@ -99,7 +105,6 @@
 	function startEdit() {
 		active = true;
 		if (!input.parentNode) board.appendChild(input);
-		input.value = "";
 		var left = curText.x - document.documentElement.scrollLeft + 'px';
 		var clientW = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 		var x = curText.x * Tools.scale - document.documentElement.scrollLeft;
@@ -110,9 +115,22 @@
 		input.style.left = x + 'px';
 		input.style.top = curText.y * Tools.scale - document.documentElement.scrollTop + 20 + 'px';
 		input.focus();
-		input.addEventListener("keyup", textChangeHandler);
-		input.addEventListener("blur", textChangeHandler);
-		input.addEventListener("blur", blur);
+		//input.addEventListener("keyup", textChangeHandler);
+		//input.addEventListener("blur", textChangeHandler);
+		//input.addEventListener("blur", blur);
+		if (mathlive === null) {
+			mathlive = MathLive.makeMathField('textToolInput', {
+				smartMode: true,
+				virtualKeyboardMode: 'manual',
+				onContentDidChange: (mf) => {
+					const latex = mf.$text();
+					console.log(mf);
+					console.log(mf.$latex());
+					renderPNG().then(console.log);
+				},
+			});
+		}
+		mathlive.$perform ( "showVirtualKeyboard" );
 	}
 
 	function stopEdit() {
@@ -125,7 +143,7 @@
 		curText.id = 0;
 		curText.sentText = "";
 		input.value = "";
-		input.removeEventListener("keyup", textChangeHandler);
+		//input.removeEventListener("keyup", textChangeHandler);
 	}
 
 	function blur() {
@@ -134,6 +152,7 @@
 	}
 
 	function textChangeHandler(evt) {
+		evt.stopPropagation();
 		if (evt.which === 13) { // enter
 			curText.y += 1.5 * curText.size;
 			stopEdit();
