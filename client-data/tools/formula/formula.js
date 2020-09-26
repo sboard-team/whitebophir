@@ -36,7 +36,6 @@ import * as htmlToImage from '../../js/html-to-image.js';
   }
 
   function onQuit() {
-    if (!mathlive.$latex()) return;
     if (!isEdit) {
       msg.id = Tools.generateUID();
       msg.x = curInput.x;
@@ -47,6 +46,13 @@ import * as htmlToImage from '../../js/html-to-image.js';
     msg.height = document.getElementById('formulaToolInput').querySelector('.ML__mathlive').offsetHeight * 2 >> 0;
     stopEdit();
     mathlive.$perform ( "hideVirtualKeyboard" );
+    document.removeEventListener('keypress', onKeyDown);
+    if (!mathlive.$latex()) {
+      mathlive.$perform ("deleteAll");
+      latexForEdit = '';
+      isEdit = false;
+      return;
+    };
     setTimeout(function () {
       renderPNG().then(function (data) {
         console.log(data);
@@ -84,8 +90,9 @@ import * as htmlToImage from '../../js/html-to-image.js';
     if (x + 250 > clientW) {
       x = Math.max(60, clientW - 260)
     }
-    input.style.left = x + 'px';
-    input.style.top = curInput.y * Tools.scale - document.documentElement.scrollTop + 20 + 'px';
+    // window.scrollTo((document.documentElement.offsetWidth - 300) / 2, curInput.y * Tools.scale + 50);
+    input.style.left = x + 175 + 'px';
+    input.style.top = curInput.y * Tools.scale + 20 + 'px';
     input.focus();
     if (mathlive === null) {
       mathlive = MathLive.makeMathField('formulaToolInput', {
@@ -93,14 +100,21 @@ import * as htmlToImage from '../../js/html-to-image.js';
         virtualKeyboardMode: 'manual',
       });
     }
-    mathlive.$latex(latexForEdit)
+    mathlive.$latex(latexForEdit);
+    mathlive.$focus();
     mathlive.$perform ( "showVirtualKeyboard" );
+    mathlive.$perform("moveToMathFieldEnd");
+    document.addEventListener('keydown', onKeyDown);
   }
 
   function stopEdit() {
     try { input.blur(); } catch (e) { /* Internet Explorer */ }
     active = false;
     blur();
+  }
+
+  function onKeyDown(e) {
+    console.log(e);
   }
 
   function blur() {
