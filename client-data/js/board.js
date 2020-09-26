@@ -244,6 +244,7 @@ Tools.isMobile = function () {
 (function hotkeys() {
 	if (!Tools.isMobile()) {
 		document.addEventListener('keyup', function (e) {
+		  if (Tools.curTool.name === 'Formula' || Tools.curTool.name === 'Text') return;
 			if (e.keyCode === 86) { // v
 				Tools.change('Transform');
 			} else if (e.keyCode === 72) {
