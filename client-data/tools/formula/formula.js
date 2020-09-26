@@ -5,6 +5,8 @@ import * as htmlToImage from '../../js/html-to-image.js';
   const input = document.createElement("div");
   input.id = "formulaToolInput";
   var mathlive = null;
+  var isEdit = false;
+  var latexForEdit = '';
 
   const msg = {
     id: null,
@@ -34,24 +36,39 @@ import * as htmlToImage from '../../js/html-to-image.js';
   }
 
   function onQuit() {
-    console.log(curInput.x);
-    console.log(curInput.y);
-    msg.id = Tools.generateUID();
-    msg.x = curInput.x;
-    msg.y = curInput.y;
+    if (!mathlive.$latex()) return;
+    if (!isEdit) {
+      msg.id = Tools.generateUID();
+      msg.x = curInput.x;
+      msg.y = curInput.y;
+    }
     msg.formulaData = mathlive.$latex();
     msg.width = document.getElementById('formulaToolInput').querySelector('.ML__mathlive').offsetWidth * 2 >> 0;
     msg.height = document.getElementById('formulaToolInput').querySelector('.ML__mathlive').offsetHeight * 2 >> 0;
-    renderPNG().then(function (data) {
-      msg.imageData = data;
-      Tools.drawAndSend(msg, Tools.list.Formula);
-    });
     stopEdit();
     mathlive.$perform ( "hideVirtualKeyboard" );
+    setTimeout(function () {
+      renderPNG().then(function (data) {
+        console.log(data);
+        msg.imageData = data;
+        Tools.drawAndSend(msg, Tools.list.Formula);
+        mathlive.$perform ("deleteAll");
+        latexForEdit = '';
+        isEdit = false;
+      });
+    }, 150);
   }
 
   function clickHandler(x, y, evt, isTouchEvent) {
     if (evt.target === input) return;
+    if (evt.target.hasAttribute('data-formula')) {
+      console.log(true);
+      isEdit = true;
+      msg.id = evt.target.getAttribute('id');
+      msg.x = evt.target.getAttribute('x');
+      msg.y = evt.target.getAttribute('y');
+      latexForEdit = evt.target.getAttribute('data-formula');
+    }
     curInput.x = x;
     curInput.y = y;
     stopEdit();
@@ -74,9 +91,9 @@ import * as htmlToImage from '../../js/html-to-image.js';
       mathlive = MathLive.makeMathField('formulaToolInput', {
         smartMode: true,
         virtualKeyboardMode: 'manual',
-
       });
     }
+    mathlive.$latex(latexForEdit)
     mathlive.$perform ( "showVirtualKeyboard" );
   }
 
@@ -92,41 +109,20 @@ import * as htmlToImage from '../../js/html-to-image.js';
   }
 
   function draw(data) {
-    const img = Tools.createSVGElement("image");
+    const img = document.getElementById(data.id) || Tools.createSVGElement("image");
     img.id = data.id;
     img.setAttributeNS(xlinkNS, "href", data.imageData);
     img.x.baseVal.value = data['x'];
     img.y.baseVal.value = data['y'];
     img.setAttribute("width", data.width);
     img.setAttribute("height", data.height);
+    img.setAttribute("data-formula", data.formulaData);
     if (msg.properties) {
       for (var i = 0; i < msg.properties.length; i++) {
         img.setAttribute(msg.properties[i][0], msg.properties[i][1]);
       }
     }
     Tools.drawingArea.appendChild(img);
-  }
-
-  function updateText(textField, text) {
-    textField.textContent = text;
-  }
-
-  function createTextField(fieldData) {
-    var elem = Tools.createSVGElement("text");
-    elem.id = fieldData.id;
-    elem.setAttribute("x", fieldData.x);
-    elem.setAttribute("y", fieldData.y);
-    if (fieldData.properties) {
-      for (var i = 0; i < fieldData.properties.length; i++) {
-        elem.setAttribute(fieldData.properties[i][0], fieldData.properties[i][1]);
-      }
-    }
-    elem.setAttribute("font-size", fieldData.size);
-    elem.setAttribute("fill", fieldData.color);
-    elem.setAttribute("opacity", Math.max(0.1, Math.min(1, fieldData.opacity)) || 1);
-    if (fieldData.txt) elem.textContent = fieldData.txt;
-    Tools.drawingArea.appendChild(elem);
-    return elem;
   }
 
   Tools.add({ //The new tool
