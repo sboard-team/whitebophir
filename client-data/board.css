@@ -360,11 +360,11 @@ body {
 }
 
 #formulaToolInput {
-	position: fixed;
 	min-width: 300px;
-	max-width: 100%;
+	max-width: min(90vw, 400px);
 	padding: 20px;
 	border: 2px solid black;
+	position: absolute;
 }
 
 #mobileWindowRect {
