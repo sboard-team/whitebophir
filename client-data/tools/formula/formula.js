@@ -55,7 +55,6 @@ import * as htmlToImage from '../../js/html-to-image.js';
     };
     setTimeout(function () {
       renderPNG().then(function (data) {
-        console.log(data);
         msg.imageData = data;
         Tools.drawAndSend(msg, Tools.list.Formula);
         mathlive.$perform ("deleteAll");
@@ -68,7 +67,6 @@ import * as htmlToImage from '../../js/html-to-image.js';
   function clickHandler(x, y, evt, isTouchEvent) {
     if (evt.target === input) return;
     if (evt.target.hasAttribute('data-formula')) {
-      console.log(true);
       isEdit = true;
       msg.id = evt.target.getAttribute('id');
       msg.x = evt.target.getAttribute('x');
@@ -95,6 +93,7 @@ import * as htmlToImage from '../../js/html-to-image.js';
         virtualKeyboardMode: 'manual',
         onKeystroke: function (field, key, evt) {
           if (evt.key === 'Enter') createFormula();
+          return true;
         }
       });
       setTimeout(function () {
