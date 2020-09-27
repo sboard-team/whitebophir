@@ -46,7 +46,7 @@ import * as htmlToImage from '../../js/html-to-image.js';
     msg.height = document.getElementById('formulaToolInput').querySelector('.ML__mathlive').offsetHeight * 2 >> 0;
     stopEdit();
     mathlive.$perform ( "hideVirtualKeyboard" );
-    document.removeEventListener('keypress', onKeyDown);
+    mathlive.$blur();
     if (!mathlive.$latex()) {
       mathlive.$perform ("deleteAll");
       latexForEdit = '';
@@ -85,26 +85,26 @@ import * as htmlToImage from '../../js/html-to-image.js';
   function startEdit() {
     active = true;
     if (!input.parentNode) board.appendChild(input);
-    var clientW = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    var x = curInput.x * Tools.scale - document.documentElement.scrollLeft;
-    if (x + 250 > clientW) {
-      x = Math.max(60, clientW - 260)
-    }
-    // window.scrollTo((document.documentElement.offsetWidth - 300) / 2, curInput.y * Tools.scale + 50);
-    input.style.left = x + 175 + 'px';
+    var x = curInput.x * Tools.scale - Tools.board.scrollLeft;
+    input.style.left = x - 150 < 0 ? 0 : x - 150 + 'px';
     input.style.top = curInput.y * Tools.scale + 20 + 'px';
     input.focus();
     if (mathlive === null) {
       mathlive = MathLive.makeMathField('formulaToolInput', {
         smartMode: true,
         virtualKeyboardMode: 'manual',
+        onKeystroke: function (field, key, evt) {
+          if (evt.key === 'Enter') createFormula();
+        }
       });
+      setTimeout(function () {
+        document.querySelector('.ML__keyboard .rows ul:last-child li:last-child').addEventListener('click', createFormula);
+      }, 200);
     }
     mathlive.$latex(latexForEdit);
     mathlive.$focus();
     mathlive.$perform ( "showVirtualKeyboard" );
     mathlive.$perform("moveToMathFieldEnd");
-    document.addEventListener('keydown', onKeyDown);
   }
 
   function stopEdit() {
@@ -113,8 +113,8 @@ import * as htmlToImage from '../../js/html-to-image.js';
     blur();
   }
 
-  function onKeyDown(e) {
-    console.log(e);
+  function createFormula() {
+    Tools.change('Hand');
   }
 
   function blur() {
