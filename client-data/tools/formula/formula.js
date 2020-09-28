@@ -7,6 +7,8 @@ import * as htmlToImage from '../../js/html-to-image.js';
   var mathlive = null;
   var isEdit = false;
   var latexForEdit = '';
+  var indexForIntervalScrolling = 0;
+  var scrollInterval = null;
 
   const msg = {
     id: null,
@@ -36,14 +38,15 @@ import * as htmlToImage from '../../js/html-to-image.js';
   }
 
   function onQuit() {
+    if (mathlive === null) return;
     if (!isEdit) {
       msg.id = Tools.generateUID();
       msg.x = curInput.x;
-      msg.y = curInput.y;
+      msg.y = curInput.y - 15;
     }
     msg.formulaData = mathlive.$latex();
-    msg.width = document.getElementById('formulaToolInput').querySelector('.ML__mathlive').offsetWidth * 2 >> 0;
-    msg.height = document.getElementById('formulaToolInput').querySelector('.ML__mathlive').offsetHeight * 2 >> 0;
+    msg.width = Math.ceil(document.getElementById('formulaToolInput').querySelector('.ML__mathlive').scrollWidth) * 2;
+    msg.height = Math.ceil(document.getElementById('formulaToolInput').querySelector('.ML__mathlive').scrollHeight) * 2;
     stopEdit();
     mathlive.$perform ( "hideVirtualKeyboard" );
     mathlive.$blur();
@@ -84,8 +87,8 @@ import * as htmlToImage from '../../js/html-to-image.js';
     active = true;
     if (!input.parentNode) board.appendChild(input);
     var x = curInput.x * Tools.scale - Tools.board.scrollLeft;
-    input.style.left = x - 150 < 0 ? 0 : x - 150 + 'px';
-    input.style.top = curInput.y * Tools.scale + 20 + 'px';
+    input.style.left = x + 'px';
+    input.style.top = curInput.y * Tools.scale - 41 < 0 ? 0 : curInput.y * Tools.scale - 41 + 'px';
     input.focus();
     if (mathlive === null) {
       mathlive = MathLive.makeMathField('formulaToolInput', {
@@ -97,13 +100,23 @@ import * as htmlToImage from '../../js/html-to-image.js';
         }
       });
       setTimeout(function () {
-        document.querySelector('.ML__keyboard .rows ul:last-child li:last-child').addEventListener('click', createFormula);
+        document.querySelector('.ML__keyboard .rows ul:last-child li:last-child').addEventListener('pointerdown', createFormula);
       }, 200);
     }
     mathlive.$latex(latexForEdit);
     mathlive.$focus();
     mathlive.$perform ( "showVirtualKeyboard" );
     mathlive.$perform("moveToMathFieldEnd");
+    scrollInterval = setInterval(function () {
+      const diffYKeyboardAndInput = document.querySelector('.ML__keyboard').getBoundingClientRect().y - document.getElementById('formulaToolInput').getBoundingClientRect().y;
+      if (diffYKeyboardAndInput < 85) {
+        window.scrollTo(window.pageXOffset, window.pageYOffset + (85 - diffYKeyboardAndInput));
+      }
+      if (indexForIntervalScrolling++ === 15) {
+        clearInterval(scrollInterval);
+        indexForIntervalScrolling = 0;
+      }
+    }, 30);
   }
 
   function stopEdit() {
