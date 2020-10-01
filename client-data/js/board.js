@@ -1134,6 +1134,7 @@ Tools.setFontSize = (function () {
     if (newFontSize) {
       fontSize = newFontSize;
       fontSizeValueEl.innerText = newFontSize;
+      Tools.list.Text.changeHandler();
     }
     return fontSize;
   }
@@ -1154,6 +1155,7 @@ Tools.getFontStyles = (function () {
     listItemEl.addEventListener('pointerdown', function (e) {
       fontValueEl.setAttribute('style', e.target.getAttribute('style'));
       fontValueEl.innerText = e.target.innerText;
+      Tools.list.Text.changeHandler();
     });
   }
 
