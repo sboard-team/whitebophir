@@ -45,7 +45,7 @@
 	const textSettingsPanel = document.getElementById('text-settings-panel');
 
 	function onQuit() {
-    //exit
+    stopEdit();
 	}
 
 	function clickHandler(x, y, evt, isTouchEvent) {
@@ -58,13 +58,9 @@
 		}
     stopEdit();
     isEdit = false;
-    textSettingsPanel.classList.add('text-settings-panel-opened');
+    curText.x = x;
+    curText.y = y + Tools.getFontSize() / 2;
     curText.id = Tools.generateUID();
-		curText.style = Tools.getFontStyles();
-		curText.color = Tools.getColor();
-		curText.x = x;
-		curText.y = y + Tools.getFontSize() / 2;
-		curText.fontName = document.getElementById('text-settings-value').innerText;
 		startEdit();
 		evt.preventDefault();
 	}
@@ -84,12 +80,15 @@
 		input.value = elem.textContent;
 	}
 
-	function startEdit() {
+	function startEdit(isContinue) {
+    textSettingsPanel.classList.add('text-settings-panel-opened');
+	  var offsetY = isContinue ? Tools.getFontSize() : 0;
+    curText.y += offsetY;
 		active = true;
 		if (!input.parentNode) board.appendChild(input);
     var x = curText.x * Tools.scale - Tools.board.scrollLeft;
     input.style.left = x + 'px';
-    input.style.top = curText.y * Tools.scale + 20 + 'px';
+    input.style.top = curText.y * Tools.scale + Tools.getFontSize() + 'px';
 		input.focus();
     input.addEventListener("keyup", changeHandler);
 	}
@@ -97,10 +96,15 @@
 	function changeHandler(evt) {
     if (evt.which === 13) { // enter
       stopEdit();
-      startEdit();
+      curText.id = Tools.generateUID();
+      startEdit(true);
+      return;
     } else if (evt.which === 27) { // escape
       stopEdit();
+      return;
     }
+    curText.color = Tools.getColor();
+    curText.fontName = document.getElementById('text-settings-value').innerText;
     curText.fontSize = Tools.getFontSize();
     curText.text = input.value;
     curText.type = isEdit ? 'update' : 'new';
@@ -109,8 +113,9 @@
   }
 
 	function stopEdit() {
+    active = false;
 		try { input.blur(); } catch (e) { /* Internet Explorer */ }
-		active = false;
+		isEdit = false;
 		blur();
 		if (curText.id) {
 			Tools.addActionToHistory({ type: "delete", id: curText.id });
@@ -123,6 +128,7 @@
 	function blur() {
 		if (active) return;
 		input.style.top = '-1000px';
+    textSettingsPanel.classList.remove('text-settings-panel-opened');
 	}
 
 	function draw(data, isLocal) {
@@ -160,7 +166,7 @@
 				elem.setAttribute(fieldData.properties[i][0], fieldData.properties[i][1]);
 			}
 		}
-		elem.setAttribute("style", `font-family: ${fieldData.fontFamily}; font-size: ${fieldData.fontSize}px;`);
+		elem.setAttribute("style", `font-family: ${fieldData.fontName}; font-size: ${fieldData.fontSize}px;`);
 		elem.setAttribute("fill", fieldData.color);
     if (fieldData.text) elem.textContent = fieldData.text;
 		Tools.drawingArea.appendChild(elem);
@@ -173,6 +179,7 @@
 		"listeners": {
 			"press": clickHandler,
 		},
+    "changeHandler": changeHandler,
 		"onquit": onQuit,
 		"draw": draw,
 		"mouseCursor": "text"
