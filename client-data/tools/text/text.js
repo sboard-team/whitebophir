@@ -51,6 +51,7 @@
 	function clickHandler(x, y, evt, isTouchEvent) {
 		if (evt.target === input) return;
 		if (evt.target.tagName === "text") {
+		  stopEdit();
 			editOldText(evt.target);
 			evt.preventDefault();
       isEdit = true;
@@ -74,8 +75,13 @@
 		curText.y = y;
 		curText.sentText = elem.textContent;
 		curText.size = parseInt(elem.getAttribute("font-size"));
-		curText.opacity = parseFloat(elem.getAttribute("opacity"));
 		curText.color = elem.getAttribute("fill");
+    const fontFamily = elem.getAttribute('style').split(':')[1].replace(';', '').trim();
+    curText.fontName = fontFamily;
+    Tools.setFontSize(curText.size);
+    const fontValueEl = document.getElementById('text-settings-value');
+    fontValueEl.setAttribute('style', `font-family: ${fontFamily};`);
+    fontValueEl.innerText = fontFamily;
 		startEdit();
 		input.value = elem.textContent;
 	}
@@ -94,16 +100,17 @@
 	}
 
 	function changeHandler(evt) {
-    if (evt.which === 13) { // enter
-      stopEdit();
-      curText.id = Tools.generateUID();
-      startEdit(true);
-      return;
-    } else if (evt.which === 27) { // escape
-      stopEdit();
-      return;
+    if (evt) {
+      if (evt.which === 13) { // enter
+        stopEdit();
+        curText.id = Tools.generateUID();
+        startEdit(true);
+        return;
+      } else if (evt.which === 27) { // escape
+        stopEdit();
+        return;
+      }
     }
-    curText.color = Tools.getColor();
     curText.fontName = document.getElementById('text-settings-value').innerText;
     curText.fontSize = Tools.getFontSize();
     curText.text = input.value;
@@ -133,7 +140,6 @@
 
 	function draw(data, isLocal) {
 		Tools.drawingEvent = true;
-    console.log(data);
 		switch (data.type) {
 			case "new":
 				createTextField(data);
@@ -145,6 +151,9 @@
 					return false;
 				}
 				updateText(textField, data.text);
+        textField.setAttribute("style", `font-family: ${data.fontName};`);
+        textField.setAttribute('font-size', `${data.fontSize}px`);
+        textField.setAttribute("fill", data.color);
 				break;
 			default:
 				console.error("Text: Draw instruction with unknown type. ", data);
@@ -166,8 +175,9 @@
 				elem.setAttribute(fieldData.properties[i][0], fieldData.properties[i][1]);
 			}
 		}
-		elem.setAttribute("style", `font-family: ${fieldData.fontName}; font-size: ${fieldData.fontSize}px;`);
+		elem.setAttribute("style", `font-family: ${fieldData.fontName};`);
 		elem.setAttribute("fill", fieldData.color);
+    elem.setAttribute('font-size', `${fieldData.fontSize}px`);
     if (fieldData.text) elem.textContent = fieldData.text;
 		Tools.drawingArea.appendChild(elem);
 		return elem;
