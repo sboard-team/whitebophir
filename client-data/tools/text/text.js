@@ -1,7 +1,7 @@
 /**
  *                        WHITEBOPHIR
  *********************************************************
- * @licstart  The following is the entire license notice for the 
+ * @licstart  The following is the entire license notice for the
  *  JavaScript code in this page.
  *
  * Copyright (C) 2013  Ophir LOJKINE
@@ -23,65 +23,44 @@
  *
  * @licend
  */
-import * as htmlToImage from '../../js/html-to-image.js';
-
 (function () { //Code isolation
 	var board = Tools.board;
 
-	var input = document.createElement("div");
+	var input = document.createElement("input");
 	input.id = "textToolInput";
-	var mathlive = null;
 
 	var curText = {
+	  "type": 'new',
 		"x": 0,
 		"y": 0,
-		"size": 36,
-		"rawSize": 16,
-		"oldSize": 0,
-		"opacity": 1,
-		"color": "#000",
-		"id": 0,
-		"sentText": "",
-		"lastSending": 0
+    "color": '#000',
+    "fontName": '',
+    "fontSize": 17,
+    "text": '',
+    "id": null,
 	};
 
 	var active = false;
-
-
-	function onStart() {
-		curText.oldSize = Tools.getSize();
-		Tools.setSize(curText.rawSize);
-	}
-
-	async function renderPNG() {
-		return htmlToImage.toPng(document.getElementById('textToolInput').querySelector('.ML__mathlive'), {
-			backgroundColor: '#fff',
-		});
-	}
+	var isEdit = false;
+	const textSettingsPanel = document.getElementById('text-settings-panel');
 
 	function onQuit() {
-		renderPNG().then(console.log);
-		stopEdit();
-		mathlive.$perform ( "hideVirtualKeyboard" );
-		console.log(mathlive);
-		Tools.setSize(curText.oldSize);
+    stopEdit();
 	}
 
 	function clickHandler(x, y, evt, isTouchEvent) {
-		//if(document.querySelector("#menu").offsetWidth>Tools.menu_width+3) return;
 		if (evt.target === input) return;
 		if (evt.target.tagName === "text") {
 			editOldText(evt.target);
 			evt.preventDefault();
+      isEdit = true;
 			return;
 		}
-		curText.rawSize = Tools.getSize();
-		curText.size = parseInt(curText.rawSize * 1.5 + 12);
-		curText.opacity = Tools.getOpacity();
-		curText.color = Tools.getColor();
-		curText.x = x;
-		curText.y = y + curText.size / 2;
-		stopEdit();
+    stopEdit();
+    isEdit = false;
+    curText.x = x;
+    curText.y = y + Tools.getFontSize() / 2;
+    curText.id = Tools.generateUID();
 		startEdit();
 		evt.preventDefault();
 	}
@@ -91,7 +70,6 @@ import * as htmlToImage from '../../js/html-to-image.js';
 		var r = elem.getBoundingClientRect();
 		var x = (r.left + document.documentElement.scrollLeft) / Tools.scale;
 		var y = (r.top + r.height + document.documentElement.scrollTop) / Tools.scale;
-
 		curText.x = x;
 		curText.y = y;
 		curText.sentText = elem.textContent;
@@ -102,95 +80,60 @@ import * as htmlToImage from '../../js/html-to-image.js';
 		input.value = elem.textContent;
 	}
 
-	function startEdit() {
+	function startEdit(isContinue) {
+    textSettingsPanel.classList.add('text-settings-panel-opened');
+	  var offsetY = isContinue ? Tools.getFontSize() : 0;
+    curText.y += offsetY;
 		active = true;
 		if (!input.parentNode) board.appendChild(input);
-		var left = curText.x - document.documentElement.scrollLeft + 'px';
-		var clientW = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-		var x = curText.x * Tools.scale - document.documentElement.scrollLeft;
-		if (x + 250 > clientW) {
-			x = Math.max(60, clientW - 260)
-		}
-
-		input.style.left = x + 'px';
-		input.style.top = curText.y * Tools.scale - document.documentElement.scrollTop + 20 + 'px';
+    var x = curText.x * Tools.scale - Tools.board.scrollLeft;
+    input.style.left = x + 'px';
+    input.style.top = curText.y * Tools.scale + Tools.getFontSize() + 'px';
 		input.focus();
-		//input.addEventListener("keyup", textChangeHandler);
-		//input.addEventListener("blur", textChangeHandler);
-		//input.addEventListener("blur", blur);
-		if (mathlive === null) {
-			mathlive = MathLive.makeMathField('textToolInput', {
-				smartMode: true,
-				virtualKeyboardMode: 'manual',
-				onContentDidChange: (mf) => {
-					const latex = mf.$text();
-					console.log(mf);
-					console.log(mf.$latex());
-					renderPNG().then(console.log);
-				},
-			});
-		}
-		mathlive.$perform ( "showVirtualKeyboard" );
+    input.addEventListener("keyup", changeHandler);
 	}
 
+	function changeHandler(evt) {
+    if (evt.which === 13) { // enter
+      stopEdit();
+      curText.id = Tools.generateUID();
+      startEdit(true);
+      return;
+    } else if (evt.which === 27) { // escape
+      stopEdit();
+      return;
+    }
+    curText.color = Tools.getColor();
+    curText.fontName = document.getElementById('text-settings-value').innerText;
+    curText.fontSize = Tools.getFontSize();
+    curText.text = input.value;
+    curText.type = isEdit ? 'update' : 'new';
+    isEdit = true;
+    Tools.drawAndSend(curText);
+  }
+
 	function stopEdit() {
+    active = false;
 		try { input.blur(); } catch (e) { /* Internet Explorer */ }
-		active = false;
+		isEdit = false;
 		blur();
 		if (curText.id) {
 			Tools.addActionToHistory({ type: "delete", id: curText.id });
 		}
-		curText.id = 0;
-		curText.sentText = "";
+		curText.id = null;
+		curText.text = "";
 		input.value = "";
-		//input.removeEventListener("keyup", textChangeHandler);
 	}
 
 	function blur() {
 		if (active) return;
 		input.style.top = '-1000px';
-	}
-
-	function textChangeHandler(evt) {
-		evt.stopPropagation();
-		if (evt.which === 13) { // enter
-			curText.y += 1.5 * curText.size;
-			stopEdit();
-			startEdit();
-		} else if (evt.which === 27) { // escape
-			stopEdit();
-		}
-		if (performance.now() - curText.lastSending > 100) {
-			if (curText.sentText !== input.value) {
-				//If the user clicked where there was no text, then create a new text field
-				if (curText.id === 0) {
-					curText.id = Tools.generateUID("t"); //"t" for text
-					Tools.drawAndSend({
-						'type': 'new',
-						'id': curText.id,
-						'color': curText.color,
-						'size': curText.size,
-						'opacity': curText.opacity,
-						'x': curText.x,
-						'y': curText.y
-					})
-				}
-				Tools.drawAndSend({
-					'type': "update",
-					'id': curText.id,
-					'txt': input.value.slice(0, 280)
-				});
-				curText.sentText = input.value;
-				curText.lastSending = performance.now();
-			}
-		} else {
-			clearTimeout(curText.timeout);
-			curText.timeout = setTimeout(textChangeHandler, 500, evt);
-		}
+    textSettingsPanel.classList.remove('text-settings-panel-opened');
 	}
 
 	function draw(data, isLocal) {
 		Tools.drawingEvent = true;
+    console.log(data);
 		switch (data.type) {
 			case "new":
 				createTextField(data);
@@ -201,7 +144,7 @@ import * as htmlToImage from '../../js/html-to-image.js';
 					console.error("Text: Hmmm... I received text that belongs to an unknown text field");
 					return false;
 				}
-				updateText(textField, data.txt);
+				updateText(textField, data.text);
 				break;
 			default:
 				console.error("Text: Draw instruction with unknown type. ", data);
@@ -223,10 +166,9 @@ import * as htmlToImage from '../../js/html-to-image.js';
 				elem.setAttribute(fieldData.properties[i][0], fieldData.properties[i][1]);
 			}
 		}
-		elem.setAttribute("font-size", fieldData.size);
+		elem.setAttribute("style", `font-family: ${fieldData.fontName}; font-size: ${fieldData.fontSize}px;`);
 		elem.setAttribute("fill", fieldData.color);
-		elem.setAttribute("opacity", Math.max(0.1, Math.min(1, fieldData.opacity)) || 1);
-		if (fieldData.txt) elem.textContent = fieldData.txt;
+    if (fieldData.text) elem.textContent = fieldData.text;
 		Tools.drawingArea.appendChild(elem);
 		return elem;
 	}
@@ -237,10 +179,9 @@ import * as htmlToImage from '../../js/html-to-image.js';
 		"listeners": {
 			"press": clickHandler,
 		},
-		"onstart": onStart,
+    "changeHandler": changeHandler,
 		"onquit": onQuit,
 		"draw": draw,
-		"stylesheet": "tools/text/text.css",
 		"mouseCursor": "text"
 	});
 

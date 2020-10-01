@@ -25,6 +25,7 @@
 	<script src="../polyfill.min.js?v={{v}}"></script>
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
 		  rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?&family=Lora&family=Open+Sans&family=Roboto+Condensed&display=swap" rel="stylesheet">
 </head>
 
 <body style="display: flex; justify-content: center;">
@@ -36,11 +37,9 @@
 		<g id="cursors"></g>
 	</svg>
 </div>
-
 <div id="preloader" class="preloader">
 	<img src="preloader.gif" height="128" width="128" style="margin: auto;display: block;"/>
 </div>
-
 <div class="top-panel panel js-elements sjx-hidden">
 	<div class="logo unselectable">
 		<img src="assets/logo.png" alt="sBoard">
@@ -72,7 +71,6 @@
 		</svg>
 	</div>
 </div>
-
 <div class="undo-redo-panel panel js-elements sjx-hidden">
 	<div data-tooltip="Отменить действие (ctrl+z)" id="undo" class="undo tooltip-bottom disabled-icon defolt-icon">
 		<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -93,7 +91,6 @@
 
 	</div>
 </div>
-
 <div class="export-and-help-panel panel js-elements sjx-hidden">
 	<div class="repost-block js-join-link">
 		<svg class="repost-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -109,7 +106,6 @@
 
 	</div>
 </div>
-
 <div class="copy-link-panel hide panel js-elements sjx-hidden js-link-panel">
 	<div class="copy-link-input">
 		<span class="copy-link-link js-link-text"></span>
@@ -123,7 +119,6 @@
             Передайте ссылку пользователю, которому хотите предоставить доступ к доске.
         </span>
 </div>
-
 <div id="tool-panel" class="tool-panel panel js-elements sjx-hidden">
 	<div class="tool">
 		<div data-tooltip="Выделение и изменение объекта (v)" id="Tool-Transform" class="main-tool">
@@ -326,14 +321,69 @@
 			</svg>
 		</div>
 	</div>
-	<div data-tooltip="Текст" class="tool">
-		<div id="Tool-Text" class="main-tool">
+
+
+
+	<div class="tool">
+		<div data-tooltip="Текст" id="Tool-Text" class="main-tool">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path d="M16.875 0H3.125C1.40188 0 0 1.40188 0 3.125V4.21875C0 4.65023 0.349766 5 0.78125 5C1.21273 5 1.5625 4.65023 1.5625 4.21875V3.125C1.5625 2.26344 2.26344 1.5625 3.125 1.5625H16.875C17.7366 1.5625 18.4375 2.26344 18.4375 3.125V4.21875C18.4375 4.65023 18.7873 5 19.2188 5C19.6502 5 20 4.65023 20 4.21875V3.125C20 1.40188 18.5981 0 16.875 0Z" fill="#828282"/>
 				<path d="M13.0469 18.4375H10.7812V3.90625C10.7812 3.47477 10.4315 3.125 10 3.125C9.56852 3.125 9.21875 3.47477 9.21875 3.90625V18.4375H6.95312C6.52164 18.4375 6.17188 18.7873 6.17188 19.2188C6.17188 19.6502 6.52164 20 6.95312 20H13.0469C13.4784 20 13.8281 19.6502 13.8281 19.2188C13.8281 18.7873 13.4784 18.4375 13.0469 18.4375Z" fill="#828282"/>
 			</svg>
 		</div>
+		<div id="text-settings-panel" class="text-settings-panel">
+			<div class="sub-tool-list panel">
+				<div id="text-settings-select" class="text-settings-select">
+					<div id="text-settings-value" style="font-family: Roboto Condensed; font-size: 17px;" class="text-settings-value">Roboto Condensed
+						<svg class="text-settings-select-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="10" height="10">
+								<rect width="10" height="10" fill="#C4C4C4"/>
+							</mask>
+							<g mask="url(#mask0)">
+								<path d="M1 7L5 3L9 7" stroke="#2D9CDB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							</g>
+						</svg>
+					</div>
+					<div class="text-settings-list">
+						<div style="font-family: Roboto Condensed;" class="text-settings-list-item">Roboto Condensed</div>
+						<div style="font-family: Montserrat;" class="text-settings-list-item">Montserrat</div>
+						<div style="font-family: Open Sans;" class="text-settings-list-item">Open Sans</div>
+						<div style="font-family: Lora;" class="text-settings-list-item">Lora</div>
+					</div>
+				</div>
+				<div class="text-settings-sizeCounter">
+					<div id="fontSize-value" class="text-settings-sizeCounter-value">
+						17
+					</div>
+					<div class="text-settings-size-buttons">
+						<div id="fontSize-up" class="text-settings-sizeCounter-btn text-settings-sizeCounter-btn-up">
+							<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="10" height="10">
+									<rect width="10" height="10" fill="#C4C4C4"/>
+								</mask>
+								<g mask="url(#mask0)">
+									<path d="M6.33333 4.33333L5 3L1 7H9L8 6" stroke="#828282" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+								</g>
+							</svg>
+						</div>
+						<div id="fontSize-down" class="text-settings-sizeCounter-btn text-settings-sizeCounter-btn-down">
+							<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="10" height="10">
+									<rect width="10" height="10" fill="#C4C4C4"/>
+								</mask>
+								<g mask="url(#mask0)">
+									<path d="M6.33333 5.66667L5 7L1 3H9L8 4" stroke="#828282" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+								</g>
+							</svg>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+
+
+
 	<div data-tooltip="Добавить изображение (i)" class="tool">
 		<div id="Tool-Document" class="main-tool">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -455,7 +505,6 @@
 		</div>
 	</div>
 </div>
-
 <div class="scale-width-panel panel js-elements sjx-hidden">
 	<div data-tooltip="Вписать доску по ширине экрана (ctrl + '=')" id="scalingWidth" class="tooltip-toLeft tooltip-top scale-to-width defolt-icon">
 		<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -484,7 +533,6 @@
 	</svg>
 	</div>
 </div>
-
 <div class="scale-panel panel js-elements sjx-hidden">
 	<div data-tooltip="Уменьшить масштаб (ctrl + '-')" id="minusScale" class="tooltip-top tooltip-toLeft minus-scale defolt-icon">
 		<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

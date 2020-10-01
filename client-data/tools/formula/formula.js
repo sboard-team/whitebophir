@@ -33,7 +33,7 @@ import * as htmlToImage from '../../js/html-to-image.js';
 
   async function renderPNG() {
     return htmlToImage.toPng(document.getElementById('formulaToolInput').querySelector('.ML__mathlive'), {
-      backgroundColor: '#fff',
+      backgroundColor: 'transparent',
     });
   }
 

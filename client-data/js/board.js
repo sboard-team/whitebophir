@@ -1079,7 +1079,6 @@ for (var colorPreset of document.getElementsByClassName('color-preset')) {
     });
 }
 
-//repost
 document.getElementsByClassName('repost-block')[0].addEventListener('click', () => {
     const copyPanel = document.getElementsByClassName('copy-link-panel')[0];
     if (copyPanel.classList.contains('hide')) {
@@ -1111,8 +1110,6 @@ function selectLink() {
     navigator.clipboard.writeText(linkEl.innerText);
 }
 
-//repost
-
 Tools.disableToolsEl = function (elementId) {
     document.getElementById(elementId).classList.add('disabled-icon');
 }
@@ -1120,6 +1117,50 @@ Tools.disableToolsEl = function (elementId) {
 Tools.enableToolsEl = function (elementId) {
     document.getElementById(elementId).classList.remove('disabled-icon');
 }
+
+Tools.setFontSize = (function () {
+  const fontSizeValueEl = document.getElementById('fontSize-value');
+  var fontSize = 17;
+
+  document.getElementById('fontSize-up').addEventListener('pointerdown', function () {
+    Tools.setFontSize(Tools.getFontSize() + 1);
+  });
+
+  document.getElementById('fontSize-down').addEventListener('pointerdown', function () {
+    Tools.setFontSize(Tools.getFontSize() - 1);
+  });
+
+  return function (newFontSize) {
+    if (newFontSize) {
+      fontSize = newFontSize;
+      fontSizeValueEl.innerText = newFontSize;
+    }
+    return fontSize;
+  }
+})();
+
+Tools.getFontSize = function() {
+  return Tools.setFontSize();
+}
+
+Tools.getFontStyles = (function () {
+  const fontSelectEl = document.getElementById('text-settings-select');
+  const fontValueEl = document.getElementById('text-settings-value');
+  fontSelectEl.addEventListener('pointerdown', function () {
+    fontSelectEl.classList.toggle('text-settings-select-opened');
+  });
+
+  for (var listItemEl of document.getElementsByClassName('text-settings-list-item')) {
+    listItemEl.addEventListener('pointerdown', function (e) {
+      fontValueEl.setAttribute('style', e.target.getAttribute('style'));
+      fontValueEl.innerText = e.target.innerText;
+    });
+  }
+
+  return function () {
+    return fontValueEl.getAttribute('style');
+  }
+})();
 
 Tools.sizeChangeHandlers = [];
 Tools.setSize = (function size() {
@@ -1184,11 +1225,7 @@ Tools.getSize = (function () {
     return Tools.setSize()
 });
 
-Tools.getOpacity = (function opacity() {
-    return function () {
-        return 1;
-    };
-})();
+Tools.getOpacity = function () { return 1;}
 
 Tools.deleteForTouches = function (evt, id) {
     if (evt.touches && evt.touches.length > 1) {

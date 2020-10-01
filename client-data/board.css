@@ -360,12 +360,17 @@ body {
 	transition: 0s;
 }
 
-#formulaToolInput {
+#formulaToolInput, #textToolInput {
 	min-width: 300px;
 	max-width: min(90vw, 400px);
 	padding: 20px;
 	border: 2px solid black;
 	position: absolute;
+}
+
+#textToolInput {
+	padding: 5px;
+	user-select: all;
 }
 
 #mobileWindowRect {

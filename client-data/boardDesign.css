@@ -346,7 +346,8 @@
 }
 
 .sub-tool-panel,
-.selected-element-panel{
+.selected-element-panel,
+.text-settings-panel{
     position: absolute;
     top: 0;
     left: 40px;
@@ -498,6 +499,106 @@
     display: flex;
     z-index: 1000;
     background-color: lightblue;
+}
+
+.text-settings-panel {
+    width: 260px;
+    display: none;
+}
+
+.text-settings-panel.text-settings-panel-opened {
+    display: block;
+}
+
+.text-settings-panel .sub-tool-list {
+    background-color: #fff;
+}
+
+.text-settings-value {
+    cursor: pointer;
+    height: 40px;
+    width: 180px;
+    line-height: 20px;
+    padding: 10px;
+    border-right: 1px solid #F2F2F2;
+    color: #000;
+    position: relative;
+    user-select: none;
+}
+
+.text-settings-list {
+    margin-top: 10px;
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: #fff;
+    height: 0;
+    box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.1);
+    transition: .3s height;
+}
+
+.text-settings-list-item {
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 0 5px 10px;
+    background-color: #fff;
+    cursor: pointer;
+    color: #000;
+    user-select: none;
+}
+
+.text-settings-list-item:hover {
+    background-color: #f4f4f4;
+}
+
+.text-settings-select-opened .text-settings-list {
+    padding: 5px 0;
+    height: 130px;
+}
+
+.text-settings-select-arrow {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    transform: rotate(-180deg);
+    transition: .3s;
+}
+
+.text-settings-select-opened .text-settings-select-arrow{
+    transform: rotate(0deg);
+}
+
+.text-settings-sizeCounter {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.text-settings-sizeCounter-value {
+    padding: 10px;
+    line-height: 20px;
+    user-select: none;
+    font-size: 16px;
+}
+
+.text-settings-sizeCounter-btn {
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    height: 20px;
+    cursor: pointer;
+    background-color: #fff;
+    padding-right: 10px;
+}
+
+.text-settings-sizeCounter-btn-up {
+    border-top-right-radius: 10px;
+    padding-top: 9px
+}
+
+.text-settings-sizeCounter-btn-down {
+    padding-bottom: 9px;
+    border-bottom-right-radius: 10px;
 }
 
 @media (max-width:645px) {
