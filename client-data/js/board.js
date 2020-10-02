@@ -531,13 +531,13 @@ function createModal(htmlContent, id) {
         resizeBoard();
     }
 
+    function goToHelp() {
+      window.open(Tools.server_config.LANDING_URL + 'lite/help');
+    }
+
     function plusScale() {
         Tools.setScale(Tools.getScale() + 0.1);
         resizeBoard();
-    }
-
-    function createHelpModal() {
-        createModal(`<iframe src="${Tools.server_config.LANDING_URL}lite/help" frameborder="0"></iframe>`, "modalHelp");
     }
 
     function sendClearBoard() {
@@ -672,7 +672,7 @@ function createModal(htmlContent, id) {
     document.getElementById('scalingFull').addEventListener('click', scaleToFull, false);
     document.getElementById('minusScale').addEventListener('click', minusScale, false);
     document.getElementById('plusScale').addEventListener('click', plusScale, false);
-    document.getElementById("help").addEventListener('click', createHelpModal, false);
+    document.getElementById("help").addEventListener('click', goToHelp, false);
     document.getElementById('clearBoard').addEventListener('click', sendClearBoard, false);
     document.getElementById('exportToPDF').addEventListener('click', createPdf, false);
     document.getElementById('exportToPDFButton').addEventListener('click', createPdf, false);

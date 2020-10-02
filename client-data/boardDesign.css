@@ -523,7 +523,6 @@
     border-right: 1px solid #F2F2F2;
     color: #000;
     position: relative;
-    user-select: none;
 }
 
 .text-settings-list {
@@ -544,7 +543,6 @@
     background-color: #fff;
     cursor: pointer;
     color: #000;
-    user-select: none;
 }
 
 .text-settings-list-item:hover {
@@ -586,7 +584,6 @@
 .text-settings-sizeCounter-value {
     padding: 10px;
     line-height: 20px;
-    user-select: none;
     font-size: 16px;
 }
 
