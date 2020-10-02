@@ -62,6 +62,7 @@
     curText.x = x;
     curText.y = y + Tools.getFontSize() / 2;
     curText.id = Tools.generateUID();
+    curText.color = Tools.getColor();
 		startEdit();
 		evt.preventDefault();
 	}
