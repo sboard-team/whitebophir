@@ -582,7 +582,7 @@ function createModal(htmlContent, id) {
 
     function createPdf() {
         if (Tools.params.permissions.pdf) {
-            window.open(Tools.server_config.PDF_URL + 'generate/' + Tools.boardName);
+            window.open(Tools.server_config.PDF_URL + 'generate/' + Tools.boardName + '?name=' + Tools.boardTitle);
         } else {
             alert('Красивая модалка, что тариф не позволяет делать экспорт в PDF.')
         }
