@@ -320,9 +320,6 @@
 			</svg>
 		</div>
 	</div>
-
-
-
 	<div class="tool">
 		<div data-tooltip="Текст" id="Tool-Text" class="main-tool">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -371,9 +368,6 @@
 			</div>
 		</div>
 	</div>
-
-
-
 	<div data-tooltip="Добавить изображение (i)" class="tool">
 		<div id="Tool-Document" class="main-tool">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -466,14 +460,17 @@
 		<div class="sub-tool-panel toLeft">
 			<div id="color-list" class="sub-tool-list panel color-list">
 				<div class="color-preset-box">
-					<label class="color-preset" id="color-picker-btn" style="background-color: #fff;">
-						<input type="color" id="color-picker" value="#fff">
+					<label class="color-preset" id="color-picker-btn" style="background: linear-gradient(to bottom left, #ff3300 0%, #0000ff 100%);">
+						<input type="color" id="color-picker" value="#000000">
 					</label>
 				</div>
 				<div class="color-preset-box">
-					<div class="color-preset" style="background-color: #000;"></div>
+					<div style="border: 1px solid black" class="color-preset" style="background-color: #ffffff;"></div>
 				</div>
-				<div class="color-preset-box selected-color">
+				<div class="color-preset-box  selected-color">
+					<div class="color-preset" style="background-color: #000000;"></div>
+				</div>
+				<div class="color-preset-box">
 					<div class="color-preset" style="background-color: #EB5757;"></div>
 				</div>
 				<div class="color-preset-box">
@@ -487,9 +484,6 @@
 				</div>
 				<div class="color-preset-box">
 					<div class="color-preset" style="background-color: #9B51E0;"></div>
-				</div>
-				<div class="color-preset-box">
-					<div class="color-preset" style="background-color: #BB6BD9;"></div>
 				</div>
 			</div>
 		</div>
@@ -543,6 +537,36 @@
 
 <script type="application/json" id="translations">{{{ json translations }}}</script>
 <script type="application/json" id="configuration">{{{ json configuration }}}</script>
+
+<!--&lt;!&ndash; Yandex.Metrika counter &ndash;&gt;-->
+<!--<script type="text/javascript" >-->
+<!--	(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};-->
+<!--		m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})-->
+<!--	(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");-->
+<!--	ym(67204918, "init", {-->
+<!--		clickmap:false,-->
+<!--		trackLinks:false,-->
+<!--		accurateTrackBounce:false,-->
+<!--		webvisor:false,-->
+<!--	});-->
+<!--</script>-->
+<!--<noscript><div><img src="https://mc.yandex.ru/watch/67204918" style="position:absolute; left:-9999px;" alt="" /></div></noscript>-->
+<!--&lt;!&ndash; /Yandex.Metrika counter &ndash;&gt;-->
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+	(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+		m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+	(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+	ym(67934998, "init", {
+		clickmap:false,
+		trackLinks:false,
+		accurateTrackBounce:false
+	});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/67934998" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 
 <script src="../js/path-data-polyfill.js?v={{v}}"></script>
 <script src="../js/board.js?v={{v}}"></script>
