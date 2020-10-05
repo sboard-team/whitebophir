@@ -532,7 +532,7 @@ function createModal(htmlContent, id) {
     }
 
     function goToHelp() {
-      window.open(Tools.server_config.LANDING_URL + 'lite/help');
+      window.open(Tools.server_config.LANDING_URL + 'help');
     }
 
     function plusScale() {
@@ -1020,6 +1020,8 @@ Tools.positionElement = function (elem, x, y) {
 
 Tools.color_chooser = document.getElementById("color-picker");
 
+document.getElementById('color-picker').addEventListener("change", watchColorPicker, false);
+
 Tools.setColor = function (color) {
     Tools.color_chooser.value = color;
     const presetsList = document.getElementsByClassName('color-preset-box');
@@ -1029,18 +1031,14 @@ Tools.setColor = function (color) {
 };
 
 Tools.getColor = (function color() {
-    var initial_color = '#000000';
-    Tools.setColor(initial_color);
     return function () {
         return Tools.color_chooser.value;
     };
 })();
 
-document.getElementById('color-picker').addEventListener("change", watchColorPicker, false);
-
 function watchColorPicker(e) {
+  console.log('waycg?')
     // e.target.value
-    document.getElementById('color-picker-btn').style = `background-color: ${e.target.value};`;
     const presetsList = document.getElementsByClassName('color-preset-box');
     for (var node of presetsList) {
         node.classList.remove('selected-color');
@@ -1090,10 +1088,11 @@ document.getElementsByClassName('repost-block')[0].addEventListener('click', () 
                 document.removeEventListener('touchstart', hideCopyPanel);
             }
         }
-
         document.addEventListener('mousedown', hideCopyPanel);
         document.addEventListener('touchstart', hideCopyPanel);
         setTimeout(selectLink, 25);
+        ym(67934998,'reachGoal','test');
+        ym(67934998,'reachGoal','invite_student');
     } else {
         copyPanel.classList.add('hide');
     }
