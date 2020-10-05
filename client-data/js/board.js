@@ -1091,8 +1091,7 @@ document.getElementsByClassName('repost-block')[0].addEventListener('click', () 
         document.addEventListener('mousedown', hideCopyPanel);
         document.addEventListener('touchstart', hideCopyPanel);
         setTimeout(selectLink, 25);
-        ym(67934998,'reachGoal','test');
-        ym(67934998,'reachGoal','invite_student');
+        ym(67204918,'reachGoal','invite_student');
     } else {
         copyPanel.classList.add('hide');
     }
