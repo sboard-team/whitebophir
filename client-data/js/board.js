@@ -492,7 +492,6 @@ function createModal(htmlContent, id) {
     window.addEventListener("scroll", function onScroll() {
         var x = document.documentElement.scrollLeft / Tools.getScale(),
             y = document.documentElement.scrollTop / Tools.getScale();
-
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(function updateHistory() {
             var hash = '#' + (x | 0) + ',' + (y | 0) + ',' + Tools.getScale().toFixed(2);

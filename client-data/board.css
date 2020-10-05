@@ -376,4 +376,5 @@ body {
 #mobileWindowRect {
 	outline: 3px solid dodgerblue;
 	fill: none;
+	transition: .2s;
 }

@@ -1,24 +1,25 @@
 (function () {
     const mobileWindowEl = document.getElementById('mobileWindowRect');
     var resetTimeoutID = null;
+    var lastTimeForScroll = performance.now();
+    const message = {
+      type: "update",
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+      userID: null,
+    };
     if (Tools.isMobile()) {
-        const message = {
-            type: "update",
-            x: 0,
-            y: 0,
-            width: 0,
-            height: 0,
-            userID: null,
-        };
+        window.addEventListener('scroll', function () {
+            if (performance.now() - lastTimeForScroll > 100) {
+                createAndSendMessage();
+                lastTimeForScroll = performance.now();
+            };
+        });
 
         setInterval(function () {
-            const windowWidth = window.innerWidth / Tools.getScale();
-            message.x = Math.max(document.documentElement.scrollLeft / Tools.getScale() >> 0, 5);
-            message.y = Math.max(document.documentElement.scrollTop / Tools.getScale() >> 0, 5);
-            message.width = (windowWidth > Tools.server_config.MAX_BOARD_SIZE_X ? Tools.server_config.MAX_BOARD_SIZE_X - 10 : windowWidth) >> 0;
-            message.height = window.innerHeight / Tools.getScale() >> 0;
-            message.userID = Tools.params.user.id;
-            Tools.send(message, 'tabletMode');
+            createAndSendMessage();
         }, 500);
     }
 
@@ -27,6 +28,16 @@
         mobileWindowEl.setAttribute('y', 0);
         mobileWindowEl.setAttribute('width', 0);
         mobileWindowEl.setAttribute('height', 0);
+    }
+
+    function createAndSendMessage() {
+        const windowWidth = window.innerWidth / Tools.getScale();
+        message.x = Math.max(document.documentElement.scrollLeft / Tools.getScale() >> 0, 5);
+        message.y = Math.max(document.documentElement.scrollTop / Tools.getScale() >> 0, 5);
+        message.width = (windowWidth > Tools.server_config.MAX_BOARD_SIZE_X ? Tools.server_config.MAX_BOARD_SIZE_X - 10 : windowWidth) >> 0;
+        message.height = window.innerHeight / Tools.getScale() >> 0;
+        message.userID = Tools.params.user.id;
+        Tools.send(message, 'tabletMode');
     }
 
     function draw(data) {
