@@ -1036,8 +1036,8 @@ Tools.getColor = (function color() {
 })();
 
 function watchColorPicker(e) {
-  console.log('waycg?')
     // e.target.value
+    colorMouseLeaveClose = true;
     const presetsList = document.getElementsByClassName('color-preset-box');
     for (var node of presetsList) {
         node.classList.remove('selected-color');
@@ -1045,12 +1045,23 @@ function watchColorPicker(e) {
     presetsList[0].classList.add('selected-color');
 }
 
+document.getElementById('color-picker-btn').addEventListener('pointerdown', function (e) {
+  colorMouseLeaveClose = false;
+  e.stopPropagation();
+  document.addEventListener('pointerdown', function () {
+    toolColorEl.classList.remove('opened');
+  }, {once: true});
+});
+
+var colorMouseLeaveClose = true;
+
 const toolColorEl = document.getElementById('color-tool');
 
 toolColorEl.addEventListener('mouseenter', function () {
     toolColorEl.classList.add('opened');
 });
 toolColorEl.addEventListener('mouseleave', function () {
+    if (!colorMouseLeaveClose) return;
     toolColorEl.classList.remove('opened');
 });
 toolColorEl.addEventListener('touchstart', function (e) {
