@@ -378,3 +378,7 @@ body {
 	fill: none;
 	transition: .2s;
 }
+
+.border-for-white{
+	border: 1px solid black;
+}
