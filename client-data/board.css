@@ -382,3 +382,13 @@ body {
 .border-for-white{
 	border: 1px solid black;
 }
+
+foreignObject {
+	overflow: visible;
+}
+
+pre {
+	width: fit-content;
+	width: -moz-fit-content;
+	margin: 0;
+}
