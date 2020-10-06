@@ -26,7 +26,7 @@
 (function () { //Code isolation
 	var board = Tools.board;
 
-	var input = document.createElement("input");
+	var input = document.createElement("textarea");
 	input.id = "textToolInput";
 
 	var curText = {
@@ -50,7 +50,7 @@
 
 	function clickHandler(x, y, evt, isTouchEvent) {
 		if (evt.target === input) return;
-		if (evt.target.tagName === "text") {
+		if (evt.target.tagName === "PRE") {
 		  stopEdit();
 			editOldText(evt.target);
 			evt.preventDefault();
@@ -74,10 +74,10 @@
 		var y = (r.top + r.height + document.documentElement.scrollTop) / Tools.scale;
 		curText.x = x;
 		curText.y = y;
-		curText.sentText = elem.textContent;
-		curText.size = parseInt(elem.getAttribute("font-size"));
-		curText.color = elem.getAttribute("fill");
-    const fontFamily = elem.getAttribute('style').split(':')[1].replace(';', '').trim();
+		curText.sentText = elem.innerText;
+		curText.size = parseInt(elem.style['font-size']);
+		curText.color = elem.style['color'];
+    const fontFamily = elem.style['font-family'].replace(/"/g, '');
     curText.fontName = fontFamily;
     Tools.setFontSize(curText.size);
     const fontValueEl = document.getElementById('text-settings-value');
@@ -87,10 +87,8 @@
 		input.value = elem.textContent;
 	}
 
-	function startEdit(isContinue) {
+	function startEdit() {
     textSettingsPanel.classList.add('text-settings-panel-opened');
-	  var offsetY = isContinue ? Tools.getFontSize() : 0;
-    curText.y += offsetY;
 		active = true;
 		if (!input.parentNode) board.appendChild(input);
     var x = curText.x * Tools.scale - Tools.board.scrollLeft;
@@ -102,10 +100,11 @@
 
 	function changeHandler(evt) {
     if (evt) {
-      if (evt.which === 13) { // enter
+      if (evt.key === 'Enter' && evt.shiftKey) {
+        input.style.top = curText.y * Tools.scale + document.getElementById(curText.id).clientHeight + Tools.getFontSize() + 'px';
+      }
+      else if (evt.key === 'Enter') { // enter
         stopEdit();
-        curText.id = Tools.generateUID();
-        startEdit(true);
         return;
       } else if (evt.which === 27) { // escape
         stopEdit();
@@ -151,10 +150,8 @@
 					console.error("Text: Hmmm... I received text that belongs to an unknown text field");
 					return false;
 				}
-				updateText(textField, data.text);
-        textField.setAttribute("style", `font-family: ${data.fontName};`);
-        textField.setAttribute('font-size', `${data.fontSize}px`);
-        textField.setAttribute("fill", data.color);
+				updateText(textField, data.text, data.id);
+        textField.setAttribute("style", `font-family: ${data.fontName}; color: ${data.color}; font-size: ${data.fontSize}px;`);
 				break;
 			default:
 				console.error("Text: Draw instruction with unknown type. ", data);
@@ -167,8 +164,7 @@
 	}
 
 	function createTextField(fieldData) {
-		var elem = Tools.createSVGElement("text");
-		elem.id = fieldData.id;
+		var elem = Tools.createSVGElement("foreignObject");
 		elem.setAttribute("x", fieldData.x);
 		elem.setAttribute("y", fieldData.y);
 		if (fieldData.properties) {
@@ -176,15 +172,16 @@
 				elem.setAttribute(fieldData.properties[i][0], fieldData.properties[i][1]);
 			}
 		}
-		elem.setAttribute("style", `font-family: ${fieldData.fontName};`);
-		elem.setAttribute("fill", fieldData.color);
-    elem.setAttribute('font-size', `${fieldData.fontSize}px`);
-    if (fieldData.text) elem.textContent = fieldData.text;
+		const textEl = document.createElement("pre");
+		textEl.id = fieldData.id;
+    textEl.setAttribute("style", `font-family: ${fieldData.fontName}; color: ${fieldData.color}; font-size: ${fieldData.fontSize}px;`);
+    if (fieldData.text) updateText(textEl, fieldData.text);
+    elem.appendChild(textEl);
 		Tools.drawingArea.appendChild(elem);
 		return elem;
 	}
 
-	Tools.add({ //The new tool
+	Tools.add({
 		"name": "Text",
 		"shortcut": "t",
 		"listeners": {
