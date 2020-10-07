@@ -1,7 +1,7 @@
 /**
  *                        WHITEBOPHIR
  *********************************************************
- * @licstart  The following is the entire license notice for the 
+ * @licstart  The following is the entire license notice for the
  *  JavaScript code in this page.
  *
  * Copyright (C) 2013  Ophir LOJKINE
@@ -63,6 +63,7 @@
 	function erase(x, y, evt) {
 		erasing = erasing || evt.which === 1;
 		var target = evt.target;
+		if (target.tagName === 'PRE') target = target.parentElement;
 		if (evt.type === "touchmove") {
 			// ... the target of touchmove events is the element that was initially touched,
 			// not the one **currently** being touched
@@ -73,7 +74,7 @@
 			document.getElementById(targetID).classList.remove('forErasing');
 		}
 		if (checkElementIsDraw(target)) {
-			targetID = target.id;
+      targetID = target.id;
 			msg.id = targetID;
 			if (erasing && !target.classList.contains('selectedEl')) {
 				Tools.drawAndSend(msg);

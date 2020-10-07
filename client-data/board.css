@@ -387,6 +387,10 @@ foreignObject {
 	overflow: visible;
 }
 
+.forErasing pre {
+	outline: 2px solid red;
+}
+
 pre {
 	width: fit-content;
 	width: -moz-fit-content;
