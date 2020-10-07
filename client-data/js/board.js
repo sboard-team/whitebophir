@@ -1051,6 +1051,7 @@ function watchColorPicker(e) {
 
 document.getElementById('color-picker-btn').addEventListener('pointerdown', function (e) {
   colorMouseLeaveClose = false;
+  colorMouseLeaveClose = false;
   e.stopPropagation();
   document.addEventListener('pointerdown', function () {
     toolColorEl.classList.remove('opened');
@@ -1271,6 +1272,7 @@ Tools.undo = (function () {
             switch (action.type) {
                 case "line":
                     instrument = Tools.list.Pencil;
+                    console.log(action);
                     Tools.drawAndSend({
                         'type': 'line',
                         'id': action.id,
@@ -1278,6 +1280,7 @@ Tools.undo = (function () {
                         'size': action.size,
                         'opacity': action.opacity || 1,
                         'properties': action.properties,
+                        'dotted': action.dotted,
                     }, instrument);
                     if (action.properties === undefined || action.properties.length === 0) {
                         for (var child of action._children) {
@@ -1349,6 +1352,7 @@ Tools.redo = (function () {
                         'size': action.size,
                         'opacity': action.opacity || 1,
                         'properties': action.properties,
+                        'dotted': action.dotted,
                     }, instrument);
                     if (action.properties === undefined || action.properties.length === 0) {
                         for (var child of action._children) {
