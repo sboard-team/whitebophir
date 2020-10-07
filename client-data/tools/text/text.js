@@ -68,7 +68,8 @@
 	}
 
 	function editOldText(elem) {
-		curText.id = elem.id;
+    console.log(elem.parentElement);
+		curText.id = elem.parentElement.id;
 		var r = elem.getBoundingClientRect();
 		var x = (r.left + document.documentElement.scrollLeft) / Tools.scale;
 		var y = (r.top + r.height + document.documentElement.scrollTop) / Tools.scale;
@@ -101,7 +102,7 @@
 	function changeHandler(evt) {
     if (evt) {
       if (evt.key === 'Enter' && evt.shiftKey) {
-        input.style.top = curText.y * Tools.scale + document.getElementById(curText.id).clientHeight + Tools.getFontSize() + 'px';
+        input.style.top = curText.y * Tools.scale + document.getElementById(curText.id).childNodes[0].clientHeight + Tools.getFontSize() + 'px';
       }
       else if (evt.key === 'Enter') { // enter
         stopEdit();
@@ -145,7 +146,7 @@
 				createTextField(data);
 				break;
 			case "update":
-				var textField = document.getElementById(data.id);
+				var textField = document.getElementById(data.id).childNodes[0];
 				if (textField === null) {
 					console.error("Text: Hmmm... I received text that belongs to an unknown text field");
 					return false;
@@ -165,6 +166,7 @@
 
 	function createTextField(fieldData) {
 		var elem = Tools.createSVGElement("foreignObject");
+
 		elem.setAttribute("x", fieldData.x);
 		elem.setAttribute("y", fieldData.y);
 		if (fieldData.properties) {
@@ -173,7 +175,7 @@
 			}
 		}
 		const textEl = document.createElement("pre");
-		textEl.id = fieldData.id;
+		elem.id = fieldData.id;
     textEl.setAttribute("style", `font-family: ${fieldData.fontName}; color: ${fieldData.color}; font-size: ${fieldData.fontSize}px;`);
     if (fieldData.text) updateText(textEl, fieldData.text);
     elem.appendChild(textEl);
