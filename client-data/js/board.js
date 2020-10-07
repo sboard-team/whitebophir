@@ -556,6 +556,10 @@ function createModal(htmlContent, id) {
         document.getElementById('newBoardName').value
             = document.getElementById('boardName').innerText;
 
+        document.getElementById('newBoardName').addEventListener('keyup', function (e) {
+          e.stopPropagation();
+        });
+
         document.getElementById('buttonRenameBoard').addEventListener('click', function () {
             const newName = document.getElementById('newBoardName').value;
             fetch(
