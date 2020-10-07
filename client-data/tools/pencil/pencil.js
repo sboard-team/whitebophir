@@ -1,7 +1,7 @@
 /**
  *                        WHITEBOPHIR
  *********************************************************
- * @licstart  The following is the entire license notice for the 
+ * @licstart  The following is the entire license notice for the
  *  JavaScript code in this page.
  *
  * Copyright (C) 2013  Ophir LOJKINE
@@ -139,6 +139,7 @@
 	function createLine(lineData) {
 		//Creates a new line on the canvas, or update a line that already exists with new information
 		var line = svg.getElementById(lineData.id) || Tools.createSVGElement("path");
+    console.log(lineData);
 		if (lineData.dotted) {
 			line.classList.add('dotted');
 		}
