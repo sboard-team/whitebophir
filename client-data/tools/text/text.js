@@ -94,7 +94,7 @@
 		if (!input.parentNode) board.appendChild(input);
     var x = curText.x * Tools.scale - Tools.board.scrollLeft;
     input.style.left = x + 'px';
-    input.style.top = curText.y * Tools.scale + Tools.getFontSize() + 'px';
+    input.style.top = curText.y * Tools.scale + Tools.getFontSize() + 5 + 'px';
 		input.focus();
     input.addEventListener("keyup", changeHandler);
 	}
