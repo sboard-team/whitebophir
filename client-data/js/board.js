@@ -678,7 +678,13 @@ function createModal(htmlContent, id) {
     function checkBoard() {
         const urlParams = new URLSearchParams(window.location.search);
         const PASS = urlParams.get('pass');
-
+        var localStorageData = localStorage.getItem(Tools.boardName);
+        if (localStorageData) {
+            if (window.location.hash.slice(1).split(',').length !== 3) {
+              localStorageData = JSON.parse(localStorageData);
+              window.location.hash = `${localStorageData.x},${localStorageData.y},${localStorageData.scale}`;
+            }
+        }
         if (Tools.server_config.DEV_MODE === 1 || PASS === 'dlTmsXCPwaMfTosmtDpsdf') {
             Tools.params = {
                 "status": true,
@@ -742,6 +748,17 @@ function createModal(htmlContent, id) {
             Tools.setScale(Tools.getScale());
             resizeBoard();
         }, 650);
+    });
+    window.addEventListener('unload', function () {
+        const coords = window.location.hash.slice(1).split(',');
+        const x = coords[0] | 0;
+        const y = coords[1] | 0;
+        const scale = parseFloat(coords[2]);
+        localStorage.setItem(Tools.boardName, JSON.stringify({
+            x: x,
+            y: y,
+            scale: scale,
+        }));
     });
 })();
 
