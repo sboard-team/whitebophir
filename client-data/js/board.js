@@ -742,6 +742,7 @@ function createModal(htmlContent, id) {
     window.addEventListener("hashchange", setScrollFromHash, false);
     window.addEventListener("popstate", setScrollFromHash, false);
     window.addEventListener("DOMContentLoaded", setScrollFromHash, false);
+    window.addEventListener("load", setScrollFromHash, false);
     window.addEventListener("DOMContentLoaded", checkBoard, false);
     window.addEventListener('orientationchange', function () {
         setTimeout(function () {
