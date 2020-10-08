@@ -78,7 +78,7 @@ Tools.connect = function () {
         handleMessage(msg).finally(function afterload() {
             if (!preloaderEl.classList.contains('hide')) {
                 preloaderEl.classList.add("hide");
-                setTimeout(Tools.setScrollFromHash, 100);
+                setTimeout(Tools.setScrollFromHash, 1000);
                 setTimeout(function () {
                     Tools.socket.emit('getSelectedElements', Tools.boardName);
                 }, 300);
