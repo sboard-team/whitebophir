@@ -101,7 +101,7 @@
 
 	function changeHandler(evt) {
     if (evt) {
-      if (evt.key === 'Enter' && evt.shiftKey) {
+      if (evt.key === 'Enter' && (evt.shiftKey || Tools.isMobile())) {
         input.style.top = curText.y * Tools.scale + document.getElementById(curText.id).childNodes[0].clientHeight + Tools.getFontSize() + 'px';
       }
       else if (evt.key === 'Enter') { // enter
