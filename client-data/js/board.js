@@ -242,23 +242,73 @@ Tools.isMobile = function () {
 };
 
 (function hotkeys() {
+  const presetsList = document.getElementsByClassName('color-preset-box');
+  const sizes = [1, 3, 5, 9, 15];
 	if (!Tools.isMobile()) {
 		document.addEventListener('keyup', function (e) {
-		  if (Tools.curTool.name === 'Formula' || Tools.curTool.name === 'Text') return;
-			if (e.keyCode === 86) { // v
+		  if (e.target.tagName === 'TEXTAREA') return;
+			if (e.keyCode === 86) { //v
 				Tools.change('Transform');
-			} else if (e.keyCode === 72) {
+			} else if (e.keyCode === 81) {//q
+        if (Tools.curTool.name === 'Shapes') {
+          var newIndex = 0;
+          if (getToolIndex('Shapes') === 0) {
+            newIndex = 2;
+          } else if (getToolIndex('Shapes') === 1) {
+            newIndex = 3;
+          } else if (getToolIndex('Shapes') === 2) {
+            newIndex = 1;
+          } else if (getToolIndex('Shapes') === 3) {
+            newIndex = 0;
+          }
+          Tools.change('Shapes', newIndex);
+        } else {
+          Tools.change('Shapes', getToolIndex('Shapes'));
+        }
+      } else if (e.keyCode === 87) { //w
+			  if (sizes.includes(Tools.getSize())) {
+			    const newIndex = sizes.findIndex(function (size) {
+            return size == Tools.getSize();
+          }) + 1;
+			    Tools.setSize(sizes[newIndex % sizes.length]);
+        } else {
+          Tools.setSize(sizes[0]);
+        }
+      } else if ( e.keyCode === 67 ) { //c
+        var indexForChange = 0;
+        for (var node of presetsList) {
+          if (node.classList.contains('selected-color')) {
+            node.classList.remove('selected-color');
+            indexForChange++;
+            break;
+          }
+          indexForChange++;
+        }
+        if (indexForChange === 8) {
+          indexForChange = 1;
+        }
+        Tools.setColor(presetsList[indexForChange].getElementsByTagName('div')[0].getAttribute('style').replace('background-color: ', '').replace(';', ''));
+        presetsList[indexForChange].classList.add('selected-color');
+      } else if (e.keyCode === 72) { //h
 				Tools.change('Hand');
-			} else if (e.keyCode === 69) {
+			} else if (e.keyCode === 69) { //e
 				Tools.change('Eraser');
-			} else if (e.keyCode === 76) {
-				Tools.change('Line');
-			} else if (e.keyCode === 84) {
+			} else if (e.keyCode === 76) { //l
+        if (Tools.curTool.name === 'Line') {
+          Tools.change('Line', getToolIndex('Line') === 5 ? 0 : getToolIndex('Line') + 1);
+        } else {
+          Tools.change('Line', getToolIndex('Line'));
+        }
+			} else if (e.keyCode === 84) { //t
 				Tools.change('Text');
-			} else if (e.keyCode === 73) {
+			} else if (e.keyCode === 73) { //i
 				Tools.change('Document');
-			} else if (e.keyCode === 80) {
-				Tools.change('Pencil');
+			} else if (e.keyCode === 80) { //p
+			  if (Tools.curTool.name === 'Pencil') {
+          Tools.change('Pencil', getToolIndex('Pencil') === 1 ? 0 : 1);
+        } else {
+			    Tools.change('Pencil', getToolIndex('Pencil'));
+        }
 			} else if (e.keyCode === 89 && e.ctrlKey) {
 				Tools.redo();
 			} else if (e.keyCode === 90 && e.ctrlKey) {
@@ -266,6 +316,10 @@ Tools.isMobile = function () {
 			}
 		}, false);
 	}
+
+	function getToolIndex(toolName) {
+    return +document.getElementById('Tool-' + toolName).dataset.index;
+  }
 })();
 
 /**
@@ -1272,7 +1326,6 @@ Tools.undo = (function () {
             switch (action.type) {
                 case "line":
                     instrument = Tools.list.Pencil;
-                    console.log(action);
                     Tools.drawAndSend({
                         'type': 'line',
                         'id': action.id,
