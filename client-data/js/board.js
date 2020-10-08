@@ -250,7 +250,9 @@ Tools.isMobile = function () {
 		  if (e.target.tagName === 'TEXTAREA') return;
 			if (e.keyCode === 86) { //v
 				Tools.change('Transform');
-			} else if (e.keyCode === 81) {//q
+			} else if (e.keyCode === 70) { //f
+        Tools.change('Formula');
+      } else if (e.keyCode === 81) {//q
         if (Tools.curTool.name === 'Shapes') {
           var newIndex = 0;
           if (getToolIndex('Shapes') === 0) {
