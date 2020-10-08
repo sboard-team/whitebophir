@@ -78,6 +78,7 @@ Tools.connect = function () {
         handleMessage(msg).finally(function afterload() {
             if (!preloaderEl.classList.contains('hide')) {
                 preloaderEl.classList.add("hide");
+                setTimeout(Tools.setScrollFromHash, 100);
                 setTimeout(function () {
                     Tools.socket.emit('getSelectedElements', Tools.boardName);
                 }, 300);
@@ -568,6 +569,8 @@ function createModal(htmlContent, id) {
         window.scrollTo(x * scale, y * scale);
         resizeBoard();
     }
+
+    Tools.setScrollFromHash = setScrollFromHash;
 
     function scaleToFull() {
         Tools.setScale(1);
