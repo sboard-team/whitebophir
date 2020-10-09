@@ -118,7 +118,7 @@
 				Tools.disableToolsEl('undo');
 				Tools.disableToolsEl('redo');
 				Tools.change("Hand");
-				Tools.drawingArea.innerHTML = '';
+				Tools.drawingArea.innerHTML = '<path stroke="#000000" stroke-width="3" opacity="1" d="M 13.866666666666667 51.2 L 13.866666666666667 51.2 C 13.866666666666667 51.2 13.866666666666667 51.2 13.866666666666667 51.2" style="visibility: hidden"></path>';
 				break;
 			default:
 				console.error("Eraser: 'delete' instruction with unknown type. ", data);

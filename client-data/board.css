@@ -385,8 +385,6 @@ body {
 
 foreignObject {
 	overflow: visible;
-	width: 1px;
-	height: 1px;
 }
 
 .forErasing pre {
