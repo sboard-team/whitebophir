@@ -68,11 +68,10 @@
 	}
 
 	function editOldText(elem) {
-    console.log(elem.parentElement);
 		curText.id = elem.parentElement.id;
 		var r = elem.getBoundingClientRect();
 		var x = (r.left + document.documentElement.scrollLeft) / Tools.scale;
-		var y = (r.top + r.height + document.documentElement.scrollTop) / Tools.scale;
+		var y = (r.top + document.documentElement.scrollTop) / Tools.scale;
 		curText.x = x;
 		curText.y = y;
 		curText.sentText = elem.innerText;
@@ -85,6 +84,7 @@
     fontValueEl.setAttribute('style', `font-family: ${fontFamily};`);
     fontValueEl.innerText = fontFamily;
 		startEdit();
+    input.style.top = (curText.y + document.getElementById(curText.id).childNodes[0].clientHeight + Tools.getFontSize() + 5) * Tools.getScale() + 'px';
 		input.value = elem.textContent;
 	}
 
@@ -94,7 +94,7 @@
 		if (!input.parentNode) board.appendChild(input);
     var x = curText.x * Tools.scale - Tools.board.scrollLeft;
     input.style.left = x + 'px';
-    input.style.top = curText.y * Tools.scale + Tools.getFontSize() + 5 + 'px';
+    input.style.top = (curText.y + Tools.getFontSize() + 5) * Tools.scale + 'px';
 		input.focus();
     input.addEventListener("keyup", changeHandler);
 	}
@@ -102,7 +102,7 @@
 	function changeHandler(evt) {
     if (evt) {
       if (evt.key === 'Enter' && (evt.shiftKey || Tools.isMobile())) {
-        input.style.top = curText.y * Tools.scale + document.getElementById(curText.id).childNodes[0].clientHeight + Tools.getFontSize() + 'px';
+        input.style.top = (curText.y + document.getElementById(curText.id).childNodes[0].clientHeight + Tools.getFontSize() + 5) * Tools.getScale() + 'px';
       }
       else if (evt.key === 'Enter') { // enter
         stopEdit();
