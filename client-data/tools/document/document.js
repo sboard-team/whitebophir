@@ -22,10 +22,14 @@
                 reader.readAsDataURL(file);
                 reader.onload = workWithImage;
             } else {
-                alert('Неподдерживаемый тип изображения! Поддерживаются: ' + fileTypes.join(', '));
-            }   
+              createModal(Tools.modalWindows.wrongImageFormat);
+            }
         } else {
-            alert('Эта функция недоступна для вас!');
+          if (Tools.params.permissions.edit) {
+            createModal(Tools.modalWindows.premiumFunctionForOwner);
+          } else {
+            createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+          }
         }
         preventDefault(e);
     }
@@ -44,7 +48,11 @@
                 // Tools.change(Tools.prevToolName);
             });
         } else {
-            alert('Эта функция недоступна для вас!');
+          if (Tools.params.permissions.edit) {
+            createModal(Tools.modalWindows.premiumFunctionForOwner);
+          } else {
+            createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+          }
         }
     }
 

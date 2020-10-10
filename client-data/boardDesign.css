@@ -607,6 +607,95 @@
     border-bottom-right-radius: 10px;
 }
 
+.modal {
+    min-width: 320px;
+    max-width: 480px;
+    background: #FFFFFF;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.05);
+    border-radius: 20px !important;
+    padding: 20px !important;
+    box-sizing: border-box;
+}
+.modal-title {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    color: #000000;
+    margin: 0;
+}
+.modal-description {
+    max-width: 380px;
+    margin: 20px auto;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+    color: #828282;
+}
+.modal .btn {
+    text-decoration: none;
+    outline: none;
+    height: 40px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    line-height: 40px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: .2s;
+    display: block;
+}
+.modal .btn-gray {
+    background: #FFFFFF;
+    color: #828282;
+    border: 1px solid #E0E0E0;
+}
+.modal .btn-gray:hover {
+    background: #2FB59D;
+    color: #FFFFFF;
+}
+.modal .btn-green {
+    background: #2FB59D;
+    color: #FFFFFF;
+    border: 1px solid #2FB59D;
+}
+.modal .btn-green:hover {
+    background: #FFFFFF;
+    color: #2FB59D;
+    border: 1px solid #2FB59D;
+}
+.modal .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+.modal .modal-buttons .btn {
+    width: 100%;
+}
+.modal .modal-buttons .btn:first-child {
+    margin-right: 20px;
+}
+.modal .close {
+    right: 10px !important;
+    top: 10px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 50% !important;
+    background: #F2F2F2;
+}
+
 @media (max-width:645px) {
     .repost-link {
         display: none;

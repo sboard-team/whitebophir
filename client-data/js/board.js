@@ -43,6 +43,35 @@ document.getElementById('cabinetURL').setAttribute('href', Tools.server_config.C
 Tools.board = document.getElementById("board");
 Tools.svg = document.getElementById("canvas");
 Tools.drawingArea = Tools.svg.getElementById("drawingArea");
+Tools.modalWindows = {
+  premiumFunctionForOwner: `<h2 class="modal-title">Функция недоступна!</h2>
+                <div class="modal-description">
+                    Эта функция не доступна на базовом тарифе.
+                </div>
+                <a href="${Tools.server_config.LANDING_URL}cabinet/tariff" class="btn btn-green">
+                Управлять тарифом
+            </a>`,
+  premiumFunctionForDefaultUser: `<h2 class="modal-title">Функция недоступна!</h2>
+                <div class="modal-description">
+                    Эта функция не доступна, обратитесь к владельцу доски.
+                </div>`,
+  functionInDevelopment: `<h2 class="modal-title">Функция недоступна!</h2>
+                <div class="modal-description">
+                    Функция в разработке. Ждите в ближайшем обновлении.
+                </div>`,
+  clearBoard: `<h2 class="modal-title">Очистка доски!</h2>
+                    <div class="modal-description">
+                       Вы уверены, что хотите очистить всю доску? Это действие нельзя отменить.
+                     </div>
+                    <div class="modal-buttons">
+                      <div data-action="cancel" class="btn btn-gray">Отмена</div>
+                      <div data-action="clearBoard" class="btn btn-green">Принять</div>
+                    </div>`,
+  wrongImageFormat: `<h2 class="modal-title">Не удалось загрузить изображение!</h2>
+                    <div class="modal-description">
+                       Неподдерживаемый тип изображения! Поддерживаются: jpeg, jpg, webp, png.
+                     </div>`
+};
 
 //Initialization
 Tools.curTool = null;
@@ -524,20 +553,25 @@ function updateDocumentTitle() {
 }
 
 // Function for creating Modal Window
-function createModal(htmlContent, id) {
-    const modal = document.createElement('div');
-    modal.classList.add('modal');
-    modal.id = id;
-    modal.innerHTML = `
-		<div class="content">
-			${htmlContent}
-		</div>`;
-    document.getElementsByTagName('body')[0].append(modal);
-    document.getElementById(id).addEventListener('click', function (event) {
-        if (event.target.getAttribute('class') === 'modal') {
-            event.target.remove();
-        }
+function createModal(htmlContent) {
+  picoModal({
+    content: htmlContent,
+    closeHtml: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L6 6M6 6L11 1M6 6L1 11M6 6L11 11" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    closeClass: 'close',
+    modalClass: 'modal',
+  }).afterCreate(modal => {
+    modal.modalElem().addEventListener("click", evt => {
+      if (evt.target && evt.target.dataset.action) {
+        modal.close(evt.target.dataset.action);
+      }
     });
+  }).afterClose((modal, event) => {
+    if (event.detail === 'clearBoard') {
+      Tools.drawAndSend({
+        'type': 'clearBoard',
+      }, Tools.list.Eraser);
+    }
+  }).show();
 }
 
 (function () {
@@ -599,12 +633,7 @@ function createModal(htmlContent, id) {
     }
 
     function sendClearBoard() {
-        const needClear = confirm('Вы уверены, что хотите очистить всю доску? Это нельзя отменить.');
-        if (needClear) {
-            Tools.drawAndSend({
-                'type': 'clearBoard',
-            }, Tools.list.Eraser);
-        }
+        createModal(Tools.modalWindows.clearBoard);
     }
 
     function createModalRename() {
@@ -646,7 +675,11 @@ function createModal(htmlContent, id) {
         if (Tools.params.permissions.pdf) {
             window.open(Tools.server_config.PDF_URL + 'generate/' + Tools.boardName + '?name=' + Tools.boardTitle);
         } else {
-            alert('Красивая модалка, что тариф не позволяет делать экспорт в PDF.')
+            if (Tools.params.permissions.edit) {
+              createModal(Tools.modalWindows.premiumFunctionForOwner);
+            } else {
+              createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+            }
         }
     }
 
