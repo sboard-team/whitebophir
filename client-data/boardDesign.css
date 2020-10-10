@@ -660,8 +660,8 @@
     border: 1px solid #E0E0E0;
 }
 .modal .btn-gray:hover {
-    background: #2FB59D;
-    color: #FFFFFF;
+    border: 1px solid #2FB59D;
+    color: #2FB59D;
 }
 .modal .btn-green {
     background: #2FB59D;
@@ -669,9 +669,7 @@
     border: 1px solid #2FB59D;
 }
 .modal .btn-green:hover {
-    background: #FFFFFF;
-    color: #2FB59D;
-    border: 1px solid #2FB59D;
+    opacity: 0.8;
 }
 .modal .modal-buttons {
     display: flex;
