@@ -288,6 +288,7 @@ Tools.isMobile = function () {
   const sizes = [1, 3, 5, 9, 15];
 	if (!Tools.isMobile()) {
 	  document.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       if (e.keyCode === 86 && (e.ctrlKey || e.metaKey)) { //v
         navigator.clipboard.read().then(function (data) {
           if (data[0].types[0] === 'text/plain') {//paste text
