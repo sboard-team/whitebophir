@@ -67,6 +67,21 @@
 		evt.preventDefault();
 	}
 
+	function createTextForPaste(text) {
+    stopEdit();
+    isEdit = false;
+    curText.x = Tools.mousePosition.x;
+    curText.y = Tools.mousePosition.y + Tools.getFontSize() / 2;
+    curText.id = Tools.generateUID();
+    curText.color = Tools.getColor();
+    curText.sentText = text;
+    startEdit();
+    input.value = text;
+    setTimeout(function () {
+      input.style.top = (curText.y + document.getElementById(curText.id).childNodes[0].clientHeight + Tools.getFontSize() + 5) * Tools.getScale() + 'px';
+    }, 200);
+  }
+
 	function editOldText(elem) {
 		curText.id = elem.parentElement.id;
 		var r = elem.getBoundingClientRect();
@@ -117,6 +132,9 @@
     curText.text = input.value;
     curText.type = isEdit ? 'update' : 'new';
     isEdit = true;
+    setTimeout(function () {
+      input.style.top = (curText.y + document.getElementById(curText.id).childNodes[0].clientHeight + Tools.getFontSize()) * Tools.getScale() + 'px';
+    }, 30);
     Tools.drawAndSend(curText);
   }
 
@@ -192,7 +210,8 @@
     "changeHandler": changeHandler,
 		"onquit": onQuit,
 		"draw": draw,
-		"mouseCursor": "text"
+		"mouseCursor": "text",
+    "createTextForPaste": createTextForPaste,
 	});
 
 })(); //End of code isolation

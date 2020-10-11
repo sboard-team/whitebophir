@@ -70,7 +70,11 @@ Tools.modalWindows = {
   wrongImageFormat: `<h2 class="modal-title">Не удалось загрузить изображение!</h2>
                     <div class="modal-description">
                        Неподдерживаемый тип изображения! Поддерживаются: jpeg, jpg, webp, png.
-                     </div>`
+                     </div>`,
+  errorOnPasteText: `<h2 class="modal-title">Не удалось вставить текст!</h2>
+                    <div class="modal-description">
+                       Произошла ошибка при вставке текста. Возможно, вы не дали разрешение на чтение данных из буфера обмена.
+                     </div>`,
 };
 
 //Initialization
@@ -275,9 +279,23 @@ Tools.isMobile = function () {
   const presetsList = document.getElementsByClassName('color-preset-box');
   const sizes = [1, 3, 5, 9, 15];
 	if (!Tools.isMobile()) {
+	  document.addEventListener('keydown', function (e) {
+      if (e.keyCode === 86 && (e.ctrlKey || e.metaKey)) { //v
+        navigator.clipboard.read().then(function (data) {
+          if (data[0].types[0] === 'text/plain') {//paste text
+            data[0].getType("text/plain").then(function (data) {
+              Tools.change('Text');
+              data.text().then(Tools.list.Text.createTextForPaste);
+            });
+          } else {
+            console.log('вставить изображение');
+          }
+        });
+      }
+    });
 		document.addEventListener('keyup', function (e) {
 		  if (e.target.tagName === 'TEXTAREA') return;
-			if (e.keyCode === 86) { //v
+		  if (e.keyCode === 86 && !e.ctrlKey && e.metaKey) { //v
 				Tools.change('Transform');
 			} else if (e.keyCode === 70) { //f
         Tools.change('Formula');
@@ -910,6 +928,7 @@ Tools.getScale = function getScale() {
     return Tools.scale;
 }
 
+Tools.mousePosition = { x: 100, y: 100};
 //List of hook functions that will be applied to tools before adding them
 Tools.toolHooks = [
     function checkToolAttributes(tool) {
@@ -938,6 +957,8 @@ Tools.toolHooks = [
             return (function listen(evt) {
                 var x = (evt.pageX - (Tools.board.getBoundingClientRect().left < 0 ? 0 : Tools.board.getBoundingClientRect().left)) / Tools.getScale(),
                     y = evt.pageY / Tools.getScale();
+                Tools.mousePosition.x = x;
+                Tools.mousePosition.y = y;
                 return listener(x, y, evt, false);
             });
         }
