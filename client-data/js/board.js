@@ -71,9 +71,9 @@ Tools.modalWindows = {
                     <div class="modal-description">
                        Неподдерживаемый тип изображения! Поддерживаются: jpeg, jpg, webp, png.
                      </div>`,
-  errorOnPasteText: `<h2 class="modal-title">Не удалось вставить текст!</h2>
+  errorOnPasteFromClipboard: `<h2 class="modal-title">Не удалось вставить текст/изображение</h2>
                     <div class="modal-description">
-                       Произошла ошибка при вставке текста. Возможно, вы не дали разрешение на чтение данных из буфера обмена.
+                       Произошла ошибка при вставке текста или изображения. Возможно, вы не дали разрешение на чтение данных из буфера обмена.
                      </div>`,
   renameBoard: `<h2 class="modal-title">Переименование доски</h2>
                 <input maxlength="128" id="newBoardName" class="modal-input" type="text" value="">
@@ -296,8 +296,10 @@ Tools.isMobile = function () {
               data.text().then(Tools.list.Text.createTextForPaste);
             });
           } else {
-            console.log('вставить изображение');
+            createModal(Tools.modalWindows.functionInDevelopment);
           }
+        }).catch(function () {
+          createModal(Tools.modalWindows.errorOnPasteFromClipboard);
         });
       }
     });
