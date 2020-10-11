@@ -75,6 +75,16 @@ Tools.modalWindows = {
                     <div class="modal-description">
                        Произошла ошибка при вставке текста. Возможно, вы не дали разрешение на чтение данных из буфера обмена.
                      </div>`,
+  renameBoard: `<h2 class="modal-title">Переименование доски</h2>
+                <input maxlength="128" id="newBoardName" class="modal-input" type="text" value="">
+                <div data-asyncaction="ChangeBoardName" id="buttonRenameBoard" class="btn btn-green">
+                  Переименовать
+                </div>`,
+  errorOnRenameBoard: `<h2 class="modal-title">Не удалось переименовать доску!</h2>
+                    <div class="modal-description">
+                       Произошла ошибка при обновлении названия доски.
+                       Пожалуйста попробуйте еще раз.
+                     </div>`
 };
 
 //Initialization
@@ -153,8 +163,6 @@ Tools.boardName = (function () {
     var path = window.location.pathname.split("/");
     return decodeURIComponent(path[path.length - 1]);
 })();
-
-Tools.boardTitle = Tools.boardName;
 
 //Get the board as soon as the page is loaded
 Tools.socket.emit("getboard", Tools.boardName);
@@ -571,24 +579,48 @@ function updateDocumentTitle() {
 }
 
 // Function for creating Modal Window
-function createModal(htmlContent) {
+function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
   picoModal({
     content: htmlContent,
     closeHtml: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L6 6M6 6L11 1M6 6L1 11M6 6L11 11" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     closeClass: 'close',
     modalClass: 'modal',
   }).afterCreate(modal => {
+    if (functionAfterCreate) functionAfterCreate();
     modal.modalElem().addEventListener("click", evt => {
       if (evt.target && evt.target.dataset.action) {
         modal.close(evt.target.dataset.action);
+      } else if (evt.target && evt.target.dataset.asyncaction) {
+        const newName = document.getElementById('newBoardName').value;
+        fetch(Tools.server_config.API_URL + 'boards/' + Tools.boardName + '?name=' + newName,
+          {
+            method: 'GET',
+            credentials: 'include',
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          }).then(function () {
+            document.getElementById('board-name-span').innerText = newName;
+            Tools.boardTitle = newName;
+            updateDocumentTitle();
+            modal.close();
+          }).catch(function () {
+            modal.close();
+            setTimeout(function () {
+              createModal(Tools.modalWindows.errorOnRenameBoard);
+            }, 50);
+        });
       }
     });
   }).afterClose((modal, event) => {
+    if (functionAfterClose) functionAfterClose();
     if (event.detail === 'clearBoard') {
       Tools.drawAndSend({
         'type': 'clearBoard',
       }, Tools.list.Eraser);
     }
+    modal.destroy();
   }).show();
 }
 
@@ -655,38 +687,9 @@ function createModal(htmlContent) {
     }
 
     function createModalRename() {
-        createModal(`
-			<input id="newBoardName" type="text" value="">
-			<input id="buttonRenameBoard" type="button" value="Переименовать">`, "modalRename");
-
-        document.getElementById('newBoardName').value
-            = document.getElementById('boardName').innerText;
-
-        document.getElementById('newBoardName').addEventListener('keyup', function (e) {
-          e.stopPropagation();
-        });
-
-        document.getElementById('buttonRenameBoard').addEventListener('click', function () {
-            const newName = document.getElementById('newBoardName').value;
-            fetch(
-                Tools.server_config.API_URL + 'boards/' + Tools.boardName + '?name=' + newName,
-                {
-                    method: 'GET',
-                    credentials: 'include',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    //body: JSON.stringify({name: newName}),
-                }
-            ).then(function () {
-                    document.getElementById('board-name-span').innerText = newName;
-                    document.getElementsByClassName('modal')[0].click();
-                    Tools.boardTitle = newName;
-                    updateDocumentTitle();
-                }
-            );
-        });
+      createModal(Tools.modalWindows.renameBoard, function () {
+        document.getElementById('newBoardName').value = Tools.boardTitle;
+      });
     }
 
     function createPdf() {
