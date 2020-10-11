@@ -96,6 +96,7 @@
     function onKeyDown(evt) {
         if (evt.ctrlKey) {
             ctrl_pressed = true;
+            if (evt.target.tagName === 'INPUT' || evt.target.tagName === 'TEXTAREA') return;
             evt.preventDefault();
             if (evt.key === '=') {
                 Tools.setScale(1);
