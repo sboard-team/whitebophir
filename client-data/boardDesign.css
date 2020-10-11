@@ -616,6 +616,7 @@
     padding: 20px !important;
     box-sizing: border-box;
 }
+
 .modal-title {
     font-family: Montserrat;
     font-style: normal;
@@ -692,6 +693,22 @@
     height: 20px !important;
     border-radius: 50% !important;
     background: #F2F2F2;
+}
+
+.modal .modal-input {
+    width: 100%;
+    outline: none;
+    margin: 20px 0;
+    height: 40px;
+    font-family: Montserrat, Roboto, sans-serif;
+    font-size: 16px;
+    border: 1px solid #e4eaec;
+    border-radius: .215rem;
+    transition: border .25s linear;
+}
+
+.modal .modal-input:focus {
+    border-color: #2FB59D;
 }
 
 @media (max-width:645px) {
