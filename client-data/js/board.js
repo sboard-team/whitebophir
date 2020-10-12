@@ -211,12 +211,11 @@ Tools.HTML = {
 			subTool.addEventListener('click', subToolClick);
 		}
 
-		//Tools.change(toolName);
 
 		toolEl.addEventListener('click', function () {
-			Tools.change(toolName, toolEl.dataset.index);
+      if (!Tools.isMobile())  Tools.change(toolName, toolEl.dataset.index);
 		});
-		toolEl.addEventListener("touchstart", onClick);
+		toolEl.addEventListener("touchend", onClick);
 		toolParentEl.addEventListener('mouseenter', onMouseEnter);
 		toolParentEl.addEventListener('mouseleave', onMouseLeave);
 	},
@@ -752,7 +751,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
                 "status": true,
                 "board": {"name": "Dev Board"},
                 "user": {"id": "187999", "name": "John", "surname": "Smith", "full_name": "John Smith"},
-                "permissions": {"edit": true, "invite": true, "image": true, "pdf": true},
+                "permissions": {"edit": true, "invite": true, "image": false, "pdf": true},
                 "invite_link": "https:\/\/back.sboard.su\/cabinet\/boards\/join\/56dfgdfbh67="
             };
             showBoard();

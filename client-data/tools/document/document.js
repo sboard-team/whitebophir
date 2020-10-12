@@ -45,13 +45,16 @@
                 var reader = new FileReader();
                 reader.readAsDataURL(fileInput.files[0]);
                 reader.onload = workWithImage;
-                // Tools.change(Tools.prevToolName);
             });
         } else {
           if (Tools.params.permissions.edit) {
-            createModal(Tools.modalWindows.premiumFunctionForOwner);
+            setTimeout(function () {
+              createModal(Tools.modalWindows.premiumFunctionForOwner);
+            }, 100);
           } else {
-            createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+            setTimeout(function () {
+              createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+            }, 100);
           }
         }
     }
