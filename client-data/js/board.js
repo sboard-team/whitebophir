@@ -291,6 +291,7 @@ Tools.isMobile = function () {
       if (e.keyCode === 86 && (e.ctrlKey || e.metaKey)) { //v
         navigator.clipboard.read().then(function (data) {
           for (var i = 0; data[0].types.length > i; i++) {
+            console.log(data[0].types[i]);
             if (data[0].types[i] === 'text/plain') {//paste text
               data[0].getType("text/plain").then(function (data) {
                 Tools.change('Text');
