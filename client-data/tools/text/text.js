@@ -42,14 +42,29 @@
 
 	var active = false;
 	var isEdit = false;
+	const oldViewportContent = document.querySelector('meta[name="viewport"]').content;
 	const textSettingsPanel = document.getElementById('text-settings-panel');
+	let heightForViewport = window.innerHeight;
+
+	function onStart() {
+    document.querySelector('meta[name="viewport"]').content = oldViewportContent;
+    heightForViewport = window.innerHeight;
+    window.addEventListener('orientationchange', onOrientationChange);
+  }
 
 	function onQuit() {
+    document.querySelector('meta[name="viewport"]').content = oldViewportContent;
+    window.removeEventListener('orientationchange', onOrientationChange)
     stopEdit();
 	}
 
+	function onOrientationChange () {
+    heightForViewport = window.innerHeight;
+  }
+
 	function clickHandler(x, y, evt, isTouchEvent) {
 		if (evt.target === input) return;
+		document.querySelector('meta[name="viewport"]').content = oldViewportContent;
 		if (evt.target.tagName === "PRE") {
 		  stopEdit();
 			editOldText(evt.target);
@@ -110,7 +125,9 @@
     var x = curText.x * Tools.scale - Tools.board.scrollLeft;
     input.style.left = x + 'px';
     input.style.top = (curText.y + Tools.getFontSize() + 5) * Tools.scale + 'px';
+    if (Tools.isMobile()) document.querySelector('meta[name="viewport"]').content = `width=device-width, height=${heightForViewport}, user-scalable=no, initial-scale=1.0 maximum-scale=1`;
 		input.focus();
+    document.querySelector('meta[name="viewport"]').content = `width=device-width, height=${heightForViewport}, user-scalable=no, initial-scale=1.0 maximum-scale=1`;
     input.addEventListener("keyup", changeHandler);
 	}
 
@@ -209,6 +226,7 @@
 		},
     "changeHandler": changeHandler,
 		"onquit": onQuit,
+    "onstart": onStart,
 		"draw": draw,
 		"mouseCursor": "text",
     "createTextForPaste": createTextForPaste,

@@ -812,6 +812,19 @@
 }
 
 @media (max-height:550px) {
+    .text-settings-panel,
+    .selected-element-panel{
+        top: inherit;
+        right: 0;
+        left: inherit;
+        bottom: 50px;
+    }
+
+    .selected-element-panel {
+        left: 0;
+        right: inherit;
+    }
+
     .tool-panel {
         bottom: 10px;
         transform: rotate(270deg);
