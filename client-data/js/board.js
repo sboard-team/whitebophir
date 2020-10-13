@@ -751,7 +751,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
                 "status": true,
                 "board": {"name": "Dev Board"},
                 "user": {"id": "187999", "name": "John", "surname": "Smith", "full_name": "John Smith"},
-                "permissions": {"edit": true, "invite": true, "image": false, "pdf": true},
+                "permissions": {"edit": true, "invite": true, "image": true, "pdf": true},
                 "invite_link": "https:\/\/back.sboard.su\/cabinet\/boards\/join\/56dfgdfbh67="
             };
             showBoard();
@@ -904,7 +904,6 @@ function updateUnreadCount(m) {
         Tools.newUnreadMessage();
     }
 }
-
 Tools.messageHooks = [resizeCanvas, updateUnreadCount];
 var scaleTimeout = null;
 const scaleValueEl = document.getElementById('scaleValue');
