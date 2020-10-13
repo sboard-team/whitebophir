@@ -133,6 +133,7 @@
         "draw": draw,
         "onstart": onstart,
         "oneTouch":true,
+        "workWithImage": workWithImage,
     });
 
 })(); //End of code isolation

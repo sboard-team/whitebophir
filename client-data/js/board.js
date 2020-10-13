@@ -290,14 +290,31 @@ Tools.isMobile = function () {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       if (e.keyCode === 86 && (e.ctrlKey || e.metaKey)) { //v
         navigator.clipboard.read().then(function (data) {
-          if (data[0].types[0] === 'text/plain') {//paste text
-            data[0].getType("text/plain").then(function (data) {
-              Tools.change('Text');
-              data.text().then(Tools.list.Text.createTextForPaste);
-            });
-          } else {
-            createModal(Tools.modalWindows.functionInDevelopment);
+          for (var i = 0; data[0].types.length > i; i++) {
+            if (data[0].types[i] === 'text/plain') {//paste text
+              data[0].getType("text/plain").then(function (data) {
+                Tools.change('Text');
+                data.text().then(Tools.list.Text.createTextForPaste);
+                return;
+              });
+            } else if (data[0].types[i] === 'image/png') {
+              if (Tools.params.permissions.image) {
+                data[0].getType("image/png").then(function (data) {
+                  var reader = new FileReader();
+                  reader.readAsDataURL(data);
+                  reader.onload = Tools.list.Document.workWithImage;
+                });
+              } else {
+                if (Tools.params.permissions.edit) {
+                  createModal(Tools.modalWindows.premiumFunctionForOwner);
+                } else {
+                  createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+                }
+              }
+              return;
+            }
           }
+
         }).catch(function () {
           createModal(Tools.modalWindows.errorOnPasteFromClipboard);
         });
