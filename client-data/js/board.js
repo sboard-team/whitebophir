@@ -69,7 +69,7 @@ Tools.modalWindows = {
                     </div>`,
   wrongImageFormat: `<h2 class="modal-title">Не удалось загрузить изображение!</h2>
                     <div class="modal-description">
-                       Неподдерживаемый тип изображения! Поддерживаются: jpeg, jpg, webp, png.
+                       Неподдерживаемый тип изображения! Поддерживаются: jpeg, jpg, webp, png, svg, ico.
                      </div>`,
   errorOnPasteFromClipboard: `<h2 class="modal-title">Не удалось вставить текст/изображение</h2>
                     <div class="modal-description">
