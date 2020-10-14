@@ -63,8 +63,11 @@
             animate(Tools.getScale() * (1 - lastScaleOnMac + evt.scale));
             lastScaleOnMac = evt.scale;
             console.log(evt);
-            clientXMAC = evt.x;
-            clientYMAC = evt.y;
+            var scale = Tools.getScale();
+            var x = evt.pageX / scale;
+            var y = evt.pageY / scale;
+            clientXMAC = x;
+            clientYMAC = y;
             if (evt.type === 'gestureend') {
                 lastScaleOnMac = 1;
             }
