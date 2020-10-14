@@ -752,6 +752,20 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
         b.forEach((el) => {
             el.classList.toggle('sjx-hidden');
         });
+        //interval for send activity board
+        setInterval((function () {
+            var lastPosX = Tools.mousePosition.x;
+            var lastPosY = Tools.mousePosition.x;
+            return function () {
+                if (lastPosX !== Tools.mousePosition.x || lastPosY !== Tools.mousePosition.y) {
+                    fetch(Tools.server_config.API_URL + `boards/${Tools.boardName}/activity`, {
+                        credentials: "include",
+                        mode: 'no-cors',
+                    });
+                }
+                lastPosX = Tools.mousePosition.x;
+                lastPosY = Tools.mousePosition.y;
+            }})(), 30000);
     }
 
     function checkBoard() {
@@ -993,6 +1007,8 @@ Tools.toolHooks = [
                     var touch = evt.changedTouches[0];
                     var x = (touch.pageX - (Tools.board.getBoundingClientRect().x < 0 ? 0 : Tools.board.getBoundingClientRect().x)) / Tools.getScale(),
                         y = touch.pageY / Tools.getScale();
+                    Tools.mousePosition.x = x;
+                    Tools.mousePosition.y = y;
                     return listener(x, y, evt, true);
                 }
                 return true;
