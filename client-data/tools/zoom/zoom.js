@@ -31,8 +31,7 @@
     var lastX = null;
     var diffFromTouches = null;
     var lastScaleOnMac = 1;
-    var lastScreenXOnIos = null;
-    var lastScreenYOnIos = null;
+    var lastScaleOnZoomMac = 1;
     var origin = {
         scrollX: document.documentElement.scrollLeft,
         scrollY: document.documentElement.scrollTop,
@@ -83,6 +82,9 @@
             console.log(document.documentElement.scrollLeft);
             console.log(Tools.mousePosition.x);
             console.log(scale);
+            var kf = 1;
+            if (scale - lastScaleOnZoomMac < 0) kf = -1;
+            lastScaleOnZoomMac = scale;
             window.scrollTo(
                 document.documentElement.scrollLeft + Tools.mousePosition.x * 0.2,
                 document.documentElement.scrollTop + Tools.mousePosition.y * 0.2,
