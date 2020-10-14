@@ -295,16 +295,17 @@ Tools.isMobile = function () {
                     console.log(data);
                     for (var i = 0; data[0].types.length > i; i++) {
                         if (data[0].types[i] === 'text/plain') {//paste text
-                            data[0].getType("text/plain").then(function (data) {
+                            data[0].getType("text/plain").then(function (dataBuffer) {
                                 Tools.change('Text');
-                                data.text().then(Tools.list.Text.createTextForPaste);
+                                console.log(dataBuffer);
+                                dataBuffer.text().then(Tools.list.Text.createTextForPaste);
                                 return;
                             });
                         } else if (data[0].types[i] === 'image/png') {
                             if (Tools.params.permissions.image) {
-                                data[0].getType("image/png").then(function (data) {
+                                data[0].getType("image/png").then(function (dataBuffer) {
                                     var reader = new FileReader();
-                                    reader.readAsDataURL(data);
+                                    reader.readAsDataURL(dataBuffer);
                                     reader.onload = Tools.list.Document.workWithImage;
                                 });
                             } else {
