@@ -292,15 +292,15 @@ Tools.isMobile = function () {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
             if (e.keyCode === 86 && (e.ctrlKey || e.metaKey)) { //v
                 navigator.clipboard.read().then(function (data) {
-                    console.log(data);
                     for (var i = 0; data[0].types.length > i; i++) {
                         if (data[0].types[i] === 'text/plain') {//paste text
                             data[0].getType("text/plain").then(function (dataBuffer) {
                                 Tools.change('Text');
                                 const reader = new FileReader();
-                                reader.onload = console.log;
+                                reader.onload = function (progressEvent) {
+                                    Tools.list.Text.createTextForPaste(progressEvent.target.result);
+                                };
                                 reader.readAsText(dataBuffer);
-                                //dataBuffer.text().then(Tools.list.Text.createTextForPaste);
                                 return;
                             });
                         } else if (data[0].types[i] === 'image/png') {
