@@ -32,6 +32,8 @@
     var diffFromTouches = null;
     var lastScaleOnMac = 1;
     var lastScaleOnZoomMac = 1;
+    var clientYMAC = 0;
+    var clientXMAC = 0;
     var origin = {
         scrollX: document.documentElement.scrollLeft,
         scrollY: document.documentElement.scrollTop,
@@ -61,6 +63,8 @@
             animate(Tools.getScale() * (1 - lastScaleOnMac + evt.scale));
             lastScaleOnMac = evt.scale;
             console.log(evt);
+            clientXMAC = evt.x;
+            clientYMAC = evt.y;
             if (evt.type === 'gestureend') {
                 lastScaleOnMac = 1;
             }
@@ -70,22 +74,21 @@
     function zoom(origin, scale) {
         var oldScale = origin.scale;
         var newScale = Tools.setScale(scale);
-        console.log('zoomTo');
         if (!(origin.clientY === 0 && origin.x === 0 && origin.y === 0)) {
+            console.log(origin);
+            console.log(origin.x);
             window.scrollTo(
                 origin.scrollX + origin.x * (newScale - oldScale),
                 origin.scrollY + origin.y * (newScale - oldScale)
             );
         } else {
-            console.log(document.documentElement.scrollLeft);
-            console.log(Tools.mousePosition.x);
-            console.log(scale);
             var kf = 1;
             if (scale - lastScaleOnZoomMac < 0) kf = -1;
             lastScaleOnZoomMac = scale;
+            if (kf === -1) console.log('zoom out');
             window.scrollTo(
-                document.documentElement.scrollLeft + Tools.mousePosition.x * 0.2 * kf,
-                document.documentElement.scrollTop + Tools.mousePosition.y * 0.2 * kf - 1,
+                document.documentElement.scrollLeft + clientXMAC * 0.2 * kf,
+                document.documentElement.scrollTop + clientYMAC * 0.2 * kf,
             );
         }
         resizeBoard();
