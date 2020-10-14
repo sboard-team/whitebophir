@@ -80,6 +80,9 @@
                 origin.scrollY + origin.y * (newScale - oldScale)
             );
         } else {
+            console.log(document.documentElement.scrollLeft);
+            console.log(Tools.mousePosition.x);
+            console.log(scale);
             window.scrollTo(
                 document.documentElement.scrollLeft + Tools.mousePosition.x * 0.2,
                 document.documentElement.scrollTop + Tools.mousePosition.y * 0.2,
