@@ -87,7 +87,7 @@
             lastScaleOnZoomMac = scale;
             window.scrollTo(
                 document.documentElement.scrollLeft + Tools.mousePosition.x * 0.2 * kf,
-                document.documentElement.scrollTop + Tools.mousePosition.y * 0.2 * kf,
+                document.documentElement.scrollTop + Tools.mousePosition.y * 0.2 * kf - 1,
             );
         }
         resizeBoard();
