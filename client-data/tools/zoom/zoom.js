@@ -152,7 +152,7 @@
             var x = evt.pageX / scale;
             var y = evt.pageY / scale;
             setOrigin(x, y, evt, false);
-            animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.01);
+            animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.02);
         } else {
             if (gestureEnded) window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
         }
