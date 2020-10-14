@@ -71,12 +71,13 @@
         var oldScale = origin.scale;
         var newScale = Tools.setScale(scale);
         console.log('zoomTo');
-        console.log(origin.scrollY + origin.y * (newScale - oldScale));
-        console.log(origin.scrollY, origin, newScale, oldScale);
-        window.scrollTo(
-            origin.scrollX + origin.x * (newScale - oldScale),
-            origin.scrollY + origin.y * (newScale - oldScale)
-        );
+        console.log(origin);
+        if (!(origin.clientY === 0 && origin.x === 0 && origin.y === 0)) {
+            window.scrollTo(
+                origin.scrollX + origin.x * (newScale - oldScale),
+                origin.scrollY + origin.y * (newScale - oldScale)
+            );
+        }
         resizeBoard();
     }
 
