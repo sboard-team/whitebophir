@@ -64,7 +64,7 @@
             lastScaleOnMac = evt.scale;
             var x = evt.pageX / Tools.getScale();
             var y = evt.pageY / Tools.getScale();
-            console.log(evt);
+            setOrigin(x, y, evt, false);
             clientXMAC = x;
             clientYMAC = y;
             if (evt.type === 'gestureend') {
@@ -78,18 +78,17 @@
         var oldScale = origin.scale;
         var newScale = Tools.setScale(scale);
         if (!(origin.clientY === 0 && origin.x === 0 && origin.y === 0)) {
-            console.log(origin.scrollY);
-            console.log(origin.y);
-            console.log(newScale - oldScale);
+            console.log('зум первый');
             window.scrollTo(
                 origin.scrollX + origin.x * (newScale - oldScale),
                 origin.scrollY + origin.y * (newScale - oldScale)
             );
         } else {
-            var kf = -1;
-            if (scale - lastScaleOnZoomMac < 0) kf = 1;
+            var kf = 1;
+            if (scale - lastScaleOnZoomMac < 0) kf = -1;
             lastScaleOnZoomMac = scale;
             if (kf === -1) console.log('zoom out');
+            console.log('зум второй');
             window.scrollTo(
                 document.documentElement.scrollLeft + clientXMAC * 0.02 * kf,
                 document.documentElement.scrollTop + clientYMAC * 0.02 * kf,
