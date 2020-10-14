@@ -64,7 +64,7 @@
             lastScaleOnMac = evt.scale;
             var x = evt.pageX / Tools.getScale();
             var y = evt.pageY / Tools.getScale();
-            console.log(x, y);
+            console.log(evt);
             clientXMAC = x;
             clientYMAC = y;
             if (evt.type === 'gestureend') {
