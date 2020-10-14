@@ -299,7 +299,7 @@ Tools.isMobile = function () {
                                 Tools.change('Text');
                                 const reader = new FileReader();
                                 reader.onload = console.log;
-                                reader.readAsDataURL(dataBuffer);
+                                reader.readAsText(dataBuffer);
                                 //dataBuffer.text().then(Tools.list.Text.createTextForPaste);
                                 return;
                             });
