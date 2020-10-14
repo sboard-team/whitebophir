@@ -76,7 +76,6 @@
     }
     function zoom(origin, scale) {
         var oldScale = origin.scale;
-        console.log(oldScale - scale);
         const scaleKF = gestureEnded ? 0 : (oldScale - scale) * -3;
         var newScale = Tools.setScale(scale + scaleKF);
         console.log('Скролл на зуме');
@@ -193,7 +192,7 @@
                     const newMoveY = lastY - evt.touches[0].clientY - evt.touches[1].clientY;
                     const newMoveX = lastX - evt.touches[0].clientX - evt.touches[1].clientX;
                     console.log('touchmove');
-                    window.scrollTo(document.documentElement.scrollLeft + newMoveX >> 0, document.documentElement.scrollTop + newMoveY >> 0);
+                    window.scrollTo(document.documentElement.scrollLeft + newMoveX, document.documentElement.scrollTop + newMoveY);
                 }
                 lastY = evt.touches[0].clientY + evt.touches[1].clientY;
                 lastX = evt.touches[0].clientX + evt.touches[1].clientX;
