@@ -93,7 +93,7 @@
     startEdit();
     input.value = text;
     setTimeout(function () {
-      input.style.top = (curText.y + document.getElementById(curText.id).childNodes[0].clientHeight + Tools.getFontSize() + 5) * Tools.getScale() + 'px';
+        input.style.top = (curText.y + document.getElementById(curText.id).childNodes[0].clientHeight + Tools.getFontSize() + 5) * Tools.getScale() + 'px';
     }, 200);
   }
 

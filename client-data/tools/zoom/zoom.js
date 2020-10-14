@@ -70,6 +70,7 @@
     function zoom(origin, scale) {
         var oldScale = origin.scale;
         var newScale = Tools.setScale(scale);
+        console.log('zoomTo');
         window.scrollTo(
             origin.scrollX + origin.x * (newScale - oldScale),
             origin.scrollY + origin.y * (newScale - oldScale)
