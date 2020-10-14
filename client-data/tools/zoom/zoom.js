@@ -86,8 +86,8 @@
                 origin.scrollY + origin.y * (newScale - oldScale)
             );
         } else {
-            var kf = 1;
-            if (scale - lastScaleOnZoomMac < 0) kf = -1;
+            var kf = -1;
+            if (scale - lastScaleOnZoomMac < 0) kf = 1;
             lastScaleOnZoomMac = scale;
             if (kf === -1) console.log('zoom out');
             window.scrollTo(
