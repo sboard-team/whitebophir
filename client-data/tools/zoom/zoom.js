@@ -79,6 +79,7 @@
         console.log(oldScale - scale);
         const scaleKF = gestureEnded ? 0 : (oldScale - scale) * -3;
         var newScale = Tools.setScale(scale + scaleKF);
+        console.log('Скролл на зуме');
         window.scrollTo(
             origin.scrollX + origin.x * (newScale - oldScale),
             origin.scrollY + origin.y * (newScale - oldScale),
@@ -154,6 +155,7 @@
             setOrigin(x, y, evt, false);
             animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.02);
         } else {
+            console.log('Скролл на gestureended');
             if (gestureEnded) window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
         }
     }
