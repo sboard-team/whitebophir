@@ -63,9 +63,8 @@
             animate(Tools.getScale() * (1 - lastScaleOnMac + evt.scale));
             lastScaleOnMac = evt.scale;
             console.log(evt);
-            var scale = Tools.getScale();
-            var x = evt.pageX / scale;
-            var y = evt.pageY / scale;
+            var x = evt.pageX / Tools.getScale();
+            var y = evt.pageY / Tools.getScale();
             clientXMAC = x;
             clientYMAC = y;
             if (evt.type === 'gestureend') {
@@ -78,8 +77,9 @@
         var oldScale = origin.scale;
         var newScale = Tools.setScale(scale);
         if (!(origin.clientY === 0 && origin.x === 0 && origin.y === 0)) {
-            console.log(origin);
-            console.log(origin.x);
+            console.log(origin.scrollY);
+            console.log(origin.y);
+            console.log(newScale - oldScale);
             window.scrollTo(
                 origin.scrollX + origin.x * (newScale - oldScale),
                 origin.scrollY + origin.y * (newScale - oldScale)
@@ -90,8 +90,8 @@
             lastScaleOnZoomMac = scale;
             if (kf === -1) console.log('zoom out');
             window.scrollTo(
-                document.documentElement.scrollLeft + clientXMAC * 0.2 * kf,
-                document.documentElement.scrollTop + clientYMAC * 0.2 * kf,
+                document.documentElement.scrollLeft + clientXMAC * 0.02,// * kf,
+                document.documentElement.scrollTop + clientYMAC * 0.02,// * kf,
             );
         }
         resizeBoard();
