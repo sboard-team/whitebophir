@@ -77,7 +77,7 @@
     function zoom(origin, scale) {
         var oldScale = origin.scale;
         console.log(oldScale - scale);
-        const scaleKF = gestureEnded ? 0 : oldScale - scale * 3;
+        const scaleKF = gestureEnded ? 0 : (oldScale - scale) * 3;
         var newScale = Tools.setScale(scale + scaleKF);
         window.scrollTo(
             origin.scrollX + origin.x * (newScale - oldScale),
