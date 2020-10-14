@@ -76,11 +76,12 @@
     }
     function zoom(origin, scale) {
         var oldScale = origin.scale;
-        var newScale = Tools.setScale(scale);
-        const kf = gestureEnded ? 1 : 3;
+        console.log(oldScale - scale);
+        const scaleKF = gestureEnded ? 0 : oldScale - scale * 3;
+        var newScale = Tools.setScale(scale + scaleKF);
         window.scrollTo(
-            origin.scrollX + (origin.x * (newScale - oldScale) * kf),
-            origin.scrollY + (origin.y * (newScale - oldScale) * kf),
+            origin.scrollX + origin.x * (newScale - oldScale),
+            origin.scrollY + origin.y * (newScale - oldScale),
         );
         // if (!(origin.clientY === 0 && origin.x === 0 && origin.y === 0)) {
         //     console.log('зум первый');
