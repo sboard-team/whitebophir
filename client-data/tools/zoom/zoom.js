@@ -84,14 +84,14 @@
                 origin.scrollY + origin.y * (newScale - oldScale)
             );
         } else {
-            var kf = 1;
-            if (scale - lastScaleOnZoomMac < 0) kf = -1;
-            lastScaleOnZoomMac = scale;
-            if (kf === -1) console.log('zoom out');
-            window.scrollTo(
-                document.documentElement.scrollLeft + clientXMAC * 0.02,// * kf,
-                document.documentElement.scrollTop + clientYMAC * 0.02,// * kf,
-            );
+            // var kf = 1;
+            // if (scale - lastScaleOnZoomMac < 0) kf = -1;
+            // lastScaleOnZoomMac = scale;
+            // if (kf === -1) console.log('zoom out');
+            // window.scrollTo(
+            //     document.documentElement.scrollLeft + clientXMAC * 0.02,// * kf,
+            //     document.documentElement.scrollTop + clientYMAC * 0.02,// * kf,
+            // );
         }
         resizeBoard();
     }
