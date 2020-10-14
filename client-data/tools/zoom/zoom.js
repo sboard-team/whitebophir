@@ -84,14 +84,14 @@
                 origin.scrollY + origin.y * (newScale - oldScale)
             );
         } else {
-            // var kf = 1;
-            // if (scale - lastScaleOnZoomMac < 0) kf = -1;
-            // lastScaleOnZoomMac = scale;
-            // if (kf === -1) console.log('zoom out');
-            // window.scrollTo(
-            //     document.documentElement.scrollLeft + clientXMAC * 0.02,// * kf,
-            //     document.documentElement.scrollTop + clientYMAC * 0.02,// * kf,
-            // );
+            var kf = 1;
+            if (scale - lastScaleOnZoomMac < 0) kf = -1;
+            lastScaleOnZoomMac = scale;
+            if (kf === -1) console.log('zoom out');
+            window.scrollTo(
+                document.documentElement.scrollLeft + clientXMAC * 0.02,// * kf,
+                document.documentElement.scrollTop + clientYMAC * 0.02,// * kf,
+            );
         }
         resizeBoard();
     }
@@ -152,8 +152,8 @@
             setOrigin(x, y, evt, false);
             animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.01);
         } else {
-            console.log('SCROLL ON WHEEL')
-            window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
+            // console.log('SCROLL ON WHEEL')
+            // window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
         }
     }
 
