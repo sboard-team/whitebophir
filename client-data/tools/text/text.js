@@ -186,7 +186,7 @@
 					console.error("Text: Hmmm... I received text that belongs to an unknown text field");
 					return false;
 				}
-				updateText(textField, data.text, data.id);
+				updateText(textField, data.text, document.getElementById(data.id));
         textField.setAttribute("style", `font-family: ${data.fontName}; color: ${data.color}; font-size: ${data.fontSize}px;`);
 				break;
 			default:
@@ -195,8 +195,10 @@
 		}
 	}
 
-	function updateText(textField, text) {
+	function updateText(textField, text, parent) {
 		textField.textContent = text;
+        parent.setAttribute("width", textField.getBoundingClientRect().width);
+        parent.setAttribute("height", textField.getBoundingClientRect().height);
 	}
 
 	function createTextField(fieldData) {
@@ -211,9 +213,9 @@
 		}
 		const textEl = document.createElement("pre");
 		elem.id = fieldData.id;
-    textEl.setAttribute("style", `font-family: ${fieldData.fontName}; color: ${fieldData.color}; font-size: ${fieldData.fontSize}px;`);
-    if (fieldData.text) updateText(textEl, fieldData.text);
-    elem.appendChild(textEl);
+        textEl.setAttribute("style", `font-family: ${fieldData.fontName}; color: ${fieldData.color}; font-size: ${fieldData.fontSize}px;`);
+        if (fieldData.text) updateText(textEl, fieldData.text, elem);
+        elem.appendChild(textEl);
 		Tools.drawingArea.appendChild(elem);
 		return elem;
 	}
