@@ -189,15 +189,16 @@
             } else {
                 // moving
                 if (lastY !== null) {
-                    const newMoveY = lastY - evt.touches[0].clientY - evt.touches[1].clientY;
-                    const newMoveX = lastX - evt.touches[0].clientX - evt.touches[1].clientX;
+                    const newMoveY = lastY - evt.touches[0].pageY - evt.touches[1].pageY;
+                    const newMoveX = lastX - evt.touches[0].pageX - evt.touches[1].pageX;
                     console.log('touchmove');
                     console.log(newMoveX);
                     console.log(newMoveY);
+                    console.log(evt.touches[0]);
                     window.scrollTo(document.documentElement.scrollLeft + newMoveX, document.documentElement.scrollTop + newMoveY);
                 }
-                lastY = evt.touches[0].clientY + evt.touches[1].clientY;
-                lastX = evt.touches[0].clientX + evt.touches[1].clientX;
+                lastY = evt.touches[0].pageY + evt.touches[1].pageY;
+                lastX = evt.touches[0].pageX + evt.touches[1].pageX;
             }
         }
     }, { passive: true });
