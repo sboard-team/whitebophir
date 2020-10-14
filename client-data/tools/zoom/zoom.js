@@ -60,6 +60,7 @@
         if (!isIosMobile) {
             animate(Tools.getScale() * (1 - lastScaleOnMac + evt.scale));
             lastScaleOnMac = evt.scale;
+            console.log(evt);
             if (evt.type === 'gestureend') {
                 lastScaleOnMac = 1;
             }
@@ -70,10 +71,7 @@
         var oldScale = origin.scale;
         var newScale = Tools.setScale(scale);
         console.log('zoomTo');
-        console.log(origin);
         if (!(origin.clientY === 0 && origin.x === 0 && origin.y === 0)) {
-            console.log(newScale - oldScale);
-            console.log(origin);
             window.scrollTo(
                 origin.scrollX + origin.x * (newScale - oldScale),
                 origin.scrollY + origin.y * (newScale - oldScale)

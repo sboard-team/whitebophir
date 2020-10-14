@@ -404,8 +404,6 @@ Tools.isMobile = function () {
         return +document.getElementById('Tool-' + toolName).dataset.index;
     }
 })();
-console.log('load page');
-alert('load page');
 /**
  * Add a new tool to the user interface
  */
