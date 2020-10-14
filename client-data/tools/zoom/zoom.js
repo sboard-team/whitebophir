@@ -73,12 +73,17 @@
         console.log('zoomTo');
         console.log(origin);
         if (!(origin.clientY === 0 && origin.x === 0 && origin.y === 0)) {
+            console.log(newScale - oldScale);
+            console.log(origin);
             window.scrollTo(
                 origin.scrollX + origin.x * (newScale - oldScale),
                 origin.scrollY + origin.y * (newScale - oldScale)
             );
         } else {
-            window.scrollTo(Tools.mousePosition.x - document.documentElement.clientWidth / Tools.scale / 2, Tools.mousePosition.y - document.documentElement.clientHeight / Tools.scale / 2);
+            window.scrollTo(
+                document.documentElement.scrollLeft + Tools.mousePosition.x * 0.2,
+                document.documentElement.scrollTop + Tools.mousePosition.y * 0.2,
+            );
         }
         resizeBoard();
     }
