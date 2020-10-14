@@ -78,7 +78,7 @@
                 origin.scrollY + origin.y * (newScale - oldScale)
             );
         } else {
-            window.scrollTo(Tools.mousePosition.x - document.documentElement.clientWidth / 2, Tools.mousePosition.y - document.documentElement.clientHeight / 2);
+            window.scrollTo(Tools.mousePosition.x - document.documentElement.clientWidth / Tools.scale / 2, Tools.mousePosition.y - document.documentElement.clientHeight / Tools.scale / 2);
         }
         resizeBoard();
     }
