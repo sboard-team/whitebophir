@@ -44,6 +44,7 @@
     };
     var pressed = false;
     var animation = null;
+    var gestureEnded = true;
     const isIosMobile = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i));
     const diffForMoving = isIosMobile ? 90 : 40;
     const body = document;
@@ -69,6 +70,7 @@
             if (evt.type === 'gestureend') {
                 lastScaleOnMac = 1;
             }
+            gestureEnded = evt.type === 'gestureend';
         }
         evt.stopPropagation();
     }
@@ -89,8 +91,8 @@
             lastScaleOnZoomMac = scale;
             if (kf === -1) console.log('zoom out');
             window.scrollTo(
-                document.documentElement.scrollLeft + clientXMAC * 0.02,// * kf,
-                document.documentElement.scrollTop + clientYMAC * 0.02,// * kf,
+                document.documentElement.scrollLeft + clientXMAC * 0.02 * kf,
+                document.documentElement.scrollTop + clientYMAC * 0.02 * kf,
             );
         }
         resizeBoard();
@@ -152,8 +154,7 @@
             setOrigin(x, y, evt, false);
             animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.01);
         } else {
-            // console.log('SCROLL ON WHEEL')
-            // window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
+            if (gestureEnded) window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
         }
     }
 
