@@ -189,14 +189,14 @@
             } else {
                 // moving
                 if (lastY !== null) {
-                    const newMoveY = lastY - (evt.touches[0].clientY + evt.touches[1].clientY) / 2;
+                    const newMoveY = lastY - evt.touches[0].clientY;// - evt.touches[1].clientY;
                     //const newMoveX = lastX - evt.touches[0].clientX - evt.touches[1].clientX;
                     console.log(newMoveY);
-                    const newMoveX = 5;
+                    const newMoveX = 0;
                     //const newMoveY = 1;
                     window.scrollTo(document.documentElement.scrollLeft + newMoveX, document.documentElement.scrollTop + newMoveY);
                 }
-                lastY = (evt.touches[0].clientY + evt.touches[1].clientY) / 2;
+                lastY = evt.touches[0].clientY;// + evt.touches[1].clientY;
                 lastX = evt.touches[0].clientX + evt.touches[1].clientX;
             }
         }
