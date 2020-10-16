@@ -160,6 +160,7 @@
     }
 
     Tools.board.addEventListener("touchstart", function ontouchstart(evt) {
+        lastX = document.documentElement.scrollLeft + evt.touches[0].clientX;
         lastY = document.documentElement.scrollTop + evt.touches[0].clientY;
     });
 
@@ -193,15 +194,10 @@
             } else {
                 // moving
                 if (lastY !== null) {
-                    const newMoveY = lastY - evt.touches[0].clientY;// - evt.touches[1].clientY;
-                    //const newMoveX = lastX - evt.touches[0].clientX - evt.touches[1].clientX;
-                    console.log(newMoveY);
-                    const newMoveX = 0;
-                    //const newMoveY = 1;
-                    window.scrollTo(document.documentElement.scrollLeft + newMoveX, lastY - evt.touches[0].clientY);
+                    window.scrollTo(lastX - evt.touches[0].clientX, lastY - evt.touches[0].clientY);
                 }
                 // lastY = evt.touches[0].clientY;// + evt.touches[1].clientY;
-                lastX = evt.touches[0].clientX + evt.touches[1].clientX;
+                // lastX = evt.touches[0].clientX + evt.touches[1].clientX;
             }
         }
     }, { passive: true });
