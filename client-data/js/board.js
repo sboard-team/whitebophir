@@ -44,22 +44,22 @@ Tools.board = document.getElementById("board");
 Tools.svg = document.getElementById("canvas");
 Tools.drawingArea = Tools.svg.getElementById("drawingArea");
 Tools.modalWindows = {
-  premiumFunctionForOwner: `<h2 class="modal-title">Функция недоступна!</h2>
+    premiumFunctionForOwner: `<h2 class="modal-title">Функция недоступна!</h2>
                 <div class="modal-description">
                     Эта функция не доступна на базовом тарифе.
                 </div>
                 <a href="${Tools.server_config.LANDING_URL}cabinet/tariff" class="btn btn-green">
                 Управлять тарифом
             </a>`,
-  premiumFunctionForDefaultUser: `<h2 class="modal-title">Функция недоступна!</h2>
+    premiumFunctionForDefaultUser: `<h2 class="modal-title">Функция недоступна!</h2>
                 <div class="modal-description">
                     Эта функция не доступна, обратитесь к владельцу доски.
                 </div>`,
-  functionInDevelopment: `<h2 class="modal-title">Функция недоступна!</h2>
+    functionInDevelopment: `<h2 class="modal-title">Функция недоступна!</h2>
                 <div class="modal-description">
                     Функция в разработке. Ждите в ближайшем обновлении.
                 </div>`,
-  clearBoard: `<h2 class="modal-title">Очистка доски!</h2>
+    clearBoard: `<h2 class="modal-title">Очистка доски!</h2>
                     <div class="modal-description">
                        Вы уверены, что хотите очистить всю доску? Это действие нельзя отменить.
                      </div>
@@ -67,20 +67,20 @@ Tools.modalWindows = {
                       <div data-action="cancel" class="btn btn-gray">Отмена</div>
                       <div data-action="clearBoard" class="btn btn-green">Принять</div>
                     </div>`,
-  wrongImageFormat: `<h2 class="modal-title">Не удалось загрузить изображение!</h2>
+    wrongImageFormat: `<h2 class="modal-title">Не удалось загрузить изображение!</h2>
                     <div class="modal-description">
                        Неподдерживаемый тип изображения! Поддерживаются: jpeg, jpg, webp, png, svg, ico.
                      </div>`,
-  errorOnPasteFromClipboard: `<h2 class="modal-title">Не удалось вставить текст/изображение</h2>
+    errorOnPasteFromClipboard: `<h2 class="modal-title">Не удалось вставить текст/изображение</h2>
                     <div class="modal-description">
                        Произошла ошибка при вставке текста или изображения. Возможно, вы не дали разрешение на чтение данных из буфера обмена.
                      </div>`,
-  renameBoard: `<h2 class="modal-title">Переименование доски</h2>
+    renameBoard: `<h2 class="modal-title">Переименование доски</h2>
                 <input maxlength="128" id="newBoardName" class="modal-input" type="text" value="">
                 <div data-asyncaction="ChangeBoardName" id="buttonRenameBoard" class="btn btn-green">
                   Переименовать
                 </div>`,
-  errorOnRenameBoard: `<h2 class="modal-title">Не удалось переименовать доску!</h2>
+    errorOnRenameBoard: `<h2 class="modal-title">Не удалось переименовать доску!</h2>
                     <div class="modal-description">
                        Произошла ошибка при обновлении названия доски.
                        Пожалуйста попробуйте еще раз.
@@ -168,75 +168,77 @@ Tools.boardName = (function () {
 Tools.socket.emit("getboard", Tools.boardName);
 
 Tools.HTML = {
-	addTool: function (toolName) {
-		var toolOpenedFromClick = false;
-		const toolEl = document.getElementById('Tool-' + toolName);
-		const toolParentEl = document.getElementById('Tool-' + toolName).parentElement;
-		const subTools = toolParentEl.getElementsByClassName('sub-tool-item');
+    addTool: function (toolName) {
+        var toolOpenedFromClick = false;
+        const toolEl = document.getElementById('Tool-' + toolName);
+        const toolParentEl = document.getElementById('Tool-' + toolName).parentElement;
+        const subTools = toolParentEl.getElementsByClassName('sub-tool-item');
 
-		const onClick = function (e) {
-			Tools.change(toolName, toolEl.dataset.index);
-			toolOpenedFromClick = true;
-			toolParentEl.classList.add('opened');
-			e.stopPropagation();
-			document.addEventListener('touchstart', closeFromClick, { once: true});
-		};
+        const onClick = function (e) {
+            Tools.change(toolName, toolEl.dataset.index);
+            toolOpenedFromClick = true;
+            toolParentEl.classList.add('opened');
+            e.stopPropagation();
+            document.addEventListener('touchstart', closeFromClick, {once: true});
+        };
 
-		const closeFromClick = function (e) {
-			for (var el of e.composedPath()) {
-				if (el && el.classList && el.classList.contains('sub-tool-item')) return;
-				if (el && el.id === 'Tool-' + toolName) return;
-			}
-			toolOpenedFromClick = false;
-			setTimeout(function () {toolParentEl.classList.remove('opened')}, 100);
-		}
+        const closeFromClick = function (e) {
+            for (var el of e.composedPath()) {
+                if (el && el.classList && el.classList.contains('sub-tool-item')) return;
+                if (el && el.id === 'Tool-' + toolName) return;
+            }
+            toolOpenedFromClick = false;
+            setTimeout(function () {
+                toolParentEl.classList.remove('opened')
+            }, 100);
+        }
 
-		const onMouseEnter = function (e) {
-			toolParentEl.classList.add('opened');
-		}
+        const onMouseEnter = function (e) {
+            toolParentEl.classList.add('opened');
+        }
 
-		const onMouseLeave = function (e) {
-			if (!toolOpenedFromClick) toolParentEl.classList.remove('opened');
-		}
+        const onMouseLeave = function (e) {
+            if (!toolOpenedFromClick) toolParentEl.classList.remove('opened');
+        }
 
-		const subToolClick = function (e) {
-			const subTool = e.composedPath().find(function (item) {
-				return item.classList.contains('sub-tool-item');
-			});
-			Tools.change(toolName, subTool.dataset.index);
-			toolParentEl.classList.remove('opened');
-}
+        const subToolClick = function (e) {
+            const subTool = e.composedPath().find(function (item) {
+                return item.classList.contains('sub-tool-item');
+            });
+            Tools.change(toolName, subTool.dataset.index);
+            toolParentEl.classList.remove('opened');
+        }
 
-		for (var subTool of subTools) {
-			subTool.addEventListener('click', subToolClick);
-		}
+        for (var subTool of subTools) {
+            subTool.addEventListener('click', subToolClick);
+        }
 
 
-		toolEl.addEventListener('click', function () {
-      if (!Tools.isMobile())  Tools.change(toolName, toolEl.dataset.index);
-		});
-		toolEl.addEventListener("touchend", onClick);
-		toolParentEl.addEventListener('mouseenter', onMouseEnter);
-		toolParentEl.addEventListener('mouseleave', onMouseLeave);
-	},
-	changeTool: function (oldToolName, newToolName) {
-		var oldTool = document.getElementById("Tool-" + oldToolName);
-		var newTool = document.getElementById("Tool-" + newToolName);
-		if (oldTool) oldTool.classList.remove("selected-tool");
-		if (newTool) newTool.classList.add("selected-tool");
-	},
-	toggle: function (toolName) {
-		var elem = document.getElementById("Tool-" + toolName);
-		elem.classList.add('selected-tool');
-	},
-	addStylesheet: function (href) {
-		//Adds a css stylesheet to the html or svg document
-		var link = document.createElement("link");
-		link.href = href;
-		link.rel = "stylesheet";
-		link.type = "text/css";
-		document.head.appendChild(link);
-	}
+        toolEl.addEventListener('click', function () {
+            if (!Tools.isMobile()) Tools.change(toolName, toolEl.dataset.index);
+        });
+        toolEl.addEventListener("touchend", onClick);
+        toolParentEl.addEventListener('mouseenter', onMouseEnter);
+        toolParentEl.addEventListener('mouseleave', onMouseLeave);
+    },
+    changeTool: function (oldToolName, newToolName) {
+        var oldTool = document.getElementById("Tool-" + oldToolName);
+        var newTool = document.getElementById("Tool-" + newToolName);
+        if (oldTool) oldTool.classList.remove("selected-tool");
+        if (newTool) newTool.classList.add("selected-tool");
+    },
+    toggle: function (toolName) {
+        var elem = document.getElementById("Tool-" + toolName);
+        elem.classList.add('selected-tool');
+    },
+    addStylesheet: function (href) {
+        //Adds a css stylesheet to the html or svg document
+        var link = document.createElement("link");
+        link.href = href;
+        link.rel = "stylesheet";
+        link.type = "text/css";
+        document.head.appendChild(link);
+    }
 };
 
 Tools.list = {}; // An array of all known tools. {"toolName" : {toolObject}}
@@ -283,123 +285,125 @@ Tools.isMobile = function () {
 };
 
 (function hotkeys() {
-  const presetsList = document.getElementsByClassName('color-preset-box');
-  const sizes = [1, 3, 5, 9, 15];
-	if (!Tools.isMobile()) {
-	  document.addEventListener('keydown', function (e) {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-      if (e.keyCode === 86 && (e.ctrlKey || e.metaKey)) { //v
-        navigator.clipboard.read().then(function (data) {
-          for (var i = 0; data[0].types.length > i; i++) {
-            console.log(data[0].types[i]);
-            if (data[0].types[i] === 'text/plain') {//paste text
-              data[0].getType("text/plain").then(function (data) {
-                Tools.change('Text');
-                data.text().then(Tools.list.Text.createTextForPaste);
-                return;
-              });
-            } else if (data[0].types[i] === 'image/png') {
-              if (Tools.params.permissions.image) {
-                data[0].getType("image/png").then(function (data) {
-                  var reader = new FileReader();
-                  reader.readAsDataURL(data);
-                  reader.onload = Tools.list.Document.workWithImage;
+    const presetsList = document.getElementsByClassName('color-preset-box');
+    const sizes = [1, 3, 5, 9, 15];
+    if (!Tools.isMobile()) {
+        document.addEventListener('keydown', function (e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.keyCode === 86 && (e.ctrlKey || e.metaKey)) { //v
+                navigator.clipboard.read().then(function (data) {
+                    for (var i = 0; data[0].types.length > i; i++) {
+                        if (data[0].types[i] === 'text/plain') {//paste text
+                            data[0].getType("text/plain").then(function (dataBuffer) {
+                                Tools.change('Text');
+                                const reader = new FileReader();
+                                reader.onload = function (progressEvent) {
+                                    Tools.list.Text.createTextForPaste(progressEvent.target.result);
+                                };
+                                reader.readAsText(dataBuffer);
+                                return;
+                            });
+                        } else if (data[0].types[i] === 'image/png') {
+                            if (Tools.params.permissions.image) {
+                                data[0].getType("image/png").then(function (dataBuffer) {
+                                    const reader = new FileReader();
+                                    reader.readAsDataURL(dataBuffer);
+                                    reader.onload = Tools.list.Document.workWithImage;
+                                });
+                            } else {
+                                if (Tools.params.permissions.edit) {
+                                    createModal(Tools.modalWindows.premiumFunctionForOwner);
+                                } else {
+                                    createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+                                }
+                            }
+                            return;
+                        }
+                    }
+
+                }).catch(function () {
+                    createModal(Tools.modalWindows.errorOnPasteFromClipboard);
                 });
-              } else {
-                if (Tools.params.permissions.edit) {
-                  createModal(Tools.modalWindows.premiumFunctionForOwner);
-                } else {
-                  createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
-                }
-              }
-              return;
             }
-          }
-
-        }).catch(function () {
-          createModal(Tools.modalWindows.errorOnPasteFromClipboard);
         });
-      }
-    });
-		document.addEventListener('keyup', function (e) {
-		  if (e.target.tagName === 'TEXTAREA') return;
-		  if (e.keyCode === 86 && !e.ctrlKey && e.metaKey) { //v
-				Tools.change('Transform');
-			} else if (e.keyCode === 70) { //f
-        Tools.change('Formula');
-      } else if (e.keyCode === 81) {//q
-        if (Tools.curTool.name === 'Shapes') {
-          var newIndex = 0;
-          if (getToolIndex('Shapes') === 0) {
-            newIndex = 2;
-          } else if (getToolIndex('Shapes') === 1) {
-            newIndex = 3;
-          } else if (getToolIndex('Shapes') === 2) {
-            newIndex = 1;
-          } else if (getToolIndex('Shapes') === 3) {
-            newIndex = 0;
-          }
-          Tools.change('Shapes', newIndex);
-        } else {
-          Tools.change('Shapes', getToolIndex('Shapes'));
-        }
-      } else if (e.keyCode === 87) { //w
-			  if (sizes.includes(Tools.getSize())) {
-			    const newIndex = sizes.findIndex(function (size) {
-            return size == Tools.getSize();
-          }) + 1;
-			    Tools.setSize(sizes[newIndex % sizes.length]);
-        } else {
-          Tools.setSize(sizes[0]);
-        }
-      } else if ( e.keyCode === 67 ) { //c
-        var indexForChange = 0;
-        for (var node of presetsList) {
-          if (node.classList.contains('selected-color')) {
-            node.classList.remove('selected-color');
-            indexForChange++;
-            break;
-          }
-          indexForChange++;
-        }
-        if (indexForChange === 8) {
-          indexForChange = 1;
-        }
-        Tools.setColor(presetsList[indexForChange].getElementsByTagName('div')[0].getAttribute('style').replace('background-color: ', '').replace(';', ''));
-        presetsList[indexForChange].classList.add('selected-color');
-      } else if (e.keyCode === 72) { //h
-				Tools.change('Hand');
-			} else if (e.keyCode === 69) { //e
-				Tools.change('Eraser');
-			} else if (e.keyCode === 76) { //l
-        if (Tools.curTool.name === 'Line') {
-          Tools.change('Line', getToolIndex('Line') === 5 ? 0 : getToolIndex('Line') + 1);
-        } else {
-          Tools.change('Line', getToolIndex('Line'));
-        }
-			} else if (e.keyCode === 84) { //t
-				Tools.change('Text');
-			} else if (e.keyCode === 73) { //i
-				Tools.change('Document');
-			} else if (e.keyCode === 80) { //p
-			  if (Tools.curTool.name === 'Pencil') {
-          Tools.change('Pencil', getToolIndex('Pencil') === 1 ? 0 : 1);
-        } else {
-			    Tools.change('Pencil', getToolIndex('Pencil'));
-        }
-			} else if (e.keyCode === 89 && e.ctrlKey) {
-				Tools.redo();
-			} else if (e.keyCode === 90 && e.ctrlKey) {
-				Tools.undo();
-			}
-		}, false);
-	}
+        document.addEventListener('keyup', function (e) {
+            if (e.target.tagName === 'TEXTAREA') return;
+            if (e.keyCode === 86 && !e.ctrlKey && e.metaKey) { //v
+                Tools.change('Transform');
+            } else if (e.keyCode === 70) { //f
+                Tools.change('Formula');
+            } else if (e.keyCode === 81) {//q
+                if (Tools.curTool.name === 'Shapes') {
+                    var newIndex = 0;
+                    if (getToolIndex('Shapes') === 0) {
+                        newIndex = 2;
+                    } else if (getToolIndex('Shapes') === 1) {
+                        newIndex = 3;
+                    } else if (getToolIndex('Shapes') === 2) {
+                        newIndex = 1;
+                    } else if (getToolIndex('Shapes') === 3) {
+                        newIndex = 0;
+                    }
+                    Tools.change('Shapes', newIndex);
+                } else {
+                    Tools.change('Shapes', getToolIndex('Shapes'));
+                }
+            } else if (e.keyCode === 87) { //w
+                if (sizes.includes(Tools.getSize())) {
+                    const newIndex = sizes.findIndex(function (size) {
+                        return size == Tools.getSize();
+                    }) + 1;
+                    Tools.setSize(sizes[newIndex % sizes.length]);
+                } else {
+                    Tools.setSize(sizes[0]);
+                }
+            } else if (e.keyCode === 67) { //c
+                var indexForChange = 0;
+                for (var node of presetsList) {
+                    if (node.classList.contains('selected-color')) {
+                        node.classList.remove('selected-color');
+                        indexForChange++;
+                        break;
+                    }
+                    indexForChange++;
+                }
+                if (indexForChange === 8) {
+                    indexForChange = 1;
+                }
+                Tools.setColor(presetsList[indexForChange].getElementsByTagName('div')[0].getAttribute('style').replace('background-color: ', '').replace(';', ''));
+                presetsList[indexForChange].classList.add('selected-color');
+            } else if (e.keyCode === 72) { //h
+                Tools.change('Hand');
+            } else if (e.keyCode === 69) { //e
+                Tools.change('Eraser');
+            } else if (e.keyCode === 76) { //l
+                if (Tools.curTool.name === 'Line') {
+                    Tools.change('Line', getToolIndex('Line') === 5 ? 0 : getToolIndex('Line') + 1);
+                } else {
+                    Tools.change('Line', getToolIndex('Line'));
+                }
+            } else if (e.keyCode === 84) { //t
+                Tools.change('Text');
+            } else if (e.keyCode === 73) { //i
+                Tools.change('Document');
+            } else if (e.keyCode === 80) { //p
+                if (Tools.curTool.name === 'Pencil') {
+                    Tools.change('Pencil', getToolIndex('Pencil') === 1 ? 0 : 1);
+                } else {
+                    Tools.change('Pencil', getToolIndex('Pencil'));
+                }
+            } else if (e.keyCode === 89 && e.ctrlKey) {
+                Tools.redo();
+            } else if (e.keyCode === 90 && e.ctrlKey) {
+                Tools.undo();
+            }
+        }, false);
+    }
 
-	function getToolIndex(toolName) {
-    return +document.getElementById('Tool-' + toolName).dataset.index;
-  }
+    function getToolIndex(toolName) {
+        return +document.getElementById('Tool-' + toolName).dataset.index;
+    }
 })();
-
 /**
  * Add a new tool to the user interface
  */
@@ -412,8 +416,8 @@ Tools.add = function (newTool) {
         Tools.HTML.addStylesheet(newTool.stylesheet);
     }
 
-	//Add the tool to the GUI
-	Tools.HTML.addTool(newTool.name);
+    //Add the tool to the GUI
+    Tools.HTML.addTool(newTool.name);
 };
 
 Tools.change = function (toolName, subToolIndex) {
@@ -600,48 +604,48 @@ function updateDocumentTitle() {
 
 // Function for creating Modal Window
 function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
-  picoModal({
-    content: htmlContent,
-    closeHtml: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L6 6M6 6L11 1M6 6L1 11M6 6L11 11" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    closeClass: 'close',
-    modalClass: 'modal',
-  }).afterCreate(modal => {
-    if (functionAfterCreate) functionAfterCreate();
-    modal.modalElem().addEventListener("click", evt => {
-      if (evt.target && evt.target.dataset.action) {
-        modal.close(evt.target.dataset.action);
-      } else if (evt.target && evt.target.dataset.asyncaction) {
-        const newName = document.getElementById('newBoardName').value;
-        fetch(Tools.server_config.API_URL + 'boards/' + Tools.boardName + '?name=' + newName,
-          {
-            method: 'GET',
-            credentials: 'include',
-            mode: 'no-cors',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          }).then(function () {
-            document.getElementById('board-name-span').innerText = newName;
-            Tools.boardTitle = newName;
-            updateDocumentTitle();
-            modal.close();
-          }).catch(function () {
-            modal.close();
-            setTimeout(function () {
-              createModal(Tools.modalWindows.errorOnRenameBoard);
-            }, 50);
+    picoModal({
+        content: htmlContent,
+        closeHtml: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L6 6M6 6L11 1M6 6L1 11M6 6L11 11" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        closeClass: 'close',
+        modalClass: 'modal',
+    }).afterCreate(modal => {
+        if (functionAfterCreate) functionAfterCreate();
+        modal.modalElem().addEventListener("click", evt => {
+            if (evt.target && evt.target.dataset.action) {
+                modal.close(evt.target.dataset.action);
+            } else if (evt.target && evt.target.dataset.asyncaction) {
+                const newName = document.getElementById('newBoardName').value;
+                fetch(Tools.server_config.API_URL + 'boards/' + Tools.boardName + '?name=' + newName,
+                    {
+                        method: 'GET',
+                        credentials: 'include',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    }).then(function () {
+                    document.getElementById('board-name-span').innerText = newName;
+                    Tools.boardTitle = newName;
+                    updateDocumentTitle();
+                    modal.close();
+                }).catch(function () {
+                    modal.close();
+                    setTimeout(function () {
+                        createModal(Tools.modalWindows.errorOnRenameBoard);
+                    }, 50);
+                });
+            }
         });
-      }
-    });
-  }).afterClose((modal, event) => {
-    if (functionAfterClose) functionAfterClose();
-    if (event.detail === 'clearBoard') {
-      Tools.drawAndSend({
-        'type': 'clearBoard',
-      }, Tools.list.Eraser);
-    }
-    modal.destroy();
-  }).show();
+    }).afterClose((modal, event) => {
+        if (functionAfterClose) functionAfterClose();
+        if (event.detail === 'clearBoard') {
+            Tools.drawAndSend({
+                'type': 'clearBoard',
+            }, Tools.list.Eraser);
+        }
+        modal.destroy();
+    }).show();
 }
 
 (function () {
@@ -694,7 +698,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
     }
 
     function goToHelp() {
-      window.open(Tools.server_config.LANDING_URL + 'help');
+        window.open(Tools.server_config.LANDING_URL + 'help');
     }
 
     function plusScale() {
@@ -707,9 +711,9 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
     }
 
     function createModalRename() {
-      createModal(Tools.modalWindows.renameBoard, function () {
-        document.getElementById('newBoardName').value = Tools.boardTitle;
-      });
+        createModal(Tools.modalWindows.renameBoard, function () {
+            document.getElementById('newBoardName').value = Tools.boardTitle;
+        });
     }
 
     function createPdf() {
@@ -717,9 +721,9 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
             window.open(Tools.server_config.PDF_URL + 'generate/' + Tools.boardName + '?name=' + Tools.boardTitle);
         } else {
             if (Tools.params.permissions.edit) {
-              createModal(Tools.modalWindows.premiumFunctionForOwner);
+                createModal(Tools.modalWindows.premiumFunctionForOwner);
             } else {
-              createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+                createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
             }
         }
     }
@@ -774,15 +778,20 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
         var localStorageData = localStorage.getItem(Tools.boardName);
         if (localStorageData) {
             if (window.location.hash.slice(1).split(',').length !== 3) {
-              localStorageData = JSON.parse(localStorageData);
-              window.location.hash = `${localStorageData.x},${localStorageData.y},${localStorageData.scale}`;
+                localStorageData = JSON.parse(localStorageData);
+                window.location.hash = `${localStorageData.x},${localStorageData.y},${localStorageData.scale}`;
             }
         }
         if (Tools.server_config.DEV_MODE === 1 || PASS === 'dlTmsXCPwaMfTosmtDpsdf') {
             Tools.params = {
                 "status": true,
                 "board": {"name": "Dev Board"},
-                "user": {"id": "187999", "name": "John", "surname": "Smith", "full_name": "John Smith"},
+                "user": {
+                    "id": "187999",
+                    "name": "John",
+                    "surname": "Smith",
+                    "full_name": "John Smith"
+                },
                 "permissions": {"edit": true, "invite": true, "image": true, "pdf": true},
                 "invite_link": "https:\/\/back.sboard.su\/cabinet\/boards\/join\/56dfgdfbh67="
             };
@@ -936,6 +945,7 @@ function updateUnreadCount(m) {
         Tools.newUnreadMessage();
     }
 }
+
 Tools.messageHooks = [resizeCanvas, updateUnreadCount];
 var scaleTimeout = null;
 const scaleValueEl = document.getElementById('scaleValue');
@@ -964,7 +974,7 @@ Tools.getScale = function getScale() {
     return Tools.scale;
 }
 
-Tools.mousePosition = { x: 100, y: 100};
+Tools.mousePosition = {x: 100, y: 100};
 //List of hook functions that will be applied to tools before adding them
 Tools.toolHooks = [
     function checkToolAttributes(tool) {
@@ -1219,12 +1229,12 @@ function watchColorPicker(e) {
 }
 
 document.getElementById('color-picker-btn').addEventListener('pointerdown', function (e) {
-  colorMouseLeaveClose = false;
-  colorMouseLeaveClose = false;
-  e.stopPropagation();
-  document.addEventListener('pointerdown', function () {
-    toolColorEl.classList.remove('opened');
-  }, {once: true});
+    colorMouseLeaveClose = false;
+    colorMouseLeaveClose = false;
+    e.stopPropagation();
+    document.addEventListener('pointerdown', function () {
+        toolColorEl.classList.remove('opened');
+    }, {once: true});
 });
 
 var colorMouseLeaveClose = true;
@@ -1275,7 +1285,7 @@ document.getElementsByClassName('repost-block')[0].addEventListener('click', () 
         document.addEventListener('mousedown', hideCopyPanel);
         document.addEventListener('touchstart', hideCopyPanel);
         setTimeout(selectLink, 25);
-        ym(67204918,'reachGoal','invite_student');
+        ym(67204918, 'reachGoal', 'invite_student');
     } else {
         copyPanel.classList.add('hide');
     }
@@ -1301,49 +1311,49 @@ Tools.enableToolsEl = function (elementId) {
 }
 
 Tools.setFontSize = (function () {
-  const fontSizeValueEl = document.getElementById('fontSize-value');
-  var fontSize = 17;
+    const fontSizeValueEl = document.getElementById('fontSize-value');
+    var fontSize = 17;
 
-  document.getElementById('fontSize-up').addEventListener('pointerdown', function () {
-    Tools.setFontSize(Tools.getFontSize() + 1);
-  });
+    document.getElementById('fontSize-up').addEventListener('pointerdown', function () {
+        Tools.setFontSize(Tools.getFontSize() + 1);
+    });
 
-  document.getElementById('fontSize-down').addEventListener('pointerdown', function () {
-    Tools.setFontSize(Tools.getFontSize() - 1);
-  });
+    document.getElementById('fontSize-down').addEventListener('pointerdown', function () {
+        Tools.setFontSize(Tools.getFontSize() - 1);
+    });
 
-  return function (newFontSize) {
-    if (newFontSize) {
-      fontSize = newFontSize;
-      fontSizeValueEl.innerText = newFontSize;
-      Tools.list.Text.changeHandler();
+    return function (newFontSize) {
+        if (newFontSize) {
+            fontSize = newFontSize;
+            fontSizeValueEl.innerText = newFontSize;
+            Tools.list.Text.changeHandler();
+        }
+        return fontSize;
     }
-    return fontSize;
-  }
 })();
 
-Tools.getFontSize = function() {
-  return Tools.setFontSize();
+Tools.getFontSize = function () {
+    return Tools.setFontSize();
 }
 
 Tools.getFontStyles = (function () {
-  const fontSelectEl = document.getElementById('text-settings-select');
-  const fontValueEl = document.getElementById('text-settings-value');
-  fontSelectEl.addEventListener('pointerdown', function () {
-    fontSelectEl.classList.toggle('text-settings-select-opened');
-  });
-
-  for (var listItemEl of document.getElementsByClassName('text-settings-list-item')) {
-    listItemEl.addEventListener('pointerdown', function (e) {
-      fontValueEl.setAttribute('style', e.target.getAttribute('style'));
-      fontValueEl.innerText = e.target.innerText;
-      Tools.list.Text.changeHandler();
+    const fontSelectEl = document.getElementById('text-settings-select');
+    const fontValueEl = document.getElementById('text-settings-value');
+    fontSelectEl.addEventListener('pointerdown', function () {
+        fontSelectEl.classList.toggle('text-settings-select-opened');
     });
-  }
 
-  return function () {
-    return fontValueEl.getAttribute('style');
-  }
+    for (var listItemEl of document.getElementsByClassName('text-settings-list-item')) {
+        listItemEl.addEventListener('pointerdown', function (e) {
+            fontValueEl.setAttribute('style', e.target.getAttribute('style'));
+            fontValueEl.innerText = e.target.innerText;
+            Tools.list.Text.changeHandler();
+        });
+    }
+
+    return function () {
+        return fontValueEl.getAttribute('style');
+    }
 })();
 
 Tools.sizeChangeHandlers = [];
@@ -1409,7 +1419,9 @@ Tools.getSize = (function () {
     return Tools.setSize()
 });
 
-Tools.getOpacity = function () { return 1;}
+Tools.getOpacity = function () {
+    return 1;
+}
 
 Tools.deleteForTouches = function (evt, id) {
     if (evt.touches && evt.touches.length > 1) {

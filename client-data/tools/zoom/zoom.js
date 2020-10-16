@@ -29,10 +29,13 @@
     var ctrl_pressed = false;
     var lastY = null;
     var lastX = null;
+    var lastYForIOS = null;
+    var lastXForIOS = null;
     var diffFromTouches = null;
     var lastScaleOnMac = 1;
-    var lastScreenXOnIos = null;
-    var lastScreenYOnIos = null;
+    var lastScaleOnZoomMac = 1;
+    var clientYMAC = 0;
+    var clientXMAC = 0;
     var origin = {
         scrollX: document.documentElement.scrollLeft,
         scrollY: document.documentElement.scrollTop,
@@ -43,7 +46,7 @@
     };
     var pressed = false;
     var animation = null;
-    const testLogEl = document.getElementById('testLog');
+    var gestureEnded = true;
     const isIosMobile = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i));
     const diffForMoving = isIosMobile ? 90 : 40;
     const body = document;
@@ -61,18 +64,25 @@
         if (!isIosMobile) {
             animate(Tools.getScale() * (1 - lastScaleOnMac + evt.scale));
             lastScaleOnMac = evt.scale;
+            var x = evt.pageX / Tools.getScale();
+            var y = evt.pageY / Tools.getScale();
+            setOrigin(x, y, evt, false);
+            clientXMAC = x;
+            clientYMAC = y;
             if (evt.type === 'gestureend') {
                 lastScaleOnMac = 1;
             }
+            gestureEnded = evt.type === 'gestureend';
         }
         evt.stopPropagation();
     }
     function zoom(origin, scale) {
         var oldScale = origin.scale;
-        var newScale = Tools.setScale(scale);
+        const scaleKF = gestureEnded ? 0 : (oldScale - scale) * -3;
+        var newScale = Tools.setScale(scale + scaleKF);
         window.scrollTo(
             origin.scrollX + origin.x * (newScale - oldScale),
-            origin.scrollY + origin.y * (newScale - oldScale)
+            origin.scrollY + origin.y * (newScale - oldScale),
         );
         resizeBoard();
     }
@@ -131,11 +141,16 @@
             var x = evt.pageX / scale;
             var y = evt.pageY / scale;
             setOrigin(x, y, evt, false);
-            animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.01);
+            animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.02);
         } else {
-            window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
+            if (gestureEnded) window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
         }
     }
+
+    Tools.board.addEventListener("touchstart", function ontouchstart(evt) {
+        lastXForIOS = document.documentElement.scrollLeft + evt.touches[0].clientX;
+        lastYForIOS = document.documentElement.scrollTop + evt.touches[0].clientY;
+    });
 
     Tools.board.addEventListener("touchmove", function ontouchmove(evt) {
         // 2-finger pan to zoom
@@ -166,13 +181,17 @@
                 }
             } else {
                 // moving
-                if (lastY !== null) {
-                    const newMoveY = lastY - evt.touches[0].clientY - evt.touches[1].clientY;
-                    const newMoveX = lastX - evt.touches[0].clientX - evt.touches[1].clientX;
-                    window.scrollTo(document.documentElement.scrollLeft + newMoveX >> 0, document.documentElement.scrollTop + newMoveY >> 0);
+                if (isIosMobile) {
+                    window.scrollTo(lastXForIOS - evt.touches[0].clientX, lastYForIOS - evt.touches[0].clientY, {});
+                } else {
+                    if (lastY !== null) {
+                        const newMoveY = lastY - evt.touches[0].clientY - evt.touches[1].clientY;
+                        const newMoveX = lastX - evt.touches[0].clientX - evt.touches[1].clientX;
+                        window.scrollTo(document.documentElement.scrollLeft + newMoveX, document.documentElement.scrollTop + newMoveY);
+                    }
+                    lastX = evt.touches[0].clientX + evt.touches[1].clientX;
+                    lastY = evt.touches[0].clientY + evt.touches[1].clientY;
                 }
-                lastY = evt.touches[0].clientY + evt.touches[1].clientY;
-                lastX = evt.touches[0].clientX + evt.touches[1].clientX;
             }
         }
     }, { passive: true });
