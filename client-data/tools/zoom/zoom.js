@@ -29,6 +29,8 @@
     var ctrl_pressed = false;
     var lastY = null;
     var lastX = null;
+    var lastYForIOS = null;
+    var lastXForIOS = null;
     var diffFromTouches = null;
     var lastScaleOnMac = 1;
     var lastScaleOnZoomMac = 1;
@@ -78,23 +80,10 @@
         var oldScale = origin.scale;
         const scaleKF = gestureEnded ? 0 : (oldScale - scale) * -3;
         var newScale = Tools.setScale(scale + scaleKF);
-        console.log('Скролл на зуме');
         window.scrollTo(
             origin.scrollX + origin.x * (newScale - oldScale),
             origin.scrollY + origin.y * (newScale - oldScale),
         );
-        // if (!(origin.clientY === 0 && origin.x === 0 && origin.y === 0)) {
-        //     console.log('зум первый');
-        //     window.scrollTo(
-        //         origin.scrollX + origin.x * (newScale - oldScale),
-        //         origin.scrollY + origin.y * (newScale - oldScale)
-        //     );
-        // } else {
-        //     window.scrollTo(
-        //         document.documentElement.scrollLeft + clientXMAC * 0.02,
-        //         document.documentElement.scrollTop + clientYMAC * 0.02,
-        //     );
-        // }
         resizeBoard();
     }
 
@@ -154,14 +143,13 @@
             setOrigin(x, y, evt, false);
             animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.02);
         } else {
-            console.log('Скролл на gestureended');
             if (gestureEnded) window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
         }
     }
 
     Tools.board.addEventListener("touchstart", function ontouchstart(evt) {
-        lastX = document.documentElement.scrollLeft + evt.touches[0].clientX;
-        lastY = document.documentElement.scrollTop + evt.touches[0].clientY;
+        lastXForIOS = document.documentElement.scrollLeft + evt.touches[0].clientX;
+        lastYForIOS = document.documentElement.scrollTop + evt.touches[0].clientY;
     });
 
     Tools.board.addEventListener("touchmove", function ontouchmove(evt) {
@@ -193,9 +181,17 @@
                 }
             } else {
                 // moving
-                window.scrollTo(lastX - evt.touches[0].clientX, lastY - evt.touches[0].clientY, {});
-                // lastY = evt.touches[0].clientY;// + evt.touches[1].clientY;
-                // lastX = evt.touches[0].clientX + evt.touches[1].clientX;
+                if (isIosMobile) {
+                    window.scrollTo(lastXForIOS - evt.touches[0].clientX, lastYForIOS - evt.touches[0].clientY, {});
+                } else {
+                    if (lastY !== null) {
+                        const newMoveY = lastY - evt.touches[0].clientY - evt.touches[1].clientY;
+                        const newMoveX = lastX - evt.touches[0].clientX - evt.touches[1].clientX;
+                        window.scrollTo(document.documentElement.scrollLeft + newMoveX, document.documentElement.scrollTop + newMoveY);
+                    }
+                    lastX = evt.touches[0].clientX + evt.touches[1].clientX;
+                    lastY = evt.touches[0].clientY + evt.touches[1].clientY;
+                }
             }
         }
     }, { passive: true });
