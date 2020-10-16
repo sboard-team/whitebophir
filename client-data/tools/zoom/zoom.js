@@ -191,13 +191,8 @@
                 if (lastY !== null) {
                     const newMoveY = lastY - evt.touches[0].clientY - evt.touches[1].clientY;
                     //const newMoveX = lastX - evt.touches[0].clientX - evt.touches[1].clientX;
-                    console.log('touchmove');
                     console.log(evt.touches[0].clientY);
-                    console.log(evt.touches[1].clientY);
-                    // console.log(newMoveX);
-                    console.log(newMoveY);
-                    console.log(evt.touches[0]);
-                    const newMoveX = 1;
+                    const newMoveX = 5;
                     //const newMoveY = 1;
                     window.scrollTo(document.documentElement.scrollLeft + newMoveX, document.documentElement.scrollTop + newMoveY);
                 }
