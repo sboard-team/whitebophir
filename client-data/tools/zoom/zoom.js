@@ -159,6 +159,10 @@
         }
     }
 
+    Tools.board.addEventListener("touchstart", function ontouchstart(evt) {
+        lastY = document.documentElement.scrollTop + evt.touches[0].clientY;
+    });
+
     Tools.board.addEventListener("touchmove", function ontouchmove(evt) {
         // 2-finger pan to zoom
         var touches = evt.touches;
@@ -194,9 +198,9 @@
                     console.log(newMoveY);
                     const newMoveX = 0;
                     //const newMoveY = 1;
-                    window.scrollTo(document.documentElement.scrollLeft + newMoveX, document.documentElement.scrollTop + newMoveY);
+                    window.scrollTo(document.documentElement.scrollLeft + newMoveX, lastY - evt.touches[0].clientY);
                 }
-                lastY = evt.touches[0].clientY;// + evt.touches[1].clientY;
+                // lastY = evt.touches[0].clientY;// + evt.touches[1].clientY;
                 lastX = evt.touches[0].clientX + evt.touches[1].clientX;
             }
         }
