@@ -193,9 +193,11 @@
                 }
             } else {
                 // moving
-                if (lastY !== null) {
-                    window.scrollTo(lastX - evt.touches[0].clientX, lastY - evt.touches[0].clientY);
-                }
+                window.scrollTo({
+                    left: lastX - evt.touches[0].clientX,
+                    top: lastY - evt.touches[0].clientY,
+                    behavior: "smooth"
+                });
                 // lastY = evt.touches[0].clientY;// + evt.touches[1].clientY;
                 // lastX = evt.touches[0].clientX + evt.touches[1].clientX;
             }
