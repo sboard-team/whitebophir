@@ -757,6 +757,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
             el.classList.toggle('sjx-hidden');
         });
         //interval for send activity board
+      return false;
         setInterval((function () {
             var lastPosX = Tools.mousePosition.x;
             var lastPosY = Tools.mousePosition.x;
@@ -967,6 +968,9 @@ Tools.setScale = function setScale(scale) {
         htmlBodyEl.style = 'display: flex; justify-content: center;';
     } else {
         htmlBodyEl.style = '';
+    }
+    if (Tools.curTool.name === 'trr') {
+        Tools.list.trr.updateRect();
     }
     return scale;
 }
