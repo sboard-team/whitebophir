@@ -12,7 +12,7 @@
     if (checkElementIsDraw(evt.target)) {
       if (evt.target === target) {
         return;
-      } else if (evt.ctrlKey && moveable !== null) {
+      } else if ((evt.ctrlKey || evt.metaKey) && moveable !== null) {
         moveable.target = [...moveable.target, evt.target];
         moveable.padding = {"left": 0, "top": 0, "right": 0, "bottom": 0};
         moveable.pinchable = false;
