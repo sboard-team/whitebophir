@@ -95,7 +95,7 @@
 		  // The container for keydown and keyup events
 		  keyContainer: window,
 		  // The rate at which the target overlaps the drag area to be selected. (default: 100)
-		  hitRate: 1,
+		  hitRate: 0.001,
 	  });
 	  selecto.on("select", e => {
 		  e.added.forEach(el => {
