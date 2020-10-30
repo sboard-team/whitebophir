@@ -16,33 +16,11 @@
 		targets.splice(0, targets.length);
 		if (selecto === null) {
 			createSelecto();
-			selecto.setSelectedTargets([])
+			selecto.setSelectedTargets(targets);
 		}
 	} else if (!checkElementIsDraw(evt.target)){
 		destroySelecto();
 	}
-    // console.log(evt.target)
-    // if (evt.target.getAttribute('class') && evt.target.classList.contains('moveable-control') || evt.target.classList.contains('moveable-area')) return;
-    // if (checkElementIsDraw(evt.target)) {
-    //   if (evt.target === target) {
-    //     return;
-    //   } else if ((evt.ctrlKey || evt.metaKey) && moveable !== null) {
-    //     moveable.target = [...moveable.target, evt.target];
-    //     moveable.padding = {"left": 0, "top": 0, "right": 0, "bottom": 0};
-    //     moveable.pinchable = false;
-    //     moveable.scalable = false;
-    //     moveable.rotatable = false;
-    //     target = evt.target;
-    //     setTransformOrigin(target);
-    //     return;
-    //   } else {
-    //     destroy();
-    //   }
-    //   target = evt.target;
-    //   setTransformOrigin(target);
-    // } else {
-    //   destroy();
-    // }
   }
 
   function setTransformOrigin(el) {
@@ -57,13 +35,16 @@
 
   function onStart() {
 	  createSelecto();
+	  document.addEventListener('keydown', actionsForEvent);
     console.log('start');
   }
 
   function onQuit() {
-    console.log('quit');
+	  document.removeEventListener('keydown', actionsForEvent);
     destroySelecto();
     destroyMoveable();
+	  targets.map(item => item.classList.remove('selectedEl'))
+	  targets = [];
   }
 
   function draw(data) {
@@ -117,6 +98,27 @@
 			selecto = null;
 		}
   }
+
+	function actionsForEvent(evt) {
+		if (evt.keyCode === 46 || evt.keyCode === 8) { // Delete key
+			deleteSelectedTargets();
+		} else if (evt.keyCode === 68 && evt.ctrlKey) {
+			createModal(Tools.modalWindows.functionInDevelopment);
+		}
+	}
+
+	function deleteSelectedTargets() {
+		destroyMoveable();
+		destroySelecto();
+		targets.forEach(function (target) {
+			Tools.drawAndSend({
+				"type": "delete",
+				"id": target.id,
+				"sendBack": true,
+			}, Tools.list.Eraser);
+		});
+		targets = [];
+	}
 
   function destroyMoveable() {
     if (moveable !== null) {
