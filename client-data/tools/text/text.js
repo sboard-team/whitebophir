@@ -231,6 +231,10 @@
 		console.log(fieldData);
 		elem.setAttribute('height', fieldData.parentHeight || 0);
 		elem.setAttribute('width', fieldData.parentWidth || 0);
+		if (fieldData.transform) {
+			elem.style.transform = fieldData.transform;
+			elem.style.transformOrigin = fieldData.transformOrigin;
+		}
 		Tools.drawingArea.appendChild(elem);
 		return elem;
 	}

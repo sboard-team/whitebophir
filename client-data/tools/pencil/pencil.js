@@ -154,6 +154,10 @@
 				line.setAttribute(lineData.properties[i][0], lineData.properties[i][1]);
 			}
 		}
+		if (lineData.transform) {
+			line.style.transform = lineData.transform;
+			line.style.transformOrigin = lineData.transformOrigin;
+		}
 		return line;
 	}
 

@@ -131,6 +131,10 @@
                 img.setAttribute(msg.properties[i][0], msg.properties[i][1]);
             }
         }
+        if (img.transform) {
+	        img.style.transform = msg.transform;
+	        img.style.transformOrigin = msg.transformOrigin;
+        }
         Tools.drawingArea.appendChild(img);
         if (msg.select) {
             Tools.change("Transform", 1);
