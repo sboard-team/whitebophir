@@ -257,6 +257,10 @@
 				shape.setAttribute(data.properties[i][0], data.properties[i][1]);
 			}
 		}
+		if (data.transform) {
+			shape.style.transform = data.transform;
+			shape.style.transformOrigin = data.transformOrigin;
+		}
 		return shape;
 	}
 

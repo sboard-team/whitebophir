@@ -3,6 +3,7 @@
   var target = null;
   var selecto = null;
   var targets = [];
+  var lastSend = performance.now();
 
   function checkElementIsDraw(element) {
     return (element.id !== 'gridContainer' && element !== Tools.svg && element !== Tools.drawingArea && Tools.drawingArea.contains(element));
@@ -48,6 +49,16 @@
   }
 
   function draw(data) {
+	  switch (data.type) {
+		  case "update":
+			  console.log(data);
+			  const el = document.getElementById(data.id);
+			  el.style.transform = data.transform;
+			  el.style.transformOrigin = data.transformOrigin;
+			  break;
+		  default:
+			  throw new Error("Mover: 'mover' instruction with unknown type. ", data);
+	  }
     console.log('draw ', data);
   }
 
@@ -154,25 +165,33 @@
 			  throttleDragRotate: 0,
 			  padding: {"left": padding, "top": padding, "right": padding, "bottom": padding},
 		  });
-		  moveable.on("drag", (data) => {
-			  targets[0].style.transform = data.transform;
-		  }).on("dragGroup", ({events}) => {
-			  for (var ev of events) {
-				  ev.target.style.transform = ev.transform;
+		  moveable.on("dragGroup", ({events}) => {
+			  var sendOrDraw = draw;
+			  if (performance.now() - lastSend > 50) {
+				  lastSend = performance.now();
+				  sendOrDraw = Tools.drawAndSend;
 			  }
-		  }).on("pinch", (data) => {
-			  targets[0].style.transform = data.transform;
-		  }).on("scale", (data) => {
-			  targets[0].style.transform = data.transform;
-		  }).on("rotate", (data) => {
-			  console.log(targets);
-			  targets[0].style.transform = data.transform;
-		  });
+			  for (var ev of events) {
+				  var msg = {type: "update", id: ev.target.id, transform: ev.transform, transformOrigin: ev.target.transformOrigin};
+				  sendOrDraw(msg);
+			  }
+		  }).on("dragGroupEnd", (data) => {
+			  console.log(data);
+		  })
+			  .on("drag", singleTransform)
+			  .on("pinch", singleTransform)
+			  .on("scale", singleTransform)
+			  .on("rotate", singleTransform);
     }
   }
 
   function move() {
     //console.log('move');
+  }
+
+  function singleTransform (data) {
+	  var msg = {type: "update", id: targets[0].id, transform: data.transform, transformOrigin: targets[0].style.transformOrigin};
+	  Tools.drawAndSend(msg);
   }
 
   Tools.add({ //The new tool
