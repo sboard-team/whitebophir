@@ -218,11 +218,11 @@
 
 		elem.setAttribute("x", fieldData.x);
 		elem.setAttribute("y", fieldData.y);
-		if (fieldData.properties) {
-			for (var i = 0; i < fieldData.properties.length; i++) {
-				elem.setAttribute(fieldData.properties[i][0], fieldData.properties[i][1]);
-			}
-		}
+		// if (fieldData.properties) {
+		// 	for (var i = 0; i < fieldData.properties.length; i++) {
+		// 		elem.setAttribute(fieldData.properties[i][0], fieldData.properties[i][1]);
+		// 	}
+		// }
 		const textEl = document.createElement("pre");
 		elem.id = fieldData.id;
 		textEl.setAttribute("style", `font-family: ${fieldData.fontName}; color: ${fieldData.color}; font-size: ${fieldData.fontSize}px;`);

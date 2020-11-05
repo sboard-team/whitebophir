@@ -140,15 +140,15 @@ Tools.connect = function () {
 
     this.socket.on("dublicateObject", function (msg) {
         var instrument = Tools.list[msg.tool];
-        if (msg.tool === 'Pencil') {
-            if (!msg.properties) {
-                msg.properties = [['d', document.getElementById(msg.id).getAttribute('d')]];
-                msg._children = [];
-            }
-        }
+		    if (msg.tool === 'Pencil') {
+			    if (!msg.properties) {
+				    msg.properties = [['d', document.getElementById(msg.id).getAttribute('d')]];
+				    msg._children = [];
+			    }
+		    }
         msg.id = Tools.generateUID();
         Tools.drawAndSend(msg, instrument);
-        Tools.list.Transform.selectElement(document.getElementById(msg.id), {dx: 20, dy: 20});
+        //Tools.list.Transform.selectElement(document.getElementById(msg.id), {dx: 20, dy: 20});
         Tools.addActionToHistory({type: "delete", id: msg.id})
     });
 
@@ -969,8 +969,8 @@ Tools.setScale = function setScale(scale) {
     } else {
         htmlBodyEl.style = '';
     }
-    if (Tools.curTool.name === 'trr') {
-        Tools.list.trr.updateRect();
+    if (Tools.curTool.name === 'Transform') {
+        Tools.list.Transform.updateRect();
     }
     return scale;
 }
@@ -1463,7 +1463,7 @@ Tools.undo = (function () {
                         'color': action.color,
                         'size': action.size,
                         'opacity': action.opacity || 1,
-                        'properties': action.properties,
+                        //'properties': action.properties,
                         'dotted': action.dotted,
                     }, instrument);
                     if (action.properties === undefined || action.properties.length === 0) {
@@ -1535,7 +1535,7 @@ Tools.redo = (function () {
                         'color': action.color,
                         'size': action.size,
                         'opacity': action.opacity || 1,
-                        'properties': action.properties,
+                        //'properties': action.properties,
                         'dotted': action.dotted,
                     }, instrument);
                     if (action.properties === undefined || action.properties.length === 0) {

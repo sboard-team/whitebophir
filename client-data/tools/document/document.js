@@ -126,11 +126,11 @@
         img.y.baseVal.value = msg['y'];
         img.setAttribute("width", msg.w);
         img.setAttribute("height", msg.h);
-        if (msg.properties) {
-            for (var i = 0; i < msg.properties.length; i++) {
-                img.setAttribute(msg.properties[i][0], msg.properties[i][1]);
-            }
-        }
+        // if (msg.properties) {
+        //     for (var i = 0; i < msg.properties.length; i++) {
+        //         img.setAttribute(msg.properties[i][0], msg.properties[i][1]);
+        //     }
+        // }
         if (img.transform) {
 	        img.style.transform = msg.transform;
 	        img.style.transformOrigin = msg.transformOrigin;
