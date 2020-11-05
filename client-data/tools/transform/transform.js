@@ -99,7 +99,6 @@
 	}
 
 	function createMoveable() {
-		moveable.updateRect();
 		targets.forEach(el => {
 			el.classList.remove("selectedEl");
 		});
@@ -154,6 +153,7 @@
 				.on("pinch", singleTransform)
 				.on("scale", singleTransform)
 				.on("rotate", singleTransform);
+			moveable.updateRect();
 		}
 	}
 
