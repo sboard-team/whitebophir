@@ -49,12 +49,6 @@ function socketConnection(socket) {
 		return board;
 	}
 
-	socket.on("getSelectedElements", function getSelectedElements(name) {
-		boards[name].selectedElements.map(el => {
-			socket.emit('broadcast', { type: "update", selectElement: el.id, tool: "Cursor" });
-		});
-	});
-
 	socket.on("error", noFail(function onError(error) {
 		log("ERROR", error);
 	}));
@@ -94,10 +88,7 @@ function socketConnection(socket) {
 
 		if (!socket.rooms.hasOwnProperty(boardName)) socket.join(boardName);
 
-		var boardData;
 		if (message.data.type === "doc") {
-			boardData = await getBoard(boardName);
-
 			if (message.data.data.length > config.MAX_DOCUMENT_SIZE) {
 				console.warn("Received too large file");
 				return;
@@ -126,13 +117,6 @@ function socketConnection(socket) {
 			if (boards.hasOwnProperty(room)) {
 				var board = await boards[room];
 				board.users.delete(socket.id);
-				const unSelectIndex = board.selectedElements.findIndex(function (el) {
-					return el.socketID === socket.id;
-				});
-				if (unSelectIndex !== -1) {
-					socket.broadcast.to(room).emit('broadcast', { unSelectElement: board.selectedElements[unSelectIndex].id, tool: "Cursor" });
-					board.selectedElements.splice(unSelectIndex, 1);
-				}
 				var userCount = board.users.size;
 				log('disconnection', { 'board': board.name, 'users': board.users.size });
 				if (userCount === 0) {
@@ -145,36 +129,7 @@ function socketConnection(socket) {
 }
 
 async function handleMessage(boardName, message, socket) {
-	if (message.tool === "Cursor") {
-		message.socket = socket.id;
-		var localBoard = await getBoard(boardName);
-		if (message.selectElement) {
-			const inList = localBoard.selectedElements.findIndex(function (el) {
-				return el.id === message.selectElement;
-			}) !== -1;
-			if (inList === false) {
-				const unSelectIndex = localBoard.selectedElements.findIndex(function (el) {
-					return el.socketID === message.socket;
-				});
-				if (unSelectIndex !== -1) {
-					socket.broadcast.to(boardName).emit('broadcast', { unSelectElement: localBoard.selectedElements[unSelectIndex].id, tool: "Cursor" });
-					localBoard.selectedElements.splice(unSelectIndex, 1);
-				}
-				localBoard.selectedElements.push({ id: message.selectElement, socketID: message.socket});
-			}
-		}
-		if (message.unSelectElement) {
-			const unSelectIndex = localBoard.selectedElements.findIndex(function (el) {
-				return el.id === message.unSelectElement;
-			});
-			if (unSelectIndex !== -1) {
-				localBoard.selectedElements.splice(unSelectIndex, 1);
-			}
-		}
-	}
-	else {
-		saveHistory(boardName, message, socket);
-	}
+	saveHistory(boardName, message, socket);
 }
 
 async function saveHistory(boardName, message, socket) {

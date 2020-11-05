@@ -92,6 +92,7 @@
 	  selecto.on("select", e => {
 		  e.added.forEach(el => {
 			  el.classList.add("selectedEl");
+			  console.log('setTransformOrigin');
 			  setTransformOrigin(el);
 			  targets.push(el);
 		  });
@@ -114,7 +115,8 @@
 		if (evt.keyCode === 46 || evt.keyCode === 8) { // Delete key
 			deleteSelectedTargets();
 		} else if (evt.keyCode === 68 && evt.ctrlKey) {
-			createModal(Tools.modalWindows.functionInDevelopment);
+			console.log('dublicate');
+			moveable.request("draggable", { deltaX: 20, deltaY: 20 }, true);
 		}
 	}
 

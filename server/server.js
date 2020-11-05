@@ -68,7 +68,6 @@ function handler(request, response) {
 }
 
 const boardTemplate = new templating.BoardTemplate(path.join(config.WEBROOT, 'board.html'));
-const indexTemplate = new templating.Template(path.join(config.WEBROOT, 'index.html'));
 
 function validateBoardName(boardName) {
 	if (/^[\w%\-_~()]*$/.test(boardName)) return boardName;

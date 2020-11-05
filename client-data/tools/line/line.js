@@ -151,11 +151,11 @@
 		line.y1.baseVal.value = lineData['y'];
 		line.x2.baseVal.value = lineData['x2'] || lineData['x'];
 		line.y2.baseVal.value = lineData['y2'] || lineData['y'];
-		if (lineData.properties) {
-			for (var i = 0; i < lineData.properties.length; i++) {
-				line.setAttribute(lineData.properties[i][0], lineData.properties[i][1]);
-			}
-		}
+		// if (lineData.properties) {
+		// 	for (var i = 0; i < lineData.properties.length; i++) {
+		// 		line.setAttribute(lineData.properties[i][0], lineData.properties[i][1]);
+		// 	}
+		// }
 		//If some data is not provided, choose default value. The line may be updated later
 		line.setAttribute("stroke", lineData.color || "black");
 		line.setAttribute("stroke-width", lineData.size || 10);
