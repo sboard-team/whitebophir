@@ -101,9 +101,22 @@
 	}
 
 	function draw(data) {
+		console.log(data);
 		var elem;
 		switch (data.type) {
-			//TODO: add the ability to erase only some points in a line
+			case "array":
+				data.events.forEach(function (event) {
+					elem = svg.getElementById(event.id);
+					if (elem === null) console.error("Eraser: Tried to delete an element that does not exist.");
+					else {
+						Tools.drawingArea.removeChild(elem);
+					}
+				});
+				if (Tools.curTool.name === 'Transform') {
+					Tools.change('Hand');
+					Tools.change('Transform');
+				}
+				break;
 			case "delete":
 				elem = svg.getElementById(data.id);
 				targetID = '';

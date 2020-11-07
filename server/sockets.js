@@ -129,7 +129,43 @@ function socketConnection(socket) {
 }
 
 async function handleMessage(boardName, message, socket) {
-	saveHistory(boardName, message, socket);
+	if (message.type === 'array') {
+		saveHistoryArray(boardName, message, socket);
+	} else {
+		saveHistory(boardName, message, socket);
+	}
+
+}
+
+async function saveHistoryArray(boardName, message, socket) {
+	var board = await getBoard(boardName);
+	const data = { type: 'array', events: [] };
+	var socketEventName;
+	message.events.map(event => {
+		switch (event.type) {
+			case "dublicate":
+				socketEventName = "dublicateObjects";
+				data.events.push(board.get(event.id));
+				break;
+			case "delete":
+				if (event.id) {
+					if (message.sendBack && !message.sendToRedo) {
+						socketEventName = "addActionToHistory";
+					} else if (message.sendBack && message.sendToRedo) {
+						socketEventName = "addActionToHistoryRedo";
+					}
+					data.events.push(board.get(event.id));
+					board.delete(event.id);
+				};
+				break;
+			case "update":
+				if (event.id) board.update(event.id, event);
+				break;
+		}
+	});
+	if (socketEventName) {
+		socket.emit(socketEventName, data);
+	}
 }
 
 async function saveHistory(boardName, message, socket) {

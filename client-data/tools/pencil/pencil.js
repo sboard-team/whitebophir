@@ -155,6 +155,7 @@
 		}
 		if (lineData.transform) {
 			line.style.transform = lineData.transform;
+			console.log(lineData);
 			line.style.transformOrigin = lineData.transformOrigin;
 		}
 		Tools.drawingArea.appendChild(line);
