@@ -77,7 +77,7 @@
       targetID = target.id;
 			msg.id = targetID;
 			if (erasing && !target.classList.contains('selectedEl')) {
-				Tools.drawAndSend(msg);
+				if (msg.id) Tools.drawAndSend(msg);
 			} else if (!target.classList.contains('selectedEl')) {
 				target.classList.add('forErasing');
 			}
@@ -88,7 +88,7 @@
 					const el = document.elementFromPoint(i[0], i[1]);
 					if (el && checkElementIsDraw(el) && !el.classList.contains('selectedEl')) {
 						msg.id = el.id;
-						Tools.drawAndSend(msg);
+						if (msg.id) Tools.drawAndSend(msg);
 					}
 				}
 			}

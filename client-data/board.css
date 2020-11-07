@@ -88,6 +88,10 @@ foreignObject {
 	outline: 2px solid red;
 }
 
+.moveable-dashed {
+  display: none;
+}
+
 pre {
 	width: fit-content;
 	width: -moz-fit-content;
