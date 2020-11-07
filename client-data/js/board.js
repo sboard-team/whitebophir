@@ -693,18 +693,28 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
     }
 
     function minusScale() {
-        Tools.setScale(Tools.getScale() - 0.1);
-        resizeBoard();
+	    scaleToCenter(-0.1);
     }
 
     function goToHelp() {
         window.open(Tools.server_config.LANDING_URL + 'help');
     }
 
-    function plusScale() {
-        Tools.setScale(Tools.getScale() + 0.1);
-        resizeBoard();
+    function scaleToCenter(deltaScale) {
+	    var oldScale = Tools.getScale();
+	    var newScale = Tools.setScale(oldScale + deltaScale);
+	    var originX = (window.scrollX + document.documentElement.clientWidth / 2 - (Tools.board.getBoundingClientRect().left < 0 ? 0 : Tools.board.getBoundingClientRect().left)) / Tools.getScale();
+	    var originY = (window.scrollY + document.documentElement.clientHeight / 2) / Tools.getScale();
+	    resizeBoard();
+	    window.scrollTo(
+		    window.scrollX + originX * (newScale - oldScale),
+		    window.scrollY + originY * (newScale - oldScale),
+	    );
     }
+
+	function plusScale() {
+		scaleToCenter(0.1);
+	}
 
     function sendClearBoard() {
         createModal(Tools.modalWindows.clearBoard);

@@ -25,187 +25,188 @@
  */
 
 (function () { //Code isolation
-    var ZOOM_FACTOR = .005;
-    var ctrl_pressed = false;
-    var lastY = null;
-    var lastX = null;
-    var lastYForIOS = null;
-    var lastXForIOS = null;
-    var diffFromTouches = null;
-    var lastScaleOnMac = 1;
-    var lastScaleOnZoomMac = 1;
-    var clientYMAC = 0;
-    var clientXMAC = 0;
-    var origin = {
-        scrollX: document.documentElement.scrollLeft,
-        scrollY: document.documentElement.scrollTop,
-        x: 0.0,
-        y: 0.0,
-        clientY: 0,
-        scale: 1.0,
-    };
-    var pressed = false;
-    var animation = null;
-    var gestureEnded = true;
-    const isIosMobile = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i));
-    const diffForMoving = isIosMobile ? 90 : 40;
-    const body = document;
-    body.addEventListener("touchend", touchend);
-    body.addEventListener("touchcancel", touchend);
-    body.addEventListener("wheel", onwheel, { passive: false });
-    body.addEventListener("keydown", onKeyDown);
-    body.addEventListener("keyup", onKeyUp);
-    body.addEventListener('gesturestart', gesture);
-    body.addEventListener('gesturechange', gesture);
-    body.addEventListener('gestureend', gesture);
+	var ZOOM_FACTOR = .005;
+	var ctrl_pressed = false;
+	var lastY = null;
+	var lastX = null;
+	var lastYForIOS = null;
+	var lastXForIOS = null;
+	var diffFromTouches = null;
+	var lastScaleOnMac = 1;
+	var lastScaleOnZoomMac = 1;
+	var clientYMAC = 0;
+	var clientXMAC = 0;
+	var origin = {
+		scrollX: document.documentElement.scrollLeft,
+		scrollY: document.documentElement.scrollTop,
+		x: 0.0,
+		y: 0.0,
+		clientY: 0,
+		scale: 1.0,
+	};
+	var pressed = false;
+	var animation = null;
+	var gestureEnded = true;
+	const isIosMobile = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i));
+	const diffForMoving = isIosMobile ? 90 : 40;
+	const body = document;
+	body.addEventListener("touchend", touchend);
+	body.addEventListener("touchcancel", touchend);
+	body.addEventListener("wheel", onwheel, {passive: false});
+	body.addEventListener("keydown", onKeyDown);
+	body.addEventListener("keyup", onKeyUp);
+	body.addEventListener('gesturestart', gesture);
+	body.addEventListener('gesturechange', gesture);
+	body.addEventListener('gestureend', gesture);
 
-    function gesture(evt) {
-        evt.preventDefault();
-        if (!isIosMobile) {
-            animate(Tools.getScale() * (1 - lastScaleOnMac + evt.scale));
-            lastScaleOnMac = evt.scale;
-            var x = evt.pageX / Tools.getScale();
-            var y = evt.pageY / Tools.getScale();
-            setOrigin(x, y, evt, false);
-            clientXMAC = x;
-            clientYMAC = y;
-            if (evt.type === 'gestureend') {
-                lastScaleOnMac = 1;
-            }
-            gestureEnded = evt.type === 'gestureend';
-        }
-        evt.stopPropagation();
-    }
-    function zoom(origin, scale) {
-        var oldScale = origin.scale;
-        const scaleKF = gestureEnded ? 0 : (oldScale - scale) * -3;
-        var newScale = Tools.setScale(scale + scaleKF);
-        window.scrollTo(
-            origin.scrollX + origin.x * (newScale - oldScale),
-            origin.scrollY + origin.y * (newScale - oldScale),
-        );
-        resizeBoard();
-    }
+	function gesture(evt) {
+		evt.preventDefault();
+		if (!isIosMobile) {
+			animate(Tools.getScale() * (1 - lastScaleOnMac + evt.scale));
+			lastScaleOnMac = evt.scale;
+			var x = evt.pageX / Tools.getScale();
+			var y = evt.pageY / Tools.getScale();
+			setOrigin(x, y, evt, false);
+			clientXMAC = x;
+			clientYMAC = y;
+			if (evt.type === 'gestureend') {
+				lastScaleOnMac = 1;
+			}
+			gestureEnded = evt.type === 'gestureend';
+		}
+		evt.stopPropagation();
+	}
 
-    function animate(scale) {
-        cancelAnimationFrame(animation);
-        animation = requestAnimationFrame(function () {
-            zoom(origin, scale);
-        });
-    }
+	function zoom(origin, scale) {
+		var oldScale = origin.scale;
+		const scaleKF = gestureEnded ? 0 : (oldScale - scale) * -3;
+		var newScale = Tools.setScale(scale + scaleKF);
+		window.scrollTo(
+			origin.scrollX + origin.x * (newScale - oldScale),
+			origin.scrollY + origin.y * (newScale - oldScale),
+		);
+		resizeBoard();
+	}
 
-    function setOrigin(x, y, evt, isTouchEvent) {
-        origin.scrollX = document.documentElement.scrollLeft;
-        origin.scrollY = document.documentElement.scrollTop;
-        origin.x = x;
-        origin.y = y;
-        origin.clientY = getClientY(evt, isTouchEvent);
-        origin.scale = Tools.getScale();
-    }
+	function animate(scale) {
+		cancelAnimationFrame(animation);
+		animation = requestAnimationFrame(function () {
+			zoom(origin, scale);
+		});
+	}
 
-    function onKeyDown(evt) {
-        if (evt.ctrlKey) {
-            ctrl_pressed = true;
-            if (evt.target.tagName === 'INPUT' || evt.target.tagName === 'TEXTAREA') return;
-            evt.preventDefault();
-            if (evt.key === '=') {
-                Tools.setScale(1);
-                resizeBoard();
-            } else if (evt.key === '+') {
-                Tools.setScale(Tools.getScale() + 0.1);
-                resizeBoard();
-            } else if (evt.key === '-') {
-                Tools.setScale(Tools.getScale() - 0.1);
-                resizeBoard();
-            } else if (evt.key === '/') {
-                Tools.setScale(document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X);
-                resizeBoard();
-            }
-        }
-    }
+	function setOrigin(x, y, evt, isTouchEvent) {
+		origin.scrollX = document.documentElement.scrollLeft;
+		origin.scrollY = document.documentElement.scrollTop;
+		origin.x = x;
+		origin.y = y;
+		origin.clientY = getClientY(evt, isTouchEvent);
+		origin.scale = Tools.getScale();
+	}
 
-    function onKeyUp(evt) {
-        if (evt.ctrlKey) ctrl_pressed = false;
-    }
+	function onKeyDown(evt) {
+		if (evt.ctrlKey) {
+			ctrl_pressed = true;
+			if (evt.target.tagName === 'INPUT' || evt.target.tagName === 'TEXTAREA') return;
+			evt.preventDefault();
+			if (evt.key === '=') {
+				Tools.setScale(1);
+				resizeBoard();
+			} else if (evt.key === '+') {
+				Tools.setScale(Tools.getScale() + 0.1);
+				resizeBoard();
+			} else if (evt.key === '-') {
+				Tools.setScale(Tools.getScale() - 0.1);
+				resizeBoard();
+			} else if (evt.key === '/') {
+				Tools.setScale(document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X);
+				resizeBoard();
+			}
+		}
+	}
 
-    function onwheel(evt) {
-        evt.preventDefault();
-        if (evt.ctrlKey && ctrl_pressed) {
-            var scale = Tools.getScale();
-            var x = evt.pageX / scale;
-            var y = evt.pageY / scale;
-            setOrigin(x, y, evt, false);
-            animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.2);
-        } else if (evt.ctrlKey && !ctrl_pressed) {
-            var scale = Tools.getScale();
-            var x = evt.pageX / scale;
-            var y = evt.pageY / scale;
-            setOrigin(x, y, evt, false);
-            animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.02);
-        } else {
-            if (gestureEnded) window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
-        }
-    }
+	function onKeyUp(evt) {
+		if (evt.ctrlKey) ctrl_pressed = false;
+	}
 
-    Tools.board.addEventListener("touchstart", function ontouchstart(evt) {
-        lastXForIOS = document.documentElement.scrollLeft + evt.touches[0].clientX;
-        lastYForIOS = document.documentElement.scrollTop + evt.touches[0].clientY;
-    });
+	function onwheel(evt) {
+		evt.preventDefault();
+		if (evt.ctrlKey && ctrl_pressed) {
+			var scale = Tools.getScale();
+			var x = evt.pageX / scale;
+			var y = evt.pageY / scale;
+			setOrigin(x, y, evt, false);
+			animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.2);
+		} else if (evt.ctrlKey && !ctrl_pressed) {
+			var scale = Tools.getScale();
+			var x = evt.pageX / scale;
+			var y = evt.pageY / scale;
+			setOrigin(x, y, evt, false);
+			animate(Tools.getScale() - (((evt.deltaY > 0) - (evt.deltaY < 0))) * 0.02);
+		} else {
+			if (gestureEnded) window.scrollTo(document.documentElement.scrollLeft + evt.deltaX, document.documentElement.scrollTop + evt.deltaY);
+		}
+	}
 
-    Tools.board.addEventListener("touchmove", function ontouchmove(evt) {
-        // 2-finger pan to zoom
-        var touches = evt.touches;
-        if (touches.length === 2) {
-            if (diffFromTouches === null) {
-                diffFromTouches = Math.hypot( //get rough estimate of distance between two fingers
-                    evt.touches[0].pageX - evt.touches[1].pageX,
-                    evt.touches[0].pageY - evt.touches[1].pageY);
-            }
-            if ((diffFromTouches >> 0) - Math.hypot(evt.touches[0].pageX - evt.touches[1].pageX, evt.touches[0].pageY - evt.touches[1].pageY) >> 0 > diffForMoving ||
-                (diffFromTouches >> 0) - Math.hypot(evt.touches[0].pageX - evt.touches[1].pageX, evt.touches[0].pageY - evt.touches[1].pageY) >> 0 < -diffForMoving) {
-                var x0 = touches[0].clientX, x1 = touches[1].clientX,
-                    y0 = touches[0].clientY, y1 = touches[1].clientY,
-                    dx = x0 - x1,
-                    dy = y0 - y1;
-                var x = (touches[0].pageX + touches[1].pageX) / 2 / Tools.getScale(),
-                    y = (touches[0].pageY + touches[1].pageY) / 2 / Tools.getScale();
-                var distance = Math.sqrt(dx * dx + dy * dy);
-                if (!pressed) {
-                    pressed = true;
-                    setOrigin(x, y, evt, true);
-                    origin.distance = distance;
-                } else {
-                    var delta = distance - origin.distance;
-                    var scale = origin.scale * (1 + delta * ZOOM_FACTOR);
-                    animate(scale);
-                }
-            } else {
-                // moving
-                if (isIosMobile) {
-                    window.scrollTo(lastXForIOS - evt.touches[0].clientX, lastYForIOS - evt.touches[0].clientY, {});
-                } else {
-                    if (lastY !== null) {
-                        const newMoveY = lastY - evt.touches[0].clientY - evt.touches[1].clientY;
-                        const newMoveX = lastX - evt.touches[0].clientX - evt.touches[1].clientX;
-                        window.scrollTo(document.documentElement.scrollLeft + newMoveX, document.documentElement.scrollTop + newMoveY);
-                    }
-                    lastX = evt.touches[0].clientX + evt.touches[1].clientX;
-                    lastY = evt.touches[0].clientY + evt.touches[1].clientY;
-                }
-            }
-        }
-    }, { passive: true });
+	Tools.board.addEventListener("touchstart", function ontouchstart(evt) {
+		lastXForIOS = document.documentElement.scrollLeft + evt.touches[0].clientX;
+		lastYForIOS = document.documentElement.scrollTop + evt.touches[0].clientY;
+	});
 
-    function touchend() {
-        lastY = null;
-        lastX = null;
-        diffFromTouches = null;
-        pressed = false;
-    }
+	Tools.board.addEventListener("touchmove", function ontouchmove(evt) {
+		// 2-finger pan to zoom
+		var touches = evt.touches;
+		if (touches.length === 2) {
+			if (diffFromTouches === null) {
+				diffFromTouches = Math.hypot( //get rough estimate of distance between two fingers
+					evt.touches[0].pageX - evt.touches[1].pageX,
+					evt.touches[0].pageY - evt.touches[1].pageY);
+			}
+			if ((diffFromTouches >> 0) - Math.hypot(evt.touches[0].pageX - evt.touches[1].pageX, evt.touches[0].pageY - evt.touches[1].pageY) >> 0 > diffForMoving ||
+				(diffFromTouches >> 0) - Math.hypot(evt.touches[0].pageX - evt.touches[1].pageX, evt.touches[0].pageY - evt.touches[1].pageY) >> 0 < -diffForMoving) {
+				var x0 = touches[0].clientX, x1 = touches[1].clientX,
+					y0 = touches[0].clientY, y1 = touches[1].clientY,
+					dx = x0 - x1,
+					dy = y0 - y1;
+				var x = (touches[0].pageX + touches[1].pageX) / 2 / Tools.getScale(),
+					y = (touches[0].pageY + touches[1].pageY) / 2 / Tools.getScale();
+				var distance = Math.sqrt(dx * dx + dy * dy);
+				if (!pressed) {
+					pressed = true;
+					setOrigin(x, y, evt, true);
+					origin.distance = distance;
+				} else {
+					var delta = distance - origin.distance;
+					var scale = origin.scale * (1 + delta * ZOOM_FACTOR);
+					animate(scale);
+				}
+			} else {
+				// moving
+				if (isIosMobile) {
+					window.scrollTo(lastXForIOS - evt.touches[0].clientX, lastYForIOS - evt.touches[0].clientY, {});
+				} else {
+					if (lastY !== null) {
+						const newMoveY = lastY - evt.touches[0].clientY - evt.touches[1].clientY;
+						const newMoveX = lastX - evt.touches[0].clientX - evt.touches[1].clientX;
+						window.scrollTo(document.documentElement.scrollLeft + newMoveX, document.documentElement.scrollTop + newMoveY);
+					}
+					lastX = evt.touches[0].clientX + evt.touches[1].clientX;
+					lastY = evt.touches[0].clientY + evt.touches[1].clientY;
+				}
+			}
+		}
+	}, {passive: true});
 
-    function getClientY(evt, isTouchEvent) {
-        return isTouchEvent ? evt.changedTouches[0].clientY : evt.clientY;
-    }
+	function touchend() {
+		lastY = null;
+		lastX = null;
+		diffFromTouches = null;
+		pressed = false;
+	}
 
-    Tools.register({"name": "Zoom"});
+	function getClientY(evt, isTouchEvent) {
+		return isTouchEvent ? evt.changedTouches[0].clientY : evt.clientY;
+	}
+
+	Tools.register({"name": "Zoom"});
 })(); //End of code isolation
