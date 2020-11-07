@@ -139,7 +139,6 @@ Tools.connect = function () {
 	});
 
 	this.socket.on("dublicateObjects", function (msg) {
-		console.log(msg)
 		msg.events.forEach(function (event) {
 			if (event.tool === 'Pencil') {
 				if (!event.properties) {
@@ -520,7 +519,6 @@ Tools.send = function (data, toolName) {
 		"board": Tools.boardName,
 		"data": d
 	};
-	if (message.data.tool !== 'Cursor') console.warn(d);
 	Tools.socket.emit('broadcast', message);
 };
 
@@ -1460,8 +1458,6 @@ Tools.undo = (function () {
 			var instrument = null;
 			switch (action.type) {
 				case "array":
-					console.clear()
-					console.warn(action);
 					if (action.events[0].type === 'delete') {
 						instrument = Tools.list.Eraser;
 						action.sendBack = true;
@@ -1484,7 +1480,6 @@ Tools.undo = (function () {
 					} else {
 						const dataForRedo = { type: 'array', events: [] };
 						action.events.forEach(function (event) {
-							console.log(event);
 							event.sendBack = true;
 							dataForRedo.events.push({ type: 'delete', id: event.id });
 							if (event.tool === 'Pencil') {
@@ -1570,7 +1565,6 @@ Tools.redo = (function () {
 					} else {
 						const dataForUndo = { type: 'array', events: [] };
 						action.events.forEach(function (event) {
-							console.log(event);
 							event.sendBack = true;
 							dataForUndo.events.push({ type: 'delete', id: event.id });
 							if (event.tool === 'Pencil') {
@@ -1622,7 +1616,6 @@ Tools.redo = (function () {
 })();
 
 function _drawLine(action) {
-	console.log(action);
 	Tools.drawAndSend({
 		'type': 'line',
 		'id': action.id,

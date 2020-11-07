@@ -11,10 +11,11 @@
 	}
 
 	function press(x, y, evt) {
-		console.log(evt.target);
 		if (evt.target.id === "gridContainer") {
 			destroyMoveable();
-			targets.map(item => item.classList.remove('localSelectedEl'))
+			targets.map(function (item) {
+				item.classList.remove('localSelectedEl')
+			});
 			targets.splice(0, targets.length);
 			if (selecto === null) {
 				createSelecto();
@@ -80,13 +81,15 @@
 			// The rate at which the target overlaps the drag area to be selected. (default: 100)
 			hitRate: 0.001,
 		});
-		selecto.on("select", e => {
-			e.added.forEach(el => {
+		selecto.on("select", function(e) {
+			e.added.forEach(function(el) {
 				targets.push(el);
 				el.classList.add("localSelectedEl");
 			});
-			e.removed.forEach(el => {
-				targets.splice(targets.findIndex(item => item === el), 1);
+			e.removed.forEach(function (el) {
+				targets.splice(targets.findIndex(function (item) {
+					return item === el;
+				}), 1);
 				el.classList.remove("localSelectedEl");
 			});
 		});
@@ -97,18 +100,17 @@
 	}
 
 	function createMoveable() {
-		targets.forEach(el => {
+		targets.forEach(function (el) {
 			el.classList.remove("localSelectedEl");
 		});
-		targets = targets.filter(el => !el.classList.contains('selectedEl'));
+		targets = targets.filter(function (el) {
+			return !el.classList.contains('selectedEl');
+		});
 		if (targets.length > 0 && moveable === null) {
-			console.log(targets);
-			console.log('createMoveable');
 			panel.classList.remove('hide');
-			//destroySelecto();
 			var single = targets.length === 1;
 			var padding = single ? 10 : 0;
-			targets.map(el => {
+			targets.map(function (el) {
 				setTransformOrigin(el);
 			});
 			moveable = new Moveable(Tools.board, {
@@ -131,8 +133,7 @@
 				throttleScale: 0.01,
 				padding: {"left": padding, "top": padding, "right": padding, "bottom": padding},
 			});
-			moveable.on("dragGroupStart", ({events}) => {
-				console.log('dragGroupStart');
+			moveable.on("dragGroupStart", function({events}) {
 				const messageForSend = { type: 'array', events: [] };
 				for (var ev of events) {
 					var msg = {
@@ -144,7 +145,7 @@
 					messageForSend.events.push(msg);
 				}
 				Tools.addActionToHistory(messageForSend);
-			}).on("dragGroup", ({events}) => {
+			}).on("dragGroup", function({events}) {
 				var sendOrDraw = draw;
 				const messageForSend = { type: 'array', events: [] };
 				if (performance.now() - lastSend > 50) {
@@ -161,8 +162,6 @@
 					messageForSend.events.push(msg);
 				}
 				sendOrDraw(messageForSend);
-			}).on("dragGroupEnd", (data) => {
-				console.log('dragGroupEnd', data);
 			}).on("dragStart", singleTransformStart)
 				.on("pinchStart", singleTransformStart)
 				.on("scaleStart", singleTransformStart)
@@ -195,7 +194,12 @@
 			transform: data.transform,
 			transformOrigin: targets[0].style.transformOrigin
 		};
-		Tools.drawAndSend(msg);
+		var sendOrDraw = draw;
+		if (performance.now() - lastSend > 50) {
+			lastSend = performance.now();
+			sendOrDraw = Tools.drawAndSend;
+		}
+		sendOrDraw(msg);
 		updateRect();
 	}
 
@@ -209,7 +213,7 @@
 
 	function dublicateObjects() {
 		const dataForUndo = {type: 'array', events: []};
-		const events = targets.map(item => {
+		const events = targets.map(function(item) {
 			dataForUndo.events.push({type: "delete", id: item.id});
 			return {"type": "dublicate", "id": item.id};
 		});
