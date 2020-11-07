@@ -33,7 +33,8 @@
 
 	var lastCursorUpdate = 0;
 	var sending = true;
-	const selectedElements = [];
+	var actualSelected = [];
+	var newSelected = [];
 	var clearSelected = false;
 	var timeoutClearing = null;
 
@@ -113,21 +114,26 @@
 		return document.getElementById(id) || createCursor(id);
 	}
 
+	setInterval(clear, 2000);
+
 	function clear() {
-		selectedElements.forEach(function (elId) {
-			document.getElementById(elId).classList.remove('selectedEl');
-		})
-		selectedElements.splice(0, selectedElements.length);
+		actualSelected.map(elId => {
+			if (!newSelected.includes(elId)) document.getElementById(elId).classList.remove('selectedEl');
+		});
+		actualSelected = newSelected;
 	}
 
 	function draw(message) {
-		if (message.selectElements && message.selectElements.length) {
+		if (message.selectElements) {
+			newSelected = [];
 			message.selectElements.forEach(function (elId) {
-				selectedElements.push(elId);
+				newSelected.push(elId);
 				document.getElementById(elId).classList.add('selectedEl');
 			});
 			timeoutClearing = clearTimeout(timeoutClearing);
-			timeoutClearing = setTimeout(clear, 2000);
+			timeoutClearing = setTimeout(function () {
+				newSelected = [];
+			}, 2000);
 		} else {
 			var cursor = getCursor("cursor-" + (message.socket || 'me'));
 			cursor.style.transform = "translate(" + message.x + "px, " + message.y + "px)";

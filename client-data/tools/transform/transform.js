@@ -1,6 +1,5 @@
 (function () {
 	var moveable = null;
-	var target = null;
 	var selecto = null;
 	var targets = [];
 	var lastSend = performance.now();
@@ -34,11 +33,10 @@
 		destroySelecto();
 		destroyMoveable();
 		targets = [];
+		sendInInterval();
 	}
 
 	function setTransformOrigin(el) {
-		console.clear();
-		console.log(el.style.transformOrigin, el.id);
 		if ((el.style && el.style.transformOrigin === '')) {
 			const targetRect = el.getBoundingClientRect();
 			const transformX = (targetRect.x + document.documentElement.scrollLeft + targetRect.width / 2 - Math.max(0, Tools.board.getBoundingClientRect().x)) / Tools.scale;
@@ -114,8 +112,8 @@
 				setTransformOrigin(el);
 			});
 			moveable = new Moveable(Tools.board, {
-				// If you want to use a group, set multiple targets(type: Array<HTMLElement | SVGElement>).
 				target: targets,
+				renderDirections: ["nw", "ne", "se", "sw"],
 				defaultGroupOrigin: "50% 50%",
 				container: Tools.board,
 				dragArea: true,
@@ -129,11 +127,26 @@
 				throttleRotate: 1,
 				throttleDrag: 1,
 				startDragRotate: 0,
-				throttleDragRotate: 0,
+				throttleDragRotate: 1,
+				throttleScale: 0.01,
 				padding: {"left": padding, "top": padding, "right": padding, "bottom": padding},
 			});
-			moveable.on("dragGroup", ({events}) => {
+			moveable.on("dragGroupStart", ({events}) => {
+				console.log('dragGroupStart');
+				const messageForSend = { type: 'array', events: [] };
+				for (var ev of events) {
+					var msg = {
+						type: "update",
+						id: ev.target.id,
+						transform: ev.target.style.transform,
+						transformOrigin: ev.target.style.transformOrigin
+					};
+					messageForSend.events.push(msg);
+				}
+				Tools.addActionToHistory(messageForSend);
+			}).on("dragGroup", ({events}) => {
 				var sendOrDraw = draw;
+				const messageForSend = { type: 'array', events: [] };
 				if (performance.now() - lastSend > 50) {
 					lastSend = performance.now();
 					sendOrDraw = Tools.drawAndSend;
@@ -145,17 +158,34 @@
 						transform: ev.transform,
 						transformOrigin: ev.target.style.transformOrigin
 					};
-					sendOrDraw(msg);
+					messageForSend.events.push(msg);
 				}
+				sendOrDraw(messageForSend);
 			}).on("dragGroupEnd", (data) => {
-				console.log(data);
-			})
+				console.log('dragGroupEnd', data);
+			}).on("dragStart", singleTransformStart)
+				.on("pinchStart", singleTransformStart)
+				.on("scaleStart", singleTransformStart)
+				.on("rotateStart", singleTransformStart)
 				.on("drag", singleTransform)
 				.on("pinch", singleTransform)
 				.on("scale", singleTransform)
 				.on("rotate", singleTransform);
 			moveable.updateRect();
 		}
+	}
+
+	function singleTransformStart() {
+		var msg = {
+			type: "array",
+			events: [{
+				type: 'update',
+				id: targets[0].id,
+				transform: targets[0].style.transform,
+				transformOrigin: targets[0].style.transformOrigin
+			}]
+		};
+		Tools.addActionToHistory(msg);
 	}
 
 	function singleTransform(data) {
@@ -166,7 +196,7 @@
 			transformOrigin: targets[0].style.transformOrigin
 		};
 		Tools.drawAndSend(msg);
-		moveable.updateRect();
+		updateRect();
 	}
 
 	function sendInInterval() {
@@ -219,6 +249,14 @@
 
 	function draw(data) {
 		switch (data.type) {
+			case "array":
+				data.events.map(function (event) {
+					const el = document.getElementById(event.id);
+					el.style.transform = event.transform;
+					el.style.transformOrigin = event.transformOrigin;
+				});
+				updateRect();
+				break;
 			case "update":
 				console.log(data);
 				const el = document.getElementById(data.id);

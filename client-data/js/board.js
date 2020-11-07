@@ -1467,6 +1467,20 @@ Tools.undo = (function () {
 						action.sendBack = true;
 						action.sendToRedo = true;
 						Tools.drawAndSend(action, instrument);
+					} else if (action.events[0].type === 'update') {
+						const dataForRedo = { type: 'array', events: [] };
+						action.events.forEach(function (event) {
+							const el = document.getElementById(event.id);
+							dataForRedo.events.push({
+								type: 'update',
+								id: event.id,
+								transform: el.style.transform,
+								transformOrigin: el.style.transformOrigin
+							});
+						});
+						Tools.historyRedo.push(dataForRedo);
+						instrument = Tools.list.Transform;
+						Tools.drawAndSend(action, instrument);
 					} else {
 						const dataForRedo = { type: 'array', events: [] };
 						action.events.forEach(function (event) {
@@ -1538,6 +1552,20 @@ Tools.redo = (function () {
 					if (action.events[0].type === 'delete') {
 						instrument = Tools.list.Eraser;
 						action.sendBack = true;
+						Tools.drawAndSend(action, instrument);
+					} else if (action.events[0].type === 'update') {
+						const dataForUndo = { type: 'array', events: [] };
+						action.events.forEach(function (event) {
+							const el = document.getElementById(event.id);
+							dataForUndo.events.push({
+								type: 'update',
+								id: event.id,
+								transform: el.style.transform,
+								transformOrigin: el.style.transformOrigin
+							});
+						});
+						Tools.history.push(dataForUndo);
+						instrument = Tools.list.Transform;
 						Tools.drawAndSend(action, instrument);
 					} else {
 						const dataForUndo = { type: 'array', events: [] };
