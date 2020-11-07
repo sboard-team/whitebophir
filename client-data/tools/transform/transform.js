@@ -15,7 +15,7 @@
 		console.log(evt.target);
 		if (evt.target.id === "gridContainer") {
 			destroyMoveable();
-			targets.map(item => item.classList.remove('selectedEl'))
+			targets.map(item => item.classList.remove('localSelectedEl'))
 			targets.splice(0, targets.length);
 			if (selecto === null) {
 				createSelecto();
@@ -37,6 +37,8 @@
 	}
 
 	function setTransformOrigin(el) {
+		console.clear();
+		console.log(el.style.transformOrigin, el.id);
 		if ((el.style && el.style.transformOrigin === '')) {
 			const targetRect = el.getBoundingClientRect();
 			const transformX = (targetRect.x + document.documentElement.scrollLeft + targetRect.width / 2 - Math.max(0, Tools.board.getBoundingClientRect().x)) / Tools.scale;
@@ -82,14 +84,12 @@
 		});
 		selecto.on("select", e => {
 			e.added.forEach(el => {
-				setTransformOrigin(el);
 				targets.push(el);
-				el.classList.add("selectedEl");
+				el.classList.add("localSelectedEl");
 			});
 			e.removed.forEach(el => {
-				console.log('index', targets.findIndex(item => item === el));
 				targets.splice(targets.findIndex(item => item === el), 1);
-				el.classList.remove("selectedEl");
+				el.classList.remove("localSelectedEl");
 			});
 		});
 	}
@@ -100,8 +100,9 @@
 
 	function createMoveable() {
 		targets.forEach(el => {
-			el.classList.remove("selectedEl");
+			el.classList.remove("localSelectedEl");
 		});
+		targets = targets.filter(el => !el.classList.contains('selectedEl'));
 		if (targets.length > 0 && moveable === null) {
 			console.log(targets);
 			console.log('createMoveable');
@@ -142,7 +143,7 @@
 						type: "update",
 						id: ev.target.id,
 						transform: ev.transform,
-						transformOrigin: ev.target.transformOrigin
+						transformOrigin: ev.target.style.transformOrigin
 					};
 					sendOrDraw(msg);
 				}
@@ -165,6 +166,7 @@
 			transformOrigin: targets[0].style.transformOrigin
 		};
 		Tools.drawAndSend(msg);
+		moveable.updateRect();
 	}
 
 	function sendInInterval() {
@@ -176,12 +178,13 @@
 	}
 
 	function dublicateObjects() {
-		targets.map(item => {
-			Tools.send({
-				"type": "dublicate",
-				"id": item.id,
-			});
-		})
+		const dataForUndo = {type: 'array', events: []};
+		const events = targets.map(item => {
+			dataForUndo.events.push({type: "delete", id: item.id});
+			return {"type": "dublicate", "id": item.id};
+		});
+		Tools.send({ type: 'array', events: events });
+		Tools.addActionToHistory(dataForUndo);
 		moveable.request("draggable", {deltaX: 20, deltaY: 20}, true);
 	}
 
@@ -196,13 +199,12 @@
 	function deleteSelectedTargets() {
 		destroyMoveable();
 		destroySelecto();
+		const data = {type: 'array', events: []};
 		targets.forEach(function (target) {
-			Tools.drawAndSend({
-				"type": "delete",
-				"id": target.id,
-				"sendBack": true,
-			}, Tools.list.Eraser);
+			data.events.push({type: "delete", id: target.id});
 		});
+		data.sendBack = true;
+		Tools.drawAndSend(data, Tools.list.Eraser);
 		targets = [];
 	}
 
@@ -291,7 +293,7 @@
 //       transformEl = null;
 //       panel.classList.add('hide');
 //     }
-//     if (transformEl === null && !evt.target.classList.contains('selectedEl')) {
+//     if (transformEl === null && !evt.target.classList.contains('localSelectedEl')) {
 //       selectElement(evt.target);
 //     }
 //   }

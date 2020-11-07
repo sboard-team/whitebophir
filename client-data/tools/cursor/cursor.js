@@ -27,7 +27,7 @@
 (function () { // Code isolation
 
 	// Allocate half of the maximum server updates to cursor updates
-	var MAX_CURSOR_UPDATES_INTERVAL_MS = 32;
+	var MAX_CURSOR_UPDATES_INTERVAL_MS = 64;
 
 	var CURSOR_DELETE_AFTER_MS = 1000 * 5;
 

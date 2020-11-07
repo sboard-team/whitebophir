@@ -21,7 +21,7 @@ body {
 	outline: 2px solid red;
 }
 
-.selectedEl {
+.selectedEl, .localSelectedEl {
 	outline: 2px solid blue;
 }
 
