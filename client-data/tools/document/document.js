@@ -41,6 +41,7 @@
             fileInput.type = "file";
             fileInput.accept = "image/*";
             fileInput.multiple = false;
+            document.body.appendChild(fileInput);
             console.log('click()!');
             fileInput.click();
             console.log('addEvent');
