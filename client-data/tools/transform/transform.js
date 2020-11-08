@@ -47,6 +47,9 @@
 	}
 
 	function onStart() {
+		const temp = () => /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+		const isSafari = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || temp();
+		alert(isSafari ? 'Это сафари text off' : 'Это не сафари text on');
 		createSelecto();
 		document.addEventListener('keydown', actionsForEvent);
 		document.getElementById('object-delete').addEventListener('click', deleteSelectedTargets);
@@ -56,14 +59,12 @@
 
 	function destroySelecto() {
 		if (selecto !== null) {
-			console.log('destroySelecto')
 			selecto.destroy();
 			selecto = null;
 		}
 	}
 
 	function createSelecto() {
-		console.log('createSelecto');
 		selecto = new Selecto({
 			// The container to add a selection element
 			container: Tools.board,
@@ -108,7 +109,6 @@
 		});
 		console.log(targets);
 		if (targets.length > 0 && moveable === null) {
-			console.log('createMoveable');
 			panel.classList.remove('hide');
 			var single = targets.length === 1;
 			var padding = single ? 10 : 0;
@@ -247,7 +247,6 @@
 	function destroyMoveable() {
 		panel.classList.add('hide');
 		if (moveable !== null) {
-			console.log('destroyMoveable')
 			moveable.destroy();
 			moveable = null;
 		}

@@ -34,19 +34,14 @@
     }
 
     function onstart() {
-        console.log('OnStart');
         if (Tools.params.permissions.image) {
-            console.log('createInput');
             var fileInput = document.createElement("input");
             fileInput.type = "file";
             fileInput.accept = "image/*";
             fileInput.multiple = false;
             document.body.appendChild(fileInput);
-            console.log('click()!');
             fileInput.click();
-            console.log('addEvent');
             fileInput.addEventListener("change", function () {
-                console.log('eventChanging');
                 var reader = new FileReader();
                 reader.readAsDataURL(fileInput.files[0]);
                 reader.onload = workWithImage;
@@ -65,7 +60,6 @@
     }
 
     function workWithImage(e) {
-        console.log('workWithImage');
         // use canvas to compress image
         var image = new Image();
         image.src = e.target.result;
@@ -119,15 +113,11 @@
 
             draw(msg);
             msg.select = false;
-            console.log('send!!!');
-            console.log(msg);
             Tools.send(msg,"Document");
         };
     };
 
     function draw(msg) {
-        console.log('draw!!!');
-        console.log(msg);
         var img = Tools.createSVGElement("image");
         img.id = msg.id;
         img.setAttributeNS(xlinkNS, "href", msg.data);
