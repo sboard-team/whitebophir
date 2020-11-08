@@ -77,7 +77,7 @@
       targetID = target.id;
 			msg.id = targetID;
 			if (erasing && !target.classList.contains('selectedEl')) {
-				Tools.drawAndSend(msg);
+				if (msg.id) Tools.drawAndSend(msg);
 			} else if (!target.classList.contains('selectedEl')) {
 				target.classList.add('forErasing');
 			}
@@ -88,7 +88,7 @@
 					const el = document.elementFromPoint(i[0], i[1]);
 					if (el && checkElementIsDraw(el) && !el.classList.contains('selectedEl')) {
 						msg.id = el.id;
-						Tools.drawAndSend(msg);
+						if (msg.id) Tools.drawAndSend(msg);
 					}
 				}
 			}
@@ -103,7 +103,15 @@
 	function draw(data) {
 		var elem;
 		switch (data.type) {
-			//TODO: add the ability to erase only some points in a line
+			case "array":
+				data.events.forEach(function (event) {
+					elem = svg.getElementById(event.id);
+					if (elem === null) console.error("Eraser: Tried to delete an element that does not exist.");
+					else {
+						Tools.drawingArea.removeChild(elem);
+					}
+				});
+				break;
 			case "delete":
 				elem = svg.getElementById(data.id);
 				targetID = '';
@@ -123,6 +131,10 @@
 			default:
 				console.error("Eraser: 'delete' instruction with unknown type. ", data);
 				break;
+		}
+		if (Tools.curTool.name === 'Transform') {
+			Tools.change('Hand');
+			Tools.change('Transform');
 		}
 	}
 

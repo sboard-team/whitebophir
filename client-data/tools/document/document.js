@@ -38,12 +38,17 @@
             var fileInput = document.createElement("input");
             fileInput.type = "file";
             fileInput.accept = "image/*";
+            fileInput.style = 'position: fixed; z-index: -100; opacity: 0;'
             fileInput.multiple = false;
+            document.body.appendChild(fileInput);
             fileInput.click();
             fileInput.addEventListener("change", function () {
                 var reader = new FileReader();
                 reader.readAsDataURL(fileInput.files[0]);
-                reader.onload = workWithImage;
+                reader.onload = function (e) {
+                    workWithImage(e);
+                    document.body.removeChild(fileInput);
+                };
             });
         } else {
           if (Tools.params.permissions.edit) {
@@ -64,10 +69,8 @@
         image.src = e.target.result;
         image.onload = function () {
             var uid = Tools.generateUID("doc"); // doc for document
-
             var ctx, size;
             var scale = 1;
-
             do {
                 // Todo give feedback of processing effort
 
@@ -109,27 +112,30 @@
                 x: ((offsetHeight + document.documentElement.clientWidth / 2) / Tools.scale) - width / 2,
                 y: ((document.documentElement.scrollTop + document.documentElement.clientHeight / 2) / Tools.scale) - height / 2,
                 select: true,
-                //fileType: fileInput.files[0].type
             };
-
             draw(msg);
             msg.select = false;
             Tools.send(msg,"Document");
+            Tools.addActionToHistory({ type: "delete", id: uid });
         };
     };
 
     function draw(msg) {
         var img = Tools.createSVGElement("image");
-        img.id=msg.id;
+        img.id = msg.id;
         img.setAttributeNS(xlinkNS, "href", msg.data);
         img.x.baseVal.value = msg['x'];
         img.y.baseVal.value = msg['y'];
         img.setAttribute("width", msg.w);
         img.setAttribute("height", msg.h);
-        if (msg.properties) {
-            for (var i = 0; i < msg.properties.length; i++) {
-                img.setAttribute(msg.properties[i][0], msg.properties[i][1]);
-            }
+        // if (msg.properties) {
+        //     for (var i = 0; i < msg.properties.length; i++) {
+        //         img.setAttribute(msg.properties[i][0], msg.properties[i][1]);
+        //     }
+        // }
+        if (img.transform) {
+	        img.style.transform = msg.transform;
+	        img.style.transformOrigin = msg.transformOrigin;
         }
         Tools.drawingArea.appendChild(img);
         if (msg.select) {

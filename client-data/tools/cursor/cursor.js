@@ -26,97 +26,120 @@
 
 (function () { // Code isolation
 
-    // Allocate half of the maximum server updates to cursor updates
-    var MAX_CURSOR_UPDATES_INTERVAL_MS = 32;
+	// Allocate half of the maximum server updates to cursor updates
+	var MAX_CURSOR_UPDATES_INTERVAL_MS = 64;
 
-    var CURSOR_DELETE_AFTER_MS = 1000 * 5;
+	var CURSOR_DELETE_AFTER_MS = 1000 * 5;
 
-    var lastCursorUpdate = 0;
-    var sending = true;
+	var lastCursorUpdate = 0;
+	var sending = true;
+	var actualSelected = [];
+	var newSelected = [];
+	var clearSelected = false;
+	var timeoutClearing = null;
 
-    var cursorTool = {
-        "name": "Cursor",
-        "listeners": {
-            "press": function () { sending = false },
-            "move": handleMarker,
-            "release": function () { sending = true },
-        },
-        "onSizeChange": onSizeChange,
-        "draw": draw,
-        "mouseCursor": "crosshair",
-        "icon": "tools/pencil/icon.svg",
-    };
-    Tools.register(cursorTool);
-    Tools.addToolListeners(cursorTool);
+	var cursorTool = {
+		"name": "Cursor",
+		"listeners": {
+			"press": function () {
+				sending = false
+			},
+			"move": handleMarker,
+			"release": function () {
+				sending = true
+			},
+		},
+		"onSizeChange": onSizeChange,
+		"draw": draw,
+		"mouseCursor": "crosshair",
+		"icon": "tools/pencil/icon.svg",
+	};
+	Tools.register(cursorTool);
+	Tools.addToolListeners(cursorTool);
 
-    var message = {
-        type: "update",
-        x: 0,
-        y: 0,
-        color: Tools.getColor(),
-        size: Tools.getSize(),
-    };
+	var message = {
+		type: "update",
+		x: 0,
+		y: 0,
+		color: Tools.getColor(),
+		size: Tools.getSize(),
+	};
 
-    function handleMarker(x, y, evt) {
-        if (evt && evt.touches && evt.touches.length > 1) return;
-        // throttle local cursor updates
-        message.x = x;
-        message.y = y;
-        message.color = Tools.getColor();
-        message.size = Tools.getSize();
-        updateMarker();
-    }
+	function handleMarker(x, y, evt) {
+		if (evt && evt.touches && evt.touches.length > 1) return;
+		// throttle local cursor updates
+		message.x = x;
+		message.y = y;
+		message.color = Tools.getColor();
+		message.size = Tools.getSize();
+		updateMarker();
+	}
 
-    function onSizeChange(size) {
-        message.size = size;
-        updateMarker();
-    }
+	function onSizeChange(size) {
+		message.size = size;
+		updateMarker();
+	}
 
-    function updateMarker() {
-        if (!Tools.showMarker) return;
-        var cur_time = performance.now();
-        if (cur_time - lastCursorUpdate > MAX_CURSOR_UPDATES_INTERVAL_MS &&
-            (sending || Tools.curTool.showMarker)) {
-            if (Tools.showMyCursor) {
-                Tools.drawAndSend(message, cursorTool);
-            } else {
-                Tools.send(message, "Cursor");
-            }
-            lastCursorUpdate = cur_time;
-        }
-    }
+	function updateMarker() {
+		if (!Tools.showMarker) return;
+		var cur_time = performance.now();
+		if (cur_time - lastCursorUpdate > MAX_CURSOR_UPDATES_INTERVAL_MS &&
+			(sending || Tools.curTool.showMarker)) {
+			if (Tools.showMyCursor) {
+				Tools.drawAndSend(message, cursorTool);
+			} else {
+				Tools.send(message, "Cursor");
+			}
+			lastCursorUpdate = cur_time;
+		}
+	}
 
-    var cursorsElem = Tools.svg.getElementById("cursors");
+	var cursorsElem = Tools.svg.getElementById("cursors");
 
-    function createCursor(id) {
-        var cursor = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        cursor.setAttributeNS(null, "class", "opcursor");
-        cursor.setAttributeNS(null, "id", id);
-        cursor.setAttributeNS(null, "cx", 0);
-        cursor.setAttributeNS(null, "cy", 0);
-        cursor.setAttributeNS(null, "r", 10);
-        cursorsElem.appendChild(cursor);
-        setTimeout(function () {
-            cursorsElem.removeChild(cursor);
-        }, CURSOR_DELETE_AFTER_MS);
-        return cursor;
-    }
+	function createCursor(id) {
+		var cursor = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+		cursor.setAttributeNS(null, "class", "opcursor");
+		cursor.setAttributeNS(null, "id", id);
+		cursor.setAttributeNS(null, "cx", 0);
+		cursor.setAttributeNS(null, "cy", 0);
+		cursor.setAttributeNS(null, "r", 10);
+		cursorsElem.appendChild(cursor);
+		setTimeout(function () {
+			cursorsElem.removeChild(cursor);
+		}, CURSOR_DELETE_AFTER_MS);
+		return cursor;
+	}
 
-    function getCursor(id) {
-        return document.getElementById(id) || createCursor(id);
-    }
+	function getCursor(id) {
+		return document.getElementById(id) || createCursor(id);
+	}
 
-    function draw(message) {
-        if (message.selectElement) {
-            document.getElementById(message.selectElement).classList.add('selectedEl');
-        } else if (message.unSelectElement) {
-            document.getElementById(message.unSelectElement).classList.remove('selectedEl');
-        } else {
-            var cursor = getCursor("cursor-" + (message.socket || 'me'));
-            cursor.style.transform = "translate(" + message.x + "px, " + message.y + "px)";
-            if (Tools.isIE) cursor.setAttributeNS(null, "transform", "translate(" + message.x + " " + message.y + ")");
-            cursor.setAttributeNS(null, "fill", message.color);
-            cursor.setAttributeNS(null, "r", message.size / 2);
-        }
-      }
+	setInterval(clear, 2000);
+
+	function clear() {
+		actualSelected.map(elId => {
+			if (!newSelected.includes(elId)) document.getElementById(elId).classList.remove('selectedEl');
+		});
+		actualSelected = newSelected;
+	}
+
+	function draw(message) {
+		if (message.selectElements) {
+			newSelected = [];
+			message.selectElements.forEach(function (elId) {
+				newSelected.push(elId);
+				document.getElementById(elId).classList.add('selectedEl');
+			});
+			timeoutClearing = clearTimeout(timeoutClearing);
+			timeoutClearing = setTimeout(function () {
+				newSelected = [];
+			}, 2000);
+		} else {
+			var cursor = getCursor("cursor-" + (message.socket || 'me'));
+			cursor.style.transform = "translate(" + message.x + "px, " + message.y + "px)";
+			if (Tools.isIE) cursor.setAttributeNS(null, "transform", "translate(" + message.x + " " + message.y + ")");
+			cursor.setAttributeNS(null, "fill", message.color);
+			cursor.setAttributeNS(null, "r", message.size / 2 || 0);
+		}
+	}
 })();

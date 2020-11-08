@@ -147,13 +147,17 @@
 		line.setAttribute("stroke", lineData.color || "black");
 		line.setAttribute("stroke-width", lineData.size || 10);
 		line.setAttribute("opacity", Math.max(0.1, Math.min(1, lineData.opacity)) || 1);
-		Tools.drawingArea.appendChild(line);
 		if (lineData.properties) {
 			elementsWithoutChild[lineData.id] = true;
 			for (var i = 0; i < lineData.properties.length; i++) {
 				line.setAttribute(lineData.properties[i][0], lineData.properties[i][1]);
 			}
 		}
+		if (lineData.transform) {
+			line.style.transform = lineData.transform;
+			line.style.transformOrigin = lineData.transformOrigin;
+		}
+		Tools.drawingArea.appendChild(line);
 		return line;
 	}
 

@@ -143,10 +143,14 @@ import * as htmlToImage from '../../js/html-to-image.js';
     img.setAttribute("width", data.width);
     img.setAttribute("height", data.height);
     img.setAttribute("data-formula", data.formulaData);
-    if (msg.properties) {
-      for (var i = 0; i < msg.properties.length; i++) {
-        img.setAttribute(msg.properties[i][0], msg.properties[i][1]);
-      }
+    // if (msg.properties) {
+    //   for (var i = 0; i < msg.properties.length; i++) {
+    //     img.setAttribute(msg.properties[i][0], msg.properties[i][1]);
+    //   }
+    // }
+    if (data.transform) {
+	    img.style.transform = data.transform;
+	    img.style.transformOrigin = data.transformOrigin;
     }
     Tools.drawingArea.appendChild(img);
   }
