@@ -64,10 +64,8 @@
         image.src = e.target.result;
         image.onload = function () {
             var uid = Tools.generateUID("doc"); // doc for document
-
             var ctx, size;
             var scale = 1;
-
             do {
                 // Todo give feedback of processing effort
 
@@ -114,11 +112,15 @@
 
             draw(msg);
             msg.select = false;
+            console.log('send!!!');
+            console.log(msg);
             Tools.send(msg,"Document");
         };
     };
 
     function draw(msg) {
+        console.log('draw!!!');
+        console.log(msg);
         var img = Tools.createSVGElement("image");
         img.id=msg.id;
         img.setAttributeNS(xlinkNS, "href", msg.data);
