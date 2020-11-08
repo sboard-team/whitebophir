@@ -48,8 +48,9 @@
 
 	function onStart() {
 		const temp = () => /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
-		const isSafari = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || temp();
+		const isSafari = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i)) || temp();
 		alert(isSafari ? 'Это сафари text off' : 'Это не сафари text on');
+		alert(navigator.userAgent);
 		createSelecto();
 		document.addEventListener('keydown', actionsForEvent);
 		document.getElementById('object-delete').addEventListener('click', deleteSelectedTargets);
