@@ -648,222 +648,228 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 }
 
 (function () {
-	// Scroll and hash handling
-	// events for button scaling
-	// button events in this function
-	var scrollTimeout, lastStateUpdate = Date.now();
+    // Scroll and hash handling
+    // events for button scaling
+    // button events in this function
+    var scrollTimeout, lastStateUpdate = Date.now();
 
-	window.addEventListener("scroll", function onScroll() {
-		var x = document.documentElement.scrollLeft / Tools.getScale(),
-			y = document.documentElement.scrollTop / Tools.getScale();
-		clearTimeout(scrollTimeout);
-		scrollTimeout = setTimeout(function updateHistory() {
-			var hash = '#' + (x | 0) + ',' + (y | 0) + ',' + Tools.getScale().toFixed(2);
-			if (Date.now() - lastStateUpdate > 5000 && hash !== window.location.hash) {
-				window.history.pushState({}, "", hash);
-				lastStateUpdate = Date.now();
-			} else {
-				window.history.replaceState({}, "", hash);
-			}
-		}, 100);
-	});
+    window.addEventListener("scroll", function onScroll() {
+        var x = document.documentElement.scrollLeft / Tools.getScale(),
+            y = document.documentElement.scrollTop / Tools.getScale();
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(function updateHistory() {
+            var hash = '#' + (x | 0) + ',' + (y | 0) + ',' + Tools.getScale().toFixed(2);
+            if (Date.now() - lastStateUpdate > 5000 && hash !== window.location.hash) {
+                window.history.pushState({}, "", hash);
+                lastStateUpdate = Date.now();
+            } else {
+                window.history.replaceState({}, "", hash);
+            }
+        }, 100);
+    });
 
-	function setScrollFromHash() {
-		var coords = window.location.hash.slice(1).split(',');
-		var x = coords[0] | 0;
-		var y = coords[1] | 0;
-		var scale = parseFloat(coords[2]);
-		resizeCanvas({x: x, y: y});
-		Tools.setScale(scale);
-		window.scrollTo(x * scale, y * scale);
-		resizeBoard();
-	}
+    function setScrollFromHash() {
+        var coords = window.location.hash.slice(1).split(',');
+        var x = coords[0] | 0;
+        var y = coords[1] | 0;
+        var scale = parseFloat(coords[2]);
+        resizeCanvas({x: x, y: y});
+        Tools.setScale(scale);
+        window.scrollTo(x * scale, y * scale);
+        resizeBoard();
+    }
 
-	Tools.setScrollFromHash = setScrollFromHash;
+    Tools.setScrollFromHash = setScrollFromHash;
 
-	function scaleToFull() {
-		Tools.setScale(1);
-		resizeBoard();
-	}
+    function scaleToFull() {
+	    scaleToCenter(1 - Tools.getScale());
+    }
 
-	function scaleToWidth() {
-		Tools.setScale(document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X);
-		resizeBoard();
-	}
+    function scaleToWidth() {
+	    scaleToCenter(document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X - Tools.getScale());
+    }
 
-	function minusScale() {
-		Tools.setScale(Tools.getScale() - 0.1);
-		resizeBoard();
-	}
+    function minusScale() {
+	    scaleToCenter(-0.1);
+    }
 
-	function goToHelp() {
-		window.open(Tools.server_config.LANDING_URL + 'help');
-	}
+    function goToHelp() {
+        window.open(Tools.server_config.LANDING_URL + 'help');
+    }
+
+    function scaleToCenter(deltaScale) {
+	    var oldScale = Tools.getScale();
+	    var newScale = Tools.setScale(oldScale + deltaScale);
+	    var originX = (window.scrollX + document.documentElement.clientWidth / 2 - (Tools.board.getBoundingClientRect().left < 0 ? 0 : Tools.board.getBoundingClientRect().left)) / Tools.getScale();
+	    var originY = (window.scrollY + document.documentElement.clientHeight / 2) / Tools.getScale();
+	    resizeBoard();
+	    window.scrollTo(
+		    window.scrollX + originX * (newScale - oldScale),
+		    window.scrollY + originY * (newScale - oldScale),
+	    );
+    }
 
 	function plusScale() {
-		Tools.setScale(Tools.getScale() + 0.1);
-		resizeBoard();
+		scaleToCenter(0.1);
 	}
 
-	function sendClearBoard() {
-		createModal(Tools.modalWindows.clearBoard);
-	}
+    function sendClearBoard() {
+        createModal(Tools.modalWindows.clearBoard);
+    }
 
-	function createModalRename() {
-		createModal(Tools.modalWindows.renameBoard, function () {
-			document.getElementById('newBoardName').value = Tools.boardTitle;
-		});
-	}
+    function createModalRename() {
+        createModal(Tools.modalWindows.renameBoard, function () {
+            document.getElementById('newBoardName').value = Tools.boardTitle;
+        });
+    }
 
-	function createPdf() {
-		if (Tools.params.permissions.pdf) {
-			window.open(Tools.server_config.PDF_URL + 'generate/' + Tools.boardName + '?name=' + Tools.boardTitle);
-		} else {
-			if (Tools.params.permissions.edit) {
-				createModal(Tools.modalWindows.premiumFunctionForOwner);
-			} else {
-				createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
-			}
-		}
-	}
+    function createPdf() {
+        if (Tools.params.permissions.pdf) {
+            window.open(Tools.server_config.PDF_URL + 'generate/' + Tools.boardName + '?name=' + Tools.boardTitle);
+        } else {
+            if (Tools.params.permissions.edit) {
+                createModal(Tools.modalWindows.premiumFunctionForOwner);
+            } else {
+                createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+            }
+        }
+    }
 
-	function showBoard() {
-		Tools.boardTitle = Tools.params.board.name;
-		updateDocumentTitle();
+    function showBoard() {
+        Tools.boardTitle = Tools.params.board.name;
+        updateDocumentTitle();
 
-		document.getElementById('board-name-span').innerText = Tools.boardTitle;
+        document.getElementById('board-name-span').innerText = Tools.boardTitle;
 
-		if (Tools.params.permissions.edit) {
-			document.getElementById('boardName').addEventListener('click', createModalRename, false);
-		} else {
-			document.getElementById('boardName')
-				.removeAttribute('data-tooltip');
-		}
+        if (Tools.params.permissions.edit) {
+            document.getElementById('boardName').addEventListener('click', createModalRename, false);
+        } else {
+            document.getElementById('boardName')
+                .removeAttribute('data-tooltip');
+        }
 
-		if (Tools.params.permissions.invite) {
-			document.querySelector('.js-link-text').innerText = Tools.params.invite_link;
-		} else {
-			document.querySelector('.js-link-panel').remove();
-			document.querySelector('.js-join-link').remove();
-		}
+        if (Tools.params.permissions.invite) {
+            document.querySelector('.js-link-text').innerText = Tools.params.invite_link;
+        } else {
+            document.querySelector('.js-link-panel').remove();
+            document.querySelector('.js-join-link').remove();
+        }
 
-		if (!Tools.params.permissions.image) {
-			document.getElementById('Tool-Document').classList.add('disabled-icon');
-		}
+        if (!Tools.params.permissions.image) {
+            document.getElementById('Tool-Document').classList.add('disabled-icon');
+        }
 
-		let b = document.querySelectorAll('.js-elements');
-		b.forEach((el) => {
-			el.classList.toggle('sjx-hidden');
-		});
-		//interval for send activity board
-		return false;
-		setInterval((function () {
-			var lastPosX = Tools.mousePosition.x;
-			var lastPosY = Tools.mousePosition.x;
-			return function () {
-				if (lastPosX !== Tools.mousePosition.x || lastPosY !== Tools.mousePosition.y) {
-					fetch(Tools.server_config.API_URL + `boards/${Tools.boardName}/activity`, {
-						credentials: "include",
-						mode: 'no-cors',
-					});
-				}
-				lastPosX = Tools.mousePosition.x;
-				lastPosY = Tools.mousePosition.y;
-			}
-		})(), 30000);
-	}
+        let b = document.querySelectorAll('.js-elements');
+        b.forEach((el) => {
+            el.classList.toggle('sjx-hidden');
+        });
+        //interval for send activity board
+        setInterval((function () {
+            var lastPosX = Tools.mousePosition.x;
+            var lastPosY = Tools.mousePosition.x;
+            return function () {
+                if (lastPosX !== Tools.mousePosition.x || lastPosY !== Tools.mousePosition.y) {
+                    fetch(Tools.server_config.API_URL + `boards/${Tools.boardName}/activity`, {
+                        credentials: "include",
+                        mode: 'no-cors',
+                    });
+                }
+                lastPosX = Tools.mousePosition.x;
+                lastPosY = Tools.mousePosition.y;
+            }})(), 30000);
+    }
 
-	function checkBoard() {
-		const urlParams = new URLSearchParams(window.location.search);
-		const PASS = urlParams.get('pass');
-		var localStorageData = localStorage.getItem(Tools.boardName);
-		if (localStorageData) {
-			if (window.location.hash.slice(1).split(',').length !== 3) {
-				localStorageData = JSON.parse(localStorageData);
-				window.location.hash = `${localStorageData.x},${localStorageData.y},${localStorageData.scale}`;
-			}
-		}
-		if (Tools.server_config.DEV_MODE === 1 || PASS === 'dlTmsXCPwaMfTosmtDpsdf') {
-			Tools.params = {
-				"status": true,
-				"board": {"name": "Dev Board"},
-				"user": {
-					"id": "187999",
-					"name": "John",
-					"surname": "Smith",
-					"full_name": "John Smith"
-				},
-				"permissions": {"edit": true, "invite": true, "image": true, "pdf": true},
-				"invite_link": "https:\/\/back.sboard.su\/cabinet\/boards\/join\/56dfgdfbh67="
-			};
-			showBoard();
-			return;
-		}
-		fetch(
-			Tools.server_config.API_URL + 'boards/' + Tools.boardName + '/info',
-			{
-				headers: new Headers({
-					'Accept': 'application/json',
-				}),
-				method: 'GET',
-				credentials: 'include',
-			}
-		)
-			.then(response => {
-				if (response.status === 401) {
-					throw new Error('Unauthenticated user')
-				} else if (response.status === 403) {
-					throw new Error('Forbidden');
-				} else if (response.status !== 200) {
-					throw new Error('Unknown error');
-				}
-				return response.json();
-			})
-			.then(data => {
-				Tools.params = data;
-				showBoard();
-			})
-			.catch(function (error) {
-				if (error.message === 'Unauthenticated user') {
-					window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/reopen';
-				} else if (error.message === 'Forbidden') {
-					window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/forbidden';
-				} else {
-					window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/unknown';
-				}
-			})
-	}
+    function checkBoard() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const PASS = urlParams.get('pass');
+        var localStorageData = localStorage.getItem(Tools.boardName);
+        if (localStorageData) {
+            if (window.location.hash.slice(1).split(',').length !== 3) {
+                localStorageData = JSON.parse(localStorageData);
+                window.location.hash = `${localStorageData.x},${localStorageData.y},${localStorageData.scale}`;
+            }
+        }
+        if (Tools.server_config.DEV_MODE === 1 || PASS === 'dlTmsXCPwaMfTosmtDpsdf') {
+            Tools.params = {
+                "status": true,
+                "board": {"name": "Dev Board"},
+                "user": {
+                    "id": "187999",
+                    "name": "John",
+                    "surname": "Smith",
+                    "full_name": "John Smith"
+                },
+                "permissions": {"edit": true, "invite": true, "image": true, "pdf": true},
+                "invite_link": "https:\/\/back.sboard.su\/cabinet\/boards\/join\/56dfgdfbh67="
+            };
+            showBoard();
+            return;
+        }
+        fetch(
+            Tools.server_config.API_URL + 'boards/' + Tools.boardName + '/info',
+            {
+                headers: new Headers({
+                    'Accept': 'application/json',
+                }),
+                method: 'GET',
+                credentials: 'include',
+            }
+        )
+            .then(response => {
+                if (response.status === 401) {
+                    throw new Error('Unauthenticated user')
+                } else if (response.status === 403) {
+                    throw new Error('Forbidden');
+                } else if (response.status !== 200) {
+                    throw new Error('Unknown error');
+                }
+                return response.json();
+            })
+            .then(data => {
+                Tools.params = data;
+                showBoard();
+            })
+            .catch(function (error) {
+                if (error.message === 'Unauthenticated user') {
+                    window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/reopen';
+                } else if (error.message === 'Forbidden') {
+                    window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/forbidden';
+                } else {
+                    window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/unknown';
+                }
+            })
+    }
 
-	document.getElementById('scalingWidth').addEventListener('click', scaleToWidth, false);
-	document.getElementById('scalingFull').addEventListener('click', scaleToFull, false);
-	document.getElementById('minusScale').addEventListener('click', minusScale, false);
-	document.getElementById('plusScale').addEventListener('click', plusScale, false);
-	document.getElementById("help").addEventListener('click', goToHelp, false);
-	document.getElementById('clearBoard').addEventListener('click', sendClearBoard, false);
-	document.getElementById('exportToPDF').addEventListener('click', createPdf, false);
-	document.getElementById('exportToPDFButton').addEventListener('click', createPdf, false);
-	window.addEventListener("hashchange", setScrollFromHash, false);
-	window.addEventListener("popstate", setScrollFromHash, false);
-	window.addEventListener("DOMContentLoaded", setScrollFromHash, false);
-	window.addEventListener("load", setScrollFromHash, false);
-	window.addEventListener("DOMContentLoaded", checkBoard, false);
-	window.addEventListener('orientationchange', function () {
-		setTimeout(function () {
-			Tools.setScale(Tools.getScale());
-			resizeBoard();
-		}, 650);
-	});
-	window.addEventListener('unload', function () {
-		const coords = window.location.hash.slice(1).split(',');
-		const x = coords[0] | 0;
-		const y = coords[1] | 0;
-		const scale = parseFloat(coords[2]);
-		localStorage.setItem(Tools.boardName, JSON.stringify({
-			x: x,
-			y: y,
-			scale: scale,
-		}));
-	});
+    document.getElementById('scalingWidth').addEventListener('click', scaleToWidth, false);
+    document.getElementById('scalingFull').addEventListener('click', scaleToFull, false);
+    document.getElementById('minusScale').addEventListener('click', minusScale, false);
+    document.getElementById('plusScale').addEventListener('click', plusScale, false);
+    document.getElementById("help").addEventListener('click', goToHelp, false);
+    document.getElementById('clearBoard').addEventListener('click', sendClearBoard, false);
+    document.getElementById('exportToPDF').addEventListener('click', createPdf, false);
+    document.getElementById('exportToPDFButton').addEventListener('click', createPdf, false);
+    window.addEventListener("hashchange", setScrollFromHash, false);
+    window.addEventListener("popstate", setScrollFromHash, false);
+    window.addEventListener("DOMContentLoaded", setScrollFromHash, false);
+    window.addEventListener("load", setScrollFromHash, false);
+    window.addEventListener("DOMContentLoaded", checkBoard, false);
+    window.addEventListener('orientationchange', function () {
+        setTimeout(function () {
+            Tools.setScale(Tools.getScale());
+            resizeBoard();
+        }, 650);
+    });
+    window.addEventListener('unload', function () {
+        const coords = window.location.hash.slice(1).split(',');
+        const x = coords[0] | 0;
+        const y = coords[1] | 0;
+        const scale = parseFloat(coords[2]);
+        localStorage.setItem(Tools.boardName, JSON.stringify({
+            x: x,
+            y: y,
+            scale: scale,
+        }));
+    });
 })();
 
 //List of hook functions that will be applied to messages before sending or drawing them
