@@ -683,13 +683,11 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
     Tools.setScrollFromHash = setScrollFromHash;
 
     function scaleToFull() {
-        Tools.setScale(1);
-        resizeBoard();
+	    scaleToCenter(1 - Tools.getScale());
     }
 
     function scaleToWidth() {
-        Tools.setScale(document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X);
-        resizeBoard();
+	    scaleToCenter(document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X - Tools.getScale());
     }
 
     function minusScale() {
