@@ -149,8 +149,6 @@ Tools.connect = function () {
 			event.id = Tools.generateUID();
 			Tools.drawAndSend(event, Tools.list[event.tool]);
 		});
-
-		//Tools.list.Transform.selectElement(document.getElementById(msg.id), {dx: 20, dy: 20});
 	});
 
 	this.socket.on("reconnect", function onReconnection() {

@@ -111,10 +111,6 @@
 						Tools.drawingArea.removeChild(elem);
 					}
 				});
-				if (Tools.curTool.name === 'Transform') {
-					Tools.change('Hand');
-					Tools.change('Transform');
-				}
 				break;
 			case "delete":
 				elem = svg.getElementById(data.id);
@@ -135,6 +131,10 @@
 			default:
 				console.error("Eraser: 'delete' instruction with unknown type. ", data);
 				break;
+		}
+		if (Tools.curTool.name === 'Transform') {
+			Tools.change('Hand');
+			Tools.change('Transform');
 		}
 	}
 
