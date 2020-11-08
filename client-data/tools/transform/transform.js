@@ -106,7 +106,9 @@
 		targets = targets.filter(function (el) {
 			return !el.classList.contains('selectedEl');
 		});
+		console.log(targets);
 		if (targets.length > 0 && moveable === null) {
+			console.log('createMoveable');
 			panel.classList.remove('hide');
 			var single = targets.length === 1;
 			var padding = single ? 10 : 0;
@@ -262,7 +264,6 @@
 				updateRect();
 				break;
 			case "update":
-				console.log(data);
 				const el = document.getElementById(data.id);
 				el.style.transform = data.transform;
 				el.style.transformOrigin = data.transformOrigin;
@@ -270,7 +271,6 @@
 			default:
 				throw new Error("Mover: 'mover' instruction with unknown type. ", data);
 		}
-		console.log('draw ', data);
 	}
 
 	function updateRect() {

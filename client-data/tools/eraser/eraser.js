@@ -101,7 +101,6 @@
 	}
 
 	function draw(data) {
-		console.log(data);
 		var elem;
 		switch (data.type) {
 			case "array":
