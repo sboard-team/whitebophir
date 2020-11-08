@@ -173,7 +173,6 @@
 				.on("scale", singleTransform)
 				.on("rotate", singleTransform);
 			moveable.updateRect();
-			setInterval(() => moveable.updateRect(), 300);
 		}
 	}
 
