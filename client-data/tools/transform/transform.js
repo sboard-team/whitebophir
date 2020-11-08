@@ -5,6 +5,11 @@
 	var lastSend = performance.now();
 	const panel = document.getElementById('object-panel');
 	var sendingInverval = null;
+	const isSafari = function () {
+		const temp = () => /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+		const isSafari = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i)) || temp();
+		return isSafari;
+	}
 
 	function checkElementIsDraw(element) {
 		return (element.id !== 'gridContainer' && element !== Tools.svg && element !== Tools.drawingArea && Tools.drawingArea.contains(element));
@@ -47,10 +52,6 @@
 	}
 
 	function onStart() {
-		const temp = () => /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
-		const isSafari = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i)) || temp();
-		alert(isSafari ? 'Это сафари text off' : 'Это не сафари text on');
-		alert(navigator.userAgent);
 		createSelecto();
 		document.addEventListener('keydown', actionsForEvent);
 		document.getElementById('object-delete').addEventListener('click', deleteSelectedTargets);
@@ -85,6 +86,7 @@
 		});
 		selecto.on("select", function(e) {
 			e.added.forEach(function(el) {
+				if (el.tagName === 'foreignObject' && isSafari()) return;
 				targets.push(el);
 				el.classList.add("localSelectedEl");
 			});
@@ -106,9 +108,9 @@
 			el.classList.remove("localSelectedEl");
 		});
 		targets = targets.filter(function (el) {
+			if (isSafari() && el.tagName === 'foreignObject') return false;
 			return !el.classList.contains('selectedEl');
 		});
-		console.log(targets);
 		if (targets.length > 0 && moveable === null) {
 			panel.classList.remove('hide');
 			var single = targets.length === 1;
