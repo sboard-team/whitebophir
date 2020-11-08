@@ -38,13 +38,17 @@
             var fileInput = document.createElement("input");
             fileInput.type = "file";
             fileInput.accept = "image/*";
+            fileInput.style = 'position: fixed; z-index: -100; opacity: 0;'
             fileInput.multiple = false;
             document.body.appendChild(fileInput);
             fileInput.click();
             fileInput.addEventListener("change", function () {
                 var reader = new FileReader();
                 reader.readAsDataURL(fileInput.files[0]);
-                reader.onload = workWithImage;
+                reader.onload = function (e) {
+                    workWithImage(e);
+                    document.body.removeChild(fileInput);
+                };
             });
         } else {
           if (Tools.params.permissions.edit) {
@@ -108,12 +112,11 @@
                 x: ((offsetHeight + document.documentElement.clientWidth / 2) / Tools.scale) - width / 2,
                 y: ((document.documentElement.scrollTop + document.documentElement.clientHeight / 2) / Tools.scale) - height / 2,
                 select: true,
-                //fileType: fileInput.files[0].type
             };
-
             draw(msg);
             msg.select = false;
             Tools.send(msg,"Document");
+            Tools.addActionToHistory({ type: "delete", id: uid });
         };
     };
 
