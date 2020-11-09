@@ -42,13 +42,6 @@
 		},
 		lastPos = { x: 0, y: 0 },
 		lastTime = performance.now(); //The time at which the last point was drawn
-	//Indicates the id of the shape the user is currently drawing or an empty string while the user is not drawing
-	const localTools = [
-		{ icon: 'icon.svg', name: 'rectangle' },
-		{ icon: 'icon-square.svg', name: 'square' },
-		{ icon: 'icon-ellipse.svg', name: 'ellipse' },
-		{ icon: 'icon-circle.svg', name: 'circle' },
-	]
 
 	function onstart() {
 		selected = true;
