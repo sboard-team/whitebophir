@@ -52,7 +52,6 @@
 		"onSizeChange": onSizeChange,
 		"draw": draw,
 		"mouseCursor": "crosshair",
-		"icon": "tools/pencil/icon.svg",
 	};
 	Tools.register(cursorTool);
 	Tools.addToolListeners(cursorTool);
