@@ -380,7 +380,9 @@
 .sub-tool-item.fix:before,
 .sub-tool-item.dash:before,
 .main-tool.fix:before,
-.main-tool.dash:before{
+.main-tool.dash:before,
+.sub-tool-item.clr:before,
+.main-tool.clr:before{
     content: 'FIX';
     position: absolute;
     bottom: 0;
@@ -399,6 +401,12 @@
 .main-tool.dash:before{
     content: 'Dash';
     width: 25px;
+}
+
+.sub-tool-item.clr:before,
+.main-tool.clr:before {
+  content: 'CLR';
+  width: 22px;
 }
 
 .sub-tool-item:last-child {

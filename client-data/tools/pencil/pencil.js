@@ -53,11 +53,11 @@
 		Tools.drawAndSend({
 			'type': 'line',
 			'id': curLineId,
-			'color': Tools.getColor(),
+			'color': Tools.curTool.name === 'Eraser' ? '#fff' : Tools.getColor(),
 			'size': Tools.getSize(),
 			'opacity': Tools.getOpacity(),
-			'dotted': index === 1,
-		});
+			'dotted': Tools.curTool.name === 'Pencil' ? index === 1 : false,
+		}, Tools.list.Pencil);
 
 		//Immediatly add a point to the line
 		continueLine(x, y);
@@ -71,7 +71,7 @@
 				evt.preventDefault();
 			}
 			if (curLineId !== "" && performance.now() - lastTime > 20) {
-				Tools.drawAndSend(new PointMessage(x, y));
+				Tools.drawAndSend(new PointMessage(x, y), Tools.list.Pencil);
 				lastTime = performance.now();
 			}
 		}

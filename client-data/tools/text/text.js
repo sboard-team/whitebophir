@@ -228,7 +228,6 @@
 		textEl.setAttribute("style", `font-family: ${fieldData.fontName}; color: ${fieldData.color}; font-size: ${fieldData.fontSize}px;`);
 		if (fieldData.text) updateText(textEl, fieldData.text, elem);
 		elem.appendChild(textEl);
-		console.log(fieldData);
 		elem.setAttribute('height', fieldData.parentHeight || 0);
 		elem.setAttribute('width', fieldData.parentWidth || 0);
 		if (fieldData.transform) {
