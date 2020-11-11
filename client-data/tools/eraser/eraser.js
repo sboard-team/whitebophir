@@ -26,11 +26,26 @@
 
 (function eraser() { //Code isolation
 	var targetID = '';
-
+	var index = 0;
 	var erasing = false;
+	var colorForUpdate = '#fff';
+
+	function press(x, y, evt) {
+		if (index === 0) return startErasing(x, y, evt);
+		Tools.list.Pencil.listeners.press(x, y, evt);
+	}
+
+	function move(x, y, evt) {
+		if (index === 0) return erase(x, y, evt);
+		Tools.list.Pencil.listeners.move(x, y, evt);
+	}
+
+	function release(x, y) {
+		if (index === 0) stopErasing();
+		Tools.list.Pencil.listeners.release(x, y);
+	}
 
 	function startErasing(x, y, evt) {
-		//Prevent the press from being interpreted by the browser
 		evt.preventDefault();
 		erasing = true;
 		erase(x, y, evt);
@@ -138,19 +153,24 @@
 		}
 	}
 
+	function setIndex(newIndex) {
+		index = +newIndex || 0;
+	}
+
 	var svg = Tools.svg;
 
 	Tools.add({ //The new tool
 		"name": "Eraser",
 		"shortcut": "e",
 		"listeners": {
-			"press": startErasing,
-			"move": erase,
-			"release": stopErasing,
+			"press": press,
+			"move": move,
+			"release": release,
 		},
 		"draw": draw,
 		"mouseCursor": "crosshair",
 		"showMarker": true,
+		"setIndex": setIndex,
 	});
 
 })(); //End of code isolation

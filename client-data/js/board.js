@@ -374,7 +374,10 @@ Tools.isMobile = function () {
 			} else if (e.keyCode === 72) { //h
 				Tools.change('Hand');
 			} else if (e.keyCode === 69) { //e
-				Tools.change('Eraser');
+				if (Tools.curTool.name === 'Eraser') {
+					return Tools.change('Eraser', getToolIndex('Eraser') === 1 ? 0 : 1);
+				}
+				Tools.change('Eraser', getToolIndex('Eraser'));
 			} else if (e.keyCode === 76) { //l
 				if (Tools.curTool.name === 'Line') {
 					Tools.change('Line', getToolIndex('Line') === 5 ? 0 : getToolIndex('Line') + 1);
