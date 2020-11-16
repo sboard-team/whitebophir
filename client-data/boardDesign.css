@@ -116,6 +116,29 @@
     padding: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+    cursor: pointer;
+}
+
+.download-pdf:hover .pdf-menu{
+  display: block;
+}
+
+.pdf-menu {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  padding-top: 10px;
+  display: none;
+}
+
+.pdf-menu .panel{
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.pdf-menu .panel div {
+  padding: 10px;
 }
 
 .undo-redo-panel {
