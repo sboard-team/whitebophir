@@ -134,7 +134,6 @@
 .pdf-menu .panel{
   position: relative;
   border-radius: 10px;
-  overflow: hidden;
 }
 
 .pdf-menu .panel div {
@@ -254,6 +253,10 @@
 
 .copy-link-icon:hover path{
     fill: #2D9CDB;
+}
+
+#pdfWithoutMobile:hover > svg path {
+  fill: #2D9CDB;
 }
 
 .help {
