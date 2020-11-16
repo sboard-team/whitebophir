@@ -738,6 +738,15 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
         }
     }
 
+    function exportPDFWithoutMobile(e) {
+	    if (document.getElementsByClassName('pdf-menu')[0].contains(e.target)) return;
+	    if (!Tools.isMobile()) createPdf();
+    }
+
+    function togglePDFLines() {
+			document.getElementById('pdfLines').classList.toggle('hide');
+    }
+
     function showBoard() {
         Tools.boardTitle = Tools.params.board.name;
         updateDocumentTitle();
@@ -851,6 +860,8 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
     document.getElementById('clearBoard').addEventListener('click', sendClearBoard, false);
     document.getElementById('exportToPDF').addEventListener('click', createPdf, false);
     document.getElementById('exportToPDFButton').addEventListener('click', createPdf, false);
+    document.getElementById('showPDFLines').addEventListener('click', togglePDFLines, false);
+		document.getElementById('pdfWithoutMobile').addEventListener('click', exportPDFWithoutMobile, false);//
     window.addEventListener("hashchange", setScrollFromHash, false);
     window.addEventListener("popstate", setScrollFromHash, false);
     window.addEventListener("DOMContentLoaded", setScrollFromHash, false);
