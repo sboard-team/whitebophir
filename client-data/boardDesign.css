@@ -113,6 +113,7 @@
 }
 
 .download-pdf {
+    position: relative;
     padding: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -271,8 +272,12 @@
 }
 
 .scale-panel {
-    right: 20px;
-    bottom: 20px;
+    position: relative;
+    margin-left: 30px;
+}
+
+.scale-width-panel {
+    position: relative;
 }
 
 .scale-panel div {
@@ -311,10 +316,7 @@
     border-bottom-right-radius: 10px;
 }
 
-.scale-width-panel {
-    bottom: 20px;
-    right: 180px;
-}
+
 
 .tool-panel {
     top: 120px;
@@ -672,7 +674,7 @@
     text-align: center;
     color: #828282;
 }
-.modal .btn {
+.modal .btn, .tutorial__btn--green {
     text-decoration: none;
     outline: none;
     height: 40px;
@@ -689,6 +691,7 @@
     transition: .2s;
     display: block;
 }
+
 .modal .btn-gray {
     background: #FFFFFF;
     color: #828282;
@@ -698,12 +701,12 @@
     border: 1px solid #2FB59D;
     color: #2FB59D;
 }
-.modal .btn-green {
+.modal .btn-green, .tutorial__btn--green {
     background: #2FB59D;
     color: #FFFFFF;
     border: 1px solid #2FB59D;
 }
-.modal .btn-green:hover {
+.modal .btn-green:hover, .tutorial__btn--green:hover {
     opacity: 0.8;
 }
 .modal .modal-buttons {
