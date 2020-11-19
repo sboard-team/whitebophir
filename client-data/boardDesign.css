@@ -791,14 +791,13 @@
     }
 
     .scale-panel {
-        bottom: 10px;
+        margin-left: 10px;
+    }
+
+    .scale-panels__wrapper{
         right: 10px;
     }
 
-    .scale-width-panel {
-        bottom: 10px;
-        right: 160px;
-    }
 }
 
 @media (max-width:520px) {

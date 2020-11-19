@@ -156,19 +156,38 @@
   }
 
   .tutorial__text{
-    font-size: 20px;
-    line-height: 25px;
+    font-size: 25px;
+    line-height: 40px;
   }
   .tutorial__btn--green.tutorial__btn, .tutorial__btn{
-    font-size: 20px;
-    line-height: 30px;
+    font-size: 25px;
+    line-height: 40px;
   }
+
   .tutorial__welcome{
-    width: 50vh;
+    width: auto;
+  }
+
+  .tutorial__welcome>.tutorial__btn:last-child{
+    margin-left: 10vw;
+  }
+
+
+  .tutorial__btn--bottom {
+    bottom: 100px;
   }
 
 }
 
-//@media screen and (max-width: 480px) {
-//
-//}
+@media screen and (max-width: 480px) {
+  .tutorial__welcome{
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .tutorial__welcome>.tutorial__btn:last-child{
+    margin-left: 0;
+    margin-bottom: 20px;
+  }
+}
