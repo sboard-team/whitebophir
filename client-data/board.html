@@ -5,6 +5,7 @@
 	<meta charset="utf-8"/>
 	<title>Онлайн доска для совместных занятий</title>
 	<link rel="shortcut icon" href="/favicon.png" type="image/png"/>
+    <link rel="stylesheet" type="text/css" href="../style/reset.css?v={{v}}"/>
 	<link rel="stylesheet" type="text/css" href="../style/tutorial.css?v={{v}}"/>
 	<link rel="stylesheet" type="text/css" href="../board.css?v={{v}}"/>
     <link rel="stylesheet" href="boardDesign.css?v={{v}}">
@@ -115,18 +116,35 @@
 <div class="tutorial">
 	<div class="tutorial__wrapper">
 		<h3 class="tutorial__header">Добро пожаловать<br> в sBoard!</h3>
-		<p class="tutorial__text">Узнайте об основах работы <br>на доске за 1 минуту</p>
+        <button class="tutorial__btn tutorial__btn--begin">Пройти обучение заново</button>
+        <ul class="tutorial__text">
+            <li class="tutorial__text__li active" data-tutorial_step="0" >
+                Узнайте об основах работы <br>на доске за 1 минуту
+            </li>
+            <li class="tutorial__text__li" data-tutorial_step="1" >
+                С помощью инструментов вы можете рисовать, писать, добавлять фигуру и изображения, печатать формулы и текст
+            </li>
+            <li class="tutorial__text__li" data-tutorial_step="2" >
+                Подберите удобный для работы масштаб доски. Обратите внимание, ширина доски ограничена
+            </li>
+            <li class="tutorial__text__li" data-tutorial_step="3" >
+                Что бы работать на доске вместе с учениками, нажмите кнопку "Поделиться" и отправьте появившуюся ссылку ученикам
+            </li>
+            <li class="tutorial__text__li" data-tutorial_step="4" >
+                В меню под логотипом Вы можете очистить доску, сохранить её в PDF или перейти в личный кабинет
+            </li>
+        </ul>
 		<div class="tutorial__welcome">
 			<button class="tutorial__btn tutorial__btn--end">Пропустить</button>
 			<button class="tutorial__btn tutorial__btn--next tutorial__btn--right tutorial__btn--green">Вперед</button>
 		</div>
 		<div class="tutorial__start">
-			<button class="tutorial__btn tutorial__btn--next tutorial__btn--green_p">Понятно</button>
+			<button class="tutorial__btn tutorial__btn--next tutorial__btn--green">Понятно</button>
 			<button class="tutorial__btn tutorial__btn--end tutorial__btn--bottom">Пропустить обучение</button>
 		</div>
 	</div>
 </div>
-<div class="top-panel panel tutorial_panel js-elements sjx-hidden">
+<div data-tutorial_step="4" class="top-panel panel tutorial_panel js-elements sjx-hidden">
 	<div class="logo unselectable">
 		<img src="assets/logo.png" alt="sBoard">
 		<svg class="logo-select-icon" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -179,7 +197,7 @@
     </div>
 	</div>
 </div>
-<div class="undo-redo-panel panel js-elements sjx-hidden tutorial_panel">
+<div data-tutorial_step="1" class="undo-redo-panel panel js-elements sjx-hidden tutorial_panel">
 	<div data-tooltip="Отменить действие (ctrl+z)" id="undo" class="undo tooltip-bottom disabled-icon defolt-icon">
 		<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<g clip-path="url(#clip0)">
@@ -199,7 +217,7 @@
 
 	</div>
 </div>
-<div class="export-and-help-panel panel js-elements sjx-hidden tutorial_panel">
+<div data-tutorial_step="3" class="export-and-help-panel panel js-elements sjx-hidden tutorial_panel">
 	<div class="repost-block js-join-link">
 		<svg class="repost-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path d="M16.6406 13.2813C15.6022 13.2813 14.6724 13.7549 14.0557 14.4973L11.4417 13.1972C11.0554 13.0052 10.5864 13.1624 10.3943 13.5488C10.2021 13.9351 10.3596 14.4041 10.7459 14.5962L13.3639 15.8983C13.3098 16.1372 13.2812 16.3856 13.2812 16.6406C13.2812 18.493 14.7883 20 16.6406 20C18.493 20 20 18.493 20 16.6406C20 14.7883 18.493 13.2813 16.6406 13.2813ZM16.6406 18.4375C15.6498 18.4375 14.8437 17.6314 14.8437 16.6406C14.8437 16.3949 14.8933 16.1606 14.983 15.9471C15.0022 15.9187 15.0198 15.8887 15.0355 15.8571C15.0521 15.8236 15.0662 15.7894 15.0777 15.7549C15.387 15.2112 15.9717 14.8438 16.6406 14.8438C17.6314 14.8438 18.4375 15.6499 18.4375 16.6406C18.4375 17.6314 17.6314 18.4375 16.6406 18.4375Z" fill="#828282"/>
@@ -226,7 +244,7 @@
             Передайте ссылку пользователю, которому хотите предоставить доступ к доске.
         </span>
 </div>
-<div id="tool-panel" class="tool-panel panel js-elements sjx-hidden tutorial_panel">
+<div data-tutorial_step="1" id="tool-panel" class="tool-panel panel js-elements sjx-hidden tutorial_panel">
 	<div class="tool">
 		<div data-tooltip="Выделение и изменение объекта (v)" id="Tool-Transform" class="main-tool">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -617,7 +635,7 @@
 	</div>
 </div>
 
-<div class="scale-panels__wrapper tutorial_panel">
+<div data-tutorial_step="2" class="scale-panels__wrapper tutorial_panel">
 <div class="scale-width-panel panel js-elements sjx-hidden">
 	<div data-tooltip="Вписать доску по ширине экрана (ctrl + '=')" id="scalingWidth" class="tooltip-toLeft tooltip-top scale-to-width defolt-icon">
 		<svg width="20" height="20" viewBox="0 0 20 20" fill="red" xmlns="http://www.w3.org/2000/svg">

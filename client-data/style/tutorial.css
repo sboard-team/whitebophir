@@ -79,6 +79,13 @@
   max-width: 55vw;
 }
 
+.tutorial__text__li{
+  display: none;
+}
+.tutorial__text__li.active{
+  display: block;
+}
+
 .tutorial__welcome, .tutorial__start{
   margin-top: 60px;
 }
@@ -88,11 +95,17 @@
 }
 
 .tutorial__btn{
-  font-size: 35px;
+  font-size: 30px;
   background: none;
   border: none;
   cursor: pointer;
   color: white;
+  transition: color 0.3s;
+  line-height: 60px;
+}
+
+.tutorial__btn:hover{
+  color: #2FB59D;
 }
 
 .tutorial__btn--right{
@@ -106,14 +119,21 @@
   transform: translateX(-50%);
 }
 
-.tutorial__btn--green_p{
-  color: #2FB59D;
+.tutorial__btn--begin{
+  display: none;
 }
 
+.tutorial__btn--begin.active{
+  display: block;
+  margin-bottom: 40px;
+}
+
+
 .tutorial__btn--green.tutorial__btn{
-  font-size: 35px;
+  font-size: 30px;
   height: auto;
-  padding: 10px 15px;
+  padding: 0px 15px;
+  line-height: 60px;
 }
 
 //@media screen and (max-width: 1480px) {
@@ -132,12 +152,21 @@
   .tutorial__header{
     font-size: 40px;
     line-height: 50px;
+    margin-bottom: 40px;
   }
 
   .tutorial__text{
-    font-size: 15px;
-    line-height: 20px;
+    font-size: 20px;
+    line-height: 25px;
   }
+  .tutorial__btn--green.tutorial__btn, .tutorial__btn{
+    font-size: 20px;
+    line-height: 30px;
+  }
+  .tutorial__welcome{
+    width: 50vh;
+  }
+
 }
 
 //@media screen and (max-width: 480px) {

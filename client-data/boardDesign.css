@@ -708,6 +708,7 @@
 }
 .modal .btn-green:hover, .tutorial__btn--green:hover {
     opacity: 0.8;
+    color: #FFFFFF;
 }
 .modal .modal-buttons {
     display: flex;
