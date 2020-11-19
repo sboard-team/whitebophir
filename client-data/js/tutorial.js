@@ -1,48 +1,49 @@
 initTutorial();
 
+function searchParam() {
+    return window.location.search
+        .replace( '?', '')
+        .split("&")
+        .map(item=>{
+            let sub_arr = item.split("=");
+            return {key:sub_arr[0], value:sub_arr[1]}});
+}
+
+function checkPatam(param, value) {
+    return searchParam().some(x=>x.key===param && x.value===value)
+}
+
 function initTutorial() {
-    const tutorial_steps=[
-            new TutorialStep(
-                 "С помощью инструментов вы можете рисовать, писать, добавлять фигуру и изображения, печатать формулыи текст",
-                 [".undo-redo-panel", ".tool-panel"]),
-            new TutorialStep(
-                "Подберите удобный для работы масштаб доски. Обратите внимание, ширина доски ограничена",
-                [".scale-panels__wrapper"]),
-            new TutorialStep(
-                "Что бы работать на доске вместе с учениками, нажмите кнопку \"Поделиться\" и отправте появившиеся ссылку ученикам"
-                ,[".export-and-help-panel"]),
-            new TutorialStep(
-                "В меню под логотипом Вы можете очистить доску, сохранить её в PDF или перейти в личный кабинет",
-                [".top-panel"])
-        ];
-    const tutorial_step_count=tutorial_steps.length-1;
+    const tutorial_step_count=4;
     let current_step = 0;
 
     const tutorial_elem = document.querySelector(".tutorial"),
-          tutorial_text = tutorial_elem.querySelector(".tutorial__text");
+          begin_btn = tutorial_elem.querySelector(".tutorial__btn--begin"),
+          tutorial_step_elem = [...document.querySelectorAll(".tutorial__text>li, body>.tutorial_panel")]
+              .map(item=> {return {id:Number(item.getAttribute("data-tutorial_step")), element:item}});
+    
 
     tutorial_elem.classList.add("start");
     tutorial_elem.querySelectorAll(".tutorial__btn--next")
         .forEach(item=>item.addEventListener("click",nextStep,false));
     tutorial_elem.querySelectorAll(".tutorial__btn--end")
         .forEach(item=>item.addEventListener("click",endTutorial,false));
+    begin_btn.addEventListener("click", resetTutorial, false);
 
-    
     function nextStep() {
-        if(current_step<=tutorial_step_count) {
+        if(current_step<tutorial_step_count) {
             if(current_step===0)
             {
                 tutorial_elem.classList.add("active");
             }
-            else{
-                tutorial_steps[current_step-1].removePanel();
-            }
+            switchPanel();
+            current_step++;
+            switchPanel();
             if(current_step===tutorial_step_count){
                 tutorial_elem.querySelector(".tutorial__start .tutorial__btn--next").innerText = "Начать работу";
                 tutorial_elem.querySelector(".tutorial__start .tutorial__btn--end").style.display = "none";
+                begin_btn.classList.add("active");
             }
-            tutorial_steps[current_step].selectPanel();
-            current_step++;
         }
         else{
             endTutorial();
@@ -50,36 +51,25 @@ function initTutorial() {
     }
     
     function endTutorial() {
-        if(current_step!==0)
-            tutorial_steps[current_step-1].removePanel();
+        switchPanel();
         tutorial_elem.classList.remove("start");
     }
 
+    function resetTutorial() {
+        begin_btn.classList.remove("active");
+        tutorial_elem.querySelector(".tutorial__start .tutorial__btn--next").innerText = "Понятно";
+        tutorial_elem.querySelector(".tutorial__start .tutorial__btn--end").style.display = "block";
+        switchPanel();
+        current_step=0;
+        nextStep();
+    }
 
-    function TutorialStep(text, panel_classes) {
-        this.text = text;
-        this.panel_classes = panel_classes;
 
-        this.initPanel = function () {
-            return this.panel_classes.map(item=>document.querySelector(item));
-        };
-
-        this.panels = this.initPanel();
-
-        this.selectPanel = function () {
-            tutorial_text.innerText = this.text;
-            this.panels.forEach(item=>{
-                item.classList.add("active");
-            })
-        };
-
-        this.removePanel = function () {
-            this.panels.forEach(item=>{
-                item.classList.remove("active");
-            })
-        };
+    function switchPanel() {
+        tutorial_step_elem.forEach(item=>{
+            if(item.id===current_step)
+                item.element.classList.toggle("active")
+        });
     }
 };
-
-
 
