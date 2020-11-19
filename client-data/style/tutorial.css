@@ -172,12 +172,20 @@
     margin-left: 10vw;
   }
 
-
   .tutorial__btn--bottom {
     bottom: 100px;
   }
+    font-size: 20px;
+    line-height: 25px;
+  }
+  .tutorial__btn--green.tutorial__btn, .tutorial__btn{
+    font-size: 20px;
+    line-height: 30px;
+  }
+  .tutorial__welcome{
+    width: 50vh;
+  }
 
-}
 
 @media screen and (max-width: 480px) {
   .tutorial__welcome{
