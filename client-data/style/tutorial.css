@@ -42,6 +42,7 @@
   left: 0;
   background-color:rgba(0,0,0,.3);
   z-index: 10;
+
 }
 
 .tutorial__wrapper{
@@ -69,14 +70,16 @@
 }
 
 .tutorial__header{
-  font-size: 70px;
-  line-height: 100px;
+  font-size: 20px;
+  line-height: 25px;
+  margin-bottom: 20px;
 }
 
 .tutorial__text, .tutorial__counter{
-  font-size: 30px;
-  line-height: 40px;
+  font-size: 16px;
+  line-height: 20px;
   max-width: 55vw;
+  padding-left: 0;
 }
 
 .tutorial__text__li{
@@ -87,21 +90,21 @@
 }
 
 .tutorial__welcome, .tutorial__start{
-  margin-top: 60px;
+  margin-top: 20px;
 }
 
 .tutorial__welcome{
-  width: 500px;
+  width: 260px;
 }
 
 .tutorial__btn{
-  font-size: 30px;
+  font-size: 14px;
   background: none;
   border: none;
   cursor: pointer;
   color: white;
   transition: color 0.3s;
-  line-height: 60px;
+  line-height: 40px;
   outline: none;
 }
 
@@ -126,21 +129,20 @@
 
 .tutorial__btn--begin.active{
   display: block;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 
 .tutorial__btn--green.tutorial__btn{
-  font-size: 30px;
   height: auto;
   padding: 0px 15px;
-  line-height: 60px;
 }
 
 .tutorial__counter{
   margin-bottom: 40px;
   color: white;
   display: none;
+  font-size: 20px;
 }
 
 .tutorial.active .tutorial__counter{
@@ -163,25 +165,15 @@
     padding: 0 60px;
   }
 
-  .tutorial__header {
-    font-size: 40px;
-    line-height: 50px;
-    margin-bottom: 40px;
-  }
 
   .tutorial__counter{
     margin-bottom: 20px;
   }
 
   .tutorial__text, .tutorial__counter {
-    font-size: 25px;
-    line-height: 40px;
     max-width: 100%;
   }
-  .tutorial__btn--green.tutorial__btn, .tutorial__btn {
-    font-size: 25px;
-    line-height: 40px;
-  }
+
 
   .tutorial__welcome {
     width: auto;
@@ -197,10 +189,7 @@
     margin-top: 10px;
   }
 
-  .tutorial__btn--green.tutorial__btn, .tutorial__btn {
-    font-size: 20px;
-    line-height: 30px;
-  }
+
 
   .tutorial__welcome {
     width: 50vh;
@@ -238,10 +227,6 @@
 
 @media screen and (max-height: 590px) {
 
-  .tutorial__btn--green.tutorial__btn, .tutorial__btn {
-    font-size: 25px;
-    line-height: 40px;
-  }
 
   .tutorial.active .tutorial__wrapper {
     box-sizing: border-box;
@@ -249,26 +234,9 @@
     padding: 60px 0;
   }
 
-  .tutorial__text, .tutorial__counter {
-    font-size: 25px;
-    line-height: 40px;
-  }
-
-  .tutorial__header{
-    font-size: 30px;
-    line-height: 50px;
-  }
 
   .tutorial__text{
     max-width: 90vw;
-  }
-
-  .tutorial__welcome{
-    width: 350px;
-  }
-
-  .tutorial__welcome, .tutorial__start {
-    margin-top: 20px;
   }
 
   .tutorial__counter{
@@ -290,20 +258,17 @@
     bottom: 0;
     margin-top: 10px;
   }
+  .tutorial__welcome > .tutorial__btn:last-child {
+    margin-left: 0;
+  }
 }
 
 
 @media screen and (max-height: 400px) {
-  .tutorial__counter{
-    margin-bottom: 20px;
-  }
+
+
   .tutorial__welcome, .tutorial__start {
     margin-top: 10px;
-  }
-
-  .tutorial__header{
-    font-size: 28px;
-    line-height: 35px;
   }
 
 }
