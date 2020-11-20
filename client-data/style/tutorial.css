@@ -73,7 +73,7 @@
   line-height: 100px;
 }
 
-.tutorial__text{
+.tutorial__text, .tutorial__counter{
   font-size: 30px;
   line-height: 40px;
   max-width: 55vw;
@@ -136,6 +136,11 @@
   line-height: 60px;
 }
 
+.tutorial__counter{
+  margin-bottom: 40px;
+  color: white;
+}
+
 //@media screen and (max-width: 1480px) {
 //
 //}
@@ -145,57 +150,114 @@
 //}
 
 @media screen and (max-width: 768px) {
-  .tutorial__welcome, .tutorial__text {
-    max-width: 90vw;
+
+  .tutorial__wrapper {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 60px;
   }
 
-  .tutorial__header{
+  .tutorial__header {
     font-size: 40px;
     line-height: 50px;
     margin-bottom: 40px;
   }
 
-  .tutorial__text{
+  .tutorial__counter{
+    margin-bottom: 20px;
+  }
+
+  .tutorial__text, .tutorial__counter {
     font-size: 25px;
     line-height: 40px;
+    max-width: 100%;
   }
-  .tutorial__btn--green.tutorial__btn, .tutorial__btn{
+  .tutorial__btn--green.tutorial__btn, .tutorial__btn {
     font-size: 25px;
     line-height: 40px;
   }
 
-  .tutorial__welcome{
+  .tutorial__welcome {
     width: auto;
   }
 
-  .tutorial__welcome>.tutorial__btn:last-child{
+  .tutorial__welcome > .tutorial__btn:last-child {
     margin-left: 10vw;
   }
 
   .tutorial__btn--bottom {
-    bottom: 100px;
+    position: relative;
+    bottom: 0;
+    margin-top: 10px;
   }
-    font-size: 20px;
-    line-height: 25px;
-  }
-  .tutorial__btn--green.tutorial__btn, .tutorial__btn{
+
+  .tutorial__btn--green.tutorial__btn, .tutorial__btn {
     font-size: 20px;
     line-height: 30px;
   }
-  .tutorial__welcome{
+
+  .tutorial__welcome {
     width: 50vh;
   }
 
-
-@media screen and (max-width: 480px) {
-  .tutorial__welcome{
+  .tutorial__welcome {
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
   }
 
-  .tutorial__welcome>.tutorial__btn:last-child{
+  .tutorial__start{
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tutorial.active .tutorial__start{
+    display: flex;
+  }
+
+}
+
+
+@media screen and (max-width: 480px) {
+
+  .tutorial__welcome > .tutorial__btn:last-child {
     margin-left: 0;
+    margin-bottom: 20px;
+  }
+
+  .tutorial__welcome, .tutorial__start {
+    margin-top: 30px;
+  }
+}
+
+@media screen and (max-height: 590px) {
+
+  .tutorial__btn--green.tutorial__btn, .tutorial__btn {
+    font-size: 25px;
+    line-height: 40px;
+  }
+
+  .tutorial__text, .tutorial__counter {
+    font-size: 25px;
+    line-height: 40px;
+  }
+
+  .tutorial__header{
+    font-size: 30px;
+    line-height: 50px;
+  }
+
+  .tutorial__welcome{
+    width: 350px;
+  }
+
+  .tutorial__welcome, .tutorial__start {
+    margin-top: 20px;
+  }
+  .tutorial__btn--bottom {
+    bottom: 60px;
+  }
+  .tutorial__counter{
     margin-bottom: 20px;
   }
 }

@@ -19,6 +19,7 @@ function initTutorial() {
 
     const tutorial_elem = document.querySelector(".tutorial"),
           begin_btn = tutorial_elem.querySelector(".tutorial__btn--begin"),
+          tutorial_counter = tutorial_elem.querySelector(".tutorial__counter"),
           tutorial_step_elem = [...document.querySelectorAll(".tutorial__text>li, body>.tutorial_panel")]
               .map(item=> {return {id:Number(item.getAttribute("data-tutorial_step")), element:item}});
     
@@ -28,7 +29,7 @@ function initTutorial() {
         .forEach(item=>item.addEventListener("click",nextStep,false));
     tutorial_elem.querySelectorAll(".tutorial__btn--end")
         .forEach(item=>item.addEventListener("click",endTutorial,false));
-    begin_btn.addEventListener("click", resetTutorial, false);
+
 
     function nextStep() {
         if(current_step<tutorial_step_count) {
@@ -38,6 +39,7 @@ function initTutorial() {
             }
             switchPanel();
             current_step++;
+            tutorial_counter.innerText = `${current_step} / ${tutorial_step_count}`;
             switchPanel();
             if(current_step===tutorial_step_count){
                 tutorial_elem.querySelector(".tutorial__start .tutorial__btn--next").innerText = "Начать работу";

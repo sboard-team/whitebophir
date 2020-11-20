@@ -847,9 +847,17 @@
         right: 10px;
     }
 
-    .scale-panel {
-        right: 10px;
-    }
+  .scale-panels__wrapper{
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .scale-panel{
+    margin-left: 10px;
+  }
+
+
+
 }
 
 @media (max-height:590px) and (max-width:415px){
@@ -919,19 +927,8 @@
         border-radius: 10px;
     }
 
-    .scale-width-panel {
-        top: 80px;
-        right: 10px;
-        left: initial;
-    }
 
     .scale-panel {
-        bottom: 110px;
-    }
-
-
-    .scale-panel {
-        right: 10px;
         overflow: visible;
     }
 
