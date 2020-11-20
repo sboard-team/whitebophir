@@ -237,6 +237,12 @@
     line-height: 40px;
   }
 
+  .tutorial.active .tutorial__wrapper {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 60px 0;
+  }
+
   .tutorial__text, .tutorial__counter {
     font-size: 25px;
     line-height: 40px;
@@ -247,6 +253,10 @@
     line-height: 50px;
   }
 
+  .tutorial__text{
+    max-width: 90vw;
+  }
+
   .tutorial__welcome{
     width: 350px;
   }
@@ -254,10 +264,39 @@
   .tutorial__welcome, .tutorial__start {
     margin-top: 20px;
   }
-  .tutorial__btn--bottom {
-    bottom: 60px;
-  }
+
   .tutorial__counter{
     margin-bottom: 20px;
   }
+
+  .tutorial__start{
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tutorial.active .tutorial__start{
+    display: flex;
+  }
+
+  .tutorial__btn--bottom {
+    position: relative;
+    bottom: 0;
+    margin-top: 10px;
+  }
+}
+
+
+@media screen and (max-height: 400px) {
+  .tutorial__counter{
+    margin-bottom: 20px;
+  }
+  .tutorial__welcome, .tutorial__start {
+    margin-top: 10px;
+  }
+
+  .tutorial__header{
+    font-size: 28px;
+    line-height: 35px;
+  }
+
 }
