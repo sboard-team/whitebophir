@@ -1,4 +1,5 @@
-initTutorial();
+
+if (checkParam("tour","1")) initTutorial();
 
 function searchParam() {
     return window.location.search
@@ -9,7 +10,7 @@ function searchParam() {
             return {key:sub_arr[0], value:sub_arr[1]}});
 }
 
-function checkPatam(param, value) {
+function checkParam(param, value) {
     return searchParam().some(x=>x.key===param && x.value===value)
 }
 
