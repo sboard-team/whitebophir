@@ -1,4 +1,3 @@
-
 if (checkParam("tour","1")) initTutorial();
 
 function searchParam() {
@@ -55,18 +54,8 @@ function initTutorial() {
     
     function endTutorial() {
         switchPanel();
-        tutorial_elem.classList.remove("start");
+        tutorial_elem.remove();
     }
-
-    function resetTutorial() {
-        begin_btn.classList.remove("active");
-        tutorial_elem.querySelector(".tutorial__start .tutorial__btn--next").innerText = "Понятно";
-        tutorial_elem.querySelector(".tutorial__start .tutorial__btn--end").style.display = "block";
-        switchPanel();
-        current_step=0;
-        nextStep();
-    }
-
 
     function switchPanel() {
         tutorial_step_elem.forEach(item=>{

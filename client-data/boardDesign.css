@@ -850,10 +850,12 @@
   .scale-panels__wrapper{
     right: 10px;
     bottom: 10px;
+    flex-direction: column-reverse;
   }
 
   .scale-panel{
-    margin-left: 10px;
+    margin-left: 0px;
+    margin-bottom: 10px;
   }
 
 
@@ -952,6 +954,14 @@
         border-bottom-right-radius: 10px;
         border-top-right-radius: 0px;
     }
+
+  .tutorial__header {
+    margin-bottom: 0px;
+  }
+
+  .tutorial__welcome > .tutorial__btn:last-child {
+    margin-left: 0;
+  }
 
 }
 
