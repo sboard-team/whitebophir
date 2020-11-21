@@ -18,7 +18,6 @@ function initTutorial() {
     let current_step = 0;
 
     const tutorial_elem = document.querySelector(".tutorial"),
-          begin_btn = tutorial_elem.querySelector(".tutorial__btn--begin"),
           tutorial_counter = tutorial_elem.querySelector(".tutorial__counter"),
           tutorial_step_elem = [...document.querySelectorAll(".tutorial__text>li, body>.tutorial_panel")]
               .map(item=> {return {id:Number(item.getAttribute("data-tutorial_step")), element:item}});
@@ -44,7 +43,6 @@ function initTutorial() {
             if(current_step===tutorial_step_count){
                 tutorial_elem.querySelector(".tutorial__start .tutorial__btn--next").innerText = "Начать работу";
                 tutorial_elem.querySelector(".tutorial__start .tutorial__btn--end").style.display = "none";
-                begin_btn.classList.add("active");
             }
         }
         else{
