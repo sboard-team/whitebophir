@@ -319,19 +319,12 @@
 		console.log(data)
 		if (data.size) el.setAttribute("stroke-width", data.size);
 		//el.setAttribute("points", `${data.x} ${data.y}, ${data.x + ((data.x2 - data.x) / 2)} ${data.y2}, ${data.x2} ${data.y}`) - равнобедренный
-		var xDiff = data.x2 - data.x
-		var yDiff = data.y - data.y2
-		const size = xDiff > yDiff ? yDiff : xDiff;
-		const vertexY = yDiff > 0 ? data.y - Math.sqrt(size ** 2 - (size / 2) ** 2) : data.y + Math.sqrt(size ** 2 - (size / 2) ** 2);
-		var lastX = data.x + size;
-		var vertexX = data.x + (size / 2)
-		if (xDiff > 0 && yDiff < 0) {
-			lastX = data.x - size;
-			vertexX = data.x - (size / 2)
-		}
-		el.setAttribute("points", `${data.x} ${data.y}, ${vertexX}, ${vertexY}, ${lastX} ${data.y}`);
+		var x3 = (data.x2-data.x)*Math.cos(45)-(data.y2-data.y)*Math.sin(45)+data.x;
+		var y3 = (data.x2-data.x)*Math.sin(45)+(data.y2-data.y)*Math.cos(45)+data.y;
+		el.setAttribute("points", `${data.x} ${data.y}, ${x3} ${y3}, ${data.x2} ${data.y2}`);
 		if (isNew) Tools.drawingArea.appendChild(el)
 	}
+
 
 	function setIndex(newIndex) {
 		index = +newIndex || 0;
