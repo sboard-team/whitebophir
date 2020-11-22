@@ -53,6 +53,9 @@ body {
 	transition: .1s;
 }
 
+#canvas polygon {
+  fill: none;
+}
 #cursor-me {
 	transition: 0s;
 }

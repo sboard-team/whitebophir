@@ -74,6 +74,25 @@
 			curUpdate.x = x;
 			curUpdate.y = y;
 			curUpdate.index = index;
+		} else if(index === 4) {
+
+			curUpdate.id = Tools.generateUID();
+			Tools.drawAndSend({
+				'type': 'triangle',
+				'id': curUpdate.id,
+				'color': Tools.getColor(),
+				'size': Tools.getSize(),
+				'x': x,
+				'y': y,
+				'x2': x + 0.001,
+				'y2': y,
+				'index': index,
+			});
+			curUpdate.x = x;
+			curUpdate.y = y;
+			curUpdate.index = index;
+
+			console.log('треугольник')
 		} else {
 			curUpdate.id = Tools.generateUID("e"); //"e" for ellipse
 			Tools.drawAndSend({
@@ -121,6 +140,16 @@
 					} else {
 						draw(curUpdate);
 					}
+				}
+			} else if (curUpdate.index === 4) {
+				if (!curUpdate.id) return;
+				curUpdate.x2 = x;
+				curUpdate.y2 = y;
+				if (performance.now() - lastTime > 50 || end) {
+					Tools.drawAndSend(curUpdate);
+					lastTime = performance.now();
+				} else {
+					draw(curUpdate);
 				}
 			} else {
 				if (!curUpdate.id) return; // Not currently drawing
@@ -175,6 +204,7 @@
 	}
 
 	function draw(data) {
+		console.log(data)
 		Tools.drawingEvent = true;
 		if (data.index === 0 || data.index === 1) {
 			switch (data.type) {
@@ -196,6 +226,14 @@
 				default:
 					console.error("Straight shape: Draw instruction with unknown type. ", data);
 					break;
+			}
+		} else if (data.index === 4) {
+			switch (data.type) {
+				case "triangle":
+					drawTriangle(data);
+					break;
+				case "update":
+					drawTriangle(data);
 			}
 		} else {
 			switch (data.type) {
@@ -270,6 +308,29 @@
 			shape.ry.baseVal.value = Math.abs(data['y2'] - data['y']) / 2;
 		}
 
+	}
+
+	function drawTriangle(data) {
+		var isNew = true
+		if (svg.getElementById(data.id)) isNew = false
+		var el = svg.getElementById(data.id) || Tools.createSVGElement("polygon");
+		el.id = data.id;
+		el.setAttribute("stroke", data.color || "black");
+		console.log(data)
+		if (data.size) el.setAttribute("stroke-width", data.size);
+		//el.setAttribute("points", `${data.x} ${data.y}, ${data.x + ((data.x2 - data.x) / 2)} ${data.y2}, ${data.x2} ${data.y}`) - равнобедренный
+		var xDiff = data.x2 - data.x
+		var yDiff = data.y - data.y2
+		const size = xDiff > yDiff ? yDiff : xDiff;
+		const vertexY = yDiff > 0 ? data.y - Math.sqrt(size ** 2 - (size / 2) ** 2) : data.y + Math.sqrt(size ** 2 - (size / 2) ** 2);
+		var lastX = data.x + size;
+		var vertexX = data.x + (size / 2)
+		if (xDiff > 0 && yDiff < 0) {
+			lastX = data.x - size;
+			vertexX = data.x - (size / 2)
+		}
+		el.setAttribute("points", `${data.x} ${data.y}, ${vertexX}, ${vertexY}, ${lastX} ${data.y}`);
+		if (isNew) Tools.drawingArea.appendChild(el)
 	}
 
 	function setIndex(newIndex) {
