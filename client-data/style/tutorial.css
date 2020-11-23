@@ -1,0 +1,274 @@
+.tutorial_panel.active{
+  z-index: 11;
+  pointer-events: none;
+}
+
+.top-panel.tutorial_panel.active .logo-menu {
+  display: block;
+}
+
+
+.top-panel.tutorial_panel.active>.board-name:before, .top-panel.tutorial_panel.active>.download-pdf:before{
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  background-color: rgba(0,0,0,.3);
+}
+
+.top-panel.tutorial_panel.active>.download-pdf:before{
+  left: -1px;
+  right: 0px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  width: auto;
+}
+
+.scale-panels__wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+}
+
+.tutorial{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color:rgba(0,0,0,.3);
+  z-index: 10;
+
+}
+
+.tutorial__wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+
+.tutorial.active .tutorial__welcome, .tutorial.active .tutorial__header,.tutorial__start,.tutorial{
+  display: none;
+}
+
+.tutorial.start, .tutorial.active .tutorial__start{
+  display: block;
+}
+
+
+.tutorial__header, .tutorial__text{
+  color: white;
+  text-align: center;
+  margin: 0;
+}
+
+.tutorial__header{
+  font-size: 20px;
+  line-height: 25px;
+  margin-bottom: 20px;
+}
+
+.tutorial__text, .tutorial__counter{
+  font-size: 16px;
+  line-height: 20px;
+  max-width: 55vw;
+  padding-left: 0;
+}
+
+.tutorial__text__li{
+  display: none;
+}
+.tutorial__text__li.active{
+  display: block;
+}
+
+.tutorial__welcome, .tutorial__start{
+  margin-top: 20px;
+}
+
+.tutorial__welcome{
+  width: 260px;
+}
+
+.tutorial__btn{
+  font-size: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  transition: color 0.3s;
+  line-height: 40px;
+  outline: none;
+}
+
+.tutorial__btn:hover{
+  color: #2FB59D;
+}
+
+.tutorial__btn--right{
+  float: right;
+}
+
+.tutorial__btn--bottom{
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tutorial__btn--begin{
+  display: none;
+}
+
+.tutorial__btn--begin.active{
+  display: block;
+  margin-bottom: 30px;
+}
+
+
+.tutorial__btn--green.tutorial__btn{
+  height: auto;
+  padding: 0px 15px;
+}
+
+.tutorial__counter{
+  margin-bottom: 40px;
+  color: white;
+  display: none;
+  font-size: 20px;
+}
+
+.tutorial.active .tutorial__counter{
+  display: block;
+}
+
+//@media screen and (max-width: 1480px) {
+//
+//}
+//
+//@media screen and (max-width: 1000px) {
+//
+//}
+
+@media screen and (max-width: 768px) {
+
+  .tutorial__wrapper {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 60px;
+  }
+
+
+  .tutorial__counter{
+    margin-bottom: 20px;
+  }
+
+  .tutorial__text, .tutorial__counter {
+    max-width: 100%;
+  }
+
+
+  .tutorial__welcome {
+    width: auto;
+  }
+
+  .tutorial__welcome > .tutorial__btn:last-child {
+    margin-left: 10vw;
+  }
+
+  .tutorial__btn--bottom {
+    position: relative;
+    bottom: 0;
+    margin-top: 10px;
+  }
+
+
+
+  .tutorial__welcome {
+    width: 50vh;
+  }
+
+  .tutorial__welcome {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .tutorial__start{
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tutorial.active .tutorial__start{
+    display: flex;
+  }
+
+}
+
+
+@media screen and (max-width: 480px) {
+
+  .tutorial__welcome > .tutorial__btn:last-child {
+    margin-left: 0;
+    margin-bottom: 20px;
+  }
+
+  .tutorial__welcome, .tutorial__start {
+    margin-top: 30px;
+  }
+}
+
+@media screen and (max-height: 590px) {
+
+
+  .tutorial.active .tutorial__wrapper {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 60px 0;
+  }
+
+
+  .tutorial__text{
+    max-width: 90vw;
+  }
+
+  .tutorial__counter{
+    margin-bottom: 20px;
+    margin-top: 0;
+  }
+
+  .tutorial__start{
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tutorial.active .tutorial__start{
+    display: flex;
+  }
+
+  .tutorial__btn--bottom {
+    position: relative;
+    bottom: 0;
+    margin-top: 10px;
+  }
+  .tutorial__welcome > .tutorial__btn:last-child {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-height: 400px) {
+
+
+  .tutorial__welcome, .tutorial__start {
+    margin-top: 10px;
+  }
+
+}
