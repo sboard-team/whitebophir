@@ -319,8 +319,8 @@
 		console.log(data)
 		if (data.size) el.setAttribute("stroke-width", data.size);
 		//el.setAttribute("points", `${data.x} ${data.y}, ${data.x + ((data.x2 - data.x) / 2)} ${data.y2}, ${data.x2} ${data.y}`) - равнобедренный
-		var x3 = (data.x2-data.x)*Math.cos(45)-(data.y2-data.y)*Math.sin(45)+data.x;
-		var y3 = (data.x2-data.x)*Math.sin(45)+(data.y2-data.y)*Math.cos(45)+data.y;
+		var x3 = (data.x2-data.x)*Math.cos(-45)-(data.y2-data.y)*Math.sin(-45)+data.x;
+		var y3 = (data.x2-data.x)*Math.sin(-45)+(data.y2-data.y)*Math.cos(-45)+data.y;
 		el.setAttribute("points", `${data.x} ${data.y}, ${x3} ${y3}, ${data.x2} ${data.y2}`);
 		if (isNew) Tools.drawingArea.appendChild(el)
 	}
