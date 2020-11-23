@@ -74,8 +74,7 @@
 			curUpdate.x = x;
 			curUpdate.y = y;
 			curUpdate.index = index;
-		} else if(index === 4) {
-
+		} else if(index === 4 || index === 5) {
 			curUpdate.id = Tools.generateUID();
 			Tools.drawAndSend({
 				'type': 'triangle',
@@ -91,8 +90,6 @@
 			curUpdate.x = x;
 			curUpdate.y = y;
 			curUpdate.index = index;
-
-			console.log('треугольник')
 		} else {
 			curUpdate.id = Tools.generateUID("e"); //"e" for ellipse
 			Tools.drawAndSend({
@@ -230,10 +227,18 @@
 		} else if (data.index === 4) {
 			switch (data.type) {
 				case "triangle":
-					drawTriangle(data);
+					drawEquilateralTriangle(data);
 					break;
 				case "update":
-					drawTriangle(data);
+					drawEquilateralTriangle(data);
+			}
+		} else if (data.index === 5) {
+			switch (data.type) {
+				case "triangle":
+					drawRightTriangle(data);
+					break;
+				case "update":
+					drawRightTriangle(data);
 			}
 		} else {
 			switch (data.type) {
@@ -310,18 +315,45 @@
 
 	}
 
-	function drawTriangle(data) {
+	function drawRightTriangle(data) {
 		var isNew = true
 		if (svg.getElementById(data.id)) isNew = false
 		var el = svg.getElementById(data.id) || Tools.createSVGElement("polygon");
 		el.id = data.id;
-		el.setAttribute("stroke", data.color || "black");
-		console.log(data)
+		if (data.color) el.setAttribute("stroke", data.color);
+		if (data.size) el.setAttribute("stroke-width", data.size);
+		var x3 = data.x
+		var y3 = data.y2
+		if (y3 < data.y) {
+			x3 = data.x2
+			y3 = data.y
+		}
+		console.log(x3 === data.x2)
+		el.setAttribute("points", `${data.x} ${data.y}, ${x3} ${y3}, ${data.x2} ${data.y2}`);
+		el.classList.add('triangle');
+		if (data.transform) {
+			el.style.transform = data.transform;
+			el.style.transformOrigin = data.transformOrigin;
+		}
+		if (isNew) Tools.drawingArea.appendChild(el)
+	}
+
+	function drawEquilateralTriangle(data) {
+		var isNew = true
+		if (svg.getElementById(data.id)) isNew = false
+		var el = svg.getElementById(data.id) || Tools.createSVGElement("polygon");
+		el.id = data.id;
+		if (data.color) el.setAttribute("stroke", data.color);
 		if (data.size) el.setAttribute("stroke-width", data.size);
 		//el.setAttribute("points", `${data.x} ${data.y}, ${data.x + ((data.x2 - data.x) / 2)} ${data.y2}, ${data.x2} ${data.y}`) - равнобедренный
 		var x3 = (data.x2-data.x)*Math.cos(-45)-(data.y2-data.y)*Math.sin(-45)+data.x;
 		var y3 = (data.x2-data.x)*Math.sin(-45)+(data.y2-data.y)*Math.cos(-45)+data.y;
 		el.setAttribute("points", `${data.x} ${data.y}, ${x3} ${y3}, ${data.x2} ${data.y2}`);
+		el.classList.add('triangle');
+		if (data.transform) {
+			el.style.transform = data.transform;
+			el.style.transformOrigin = data.transformOrigin;
+		}
 		if (isNew) Tools.drawingArea.appendChild(el)
 	}
 

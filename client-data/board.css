@@ -53,7 +53,7 @@ body {
 	transition: .1s;
 }
 
-#canvas polygon {
+#canvas .triangle {
   fill: none;
 }
 #cursor-me {
