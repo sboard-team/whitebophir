@@ -91,10 +91,10 @@ function handleRequest(request, response) {
 			// "boards" refers to the root directory
 			//log('board action', { 'url': request.url });
 			if (parts.length === 1 && parsedUrl.query.board) {
-				log('board action for html forms', { 'url': request.url });
+				log('board action for html forms', {'url': request.url});
 				// '/boards?board=...' This allows html forms to point to boards
-				var headers = { Location: 'boards/' + encodeURIComponent(parsedUrl.query.board) };
-				response.writeHead(301, headers);
+				var headers = {Location: 'boards/' + encodeURIComponent(parsedUrl.query.board)};
+				response.writeHead(302, headers);
 				response.end();
 			} else if (parts.length === 2 && request.url.indexOf('.') === -1) {
 				log('board attempt opening', { 'url': request.url });
@@ -105,8 +105,8 @@ function handleRequest(request, response) {
 
 				db.boardExists(name).then(boardExists => {
 					if (!boardExists) {
-						log('board not exists and go to cabinet', { 'board': name });
-						response.writeHead(301, { 'Location': config.CABINET_URL + 'boards/' +name + '/deleted' });
+						log('board not exists and go to cabinet', {'board': name});
+						response.writeHead(302, {'Location': config.CABINET_URL + 'boards/' + name + '/deleted'});
 						response.end();
 					} else {
 						// If there is no dot and no directory, parts[1] is the board name
