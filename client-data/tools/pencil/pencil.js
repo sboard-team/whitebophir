@@ -54,7 +54,7 @@
 			'type': 'line',
 			'id': curLineId,
 			'color': Tools.curTool.name === 'Eraser' ? '#fff' : Tools.getColor(),
-			'size': Tools.getSize(),
+			'size': Tools.getSize() * 3,
 			'opacity': Tools.getOpacity(),
 			'dotted': Tools.curTool.name === 'Pencil' ? index === 1 : false,
 		}, Tools.list.Pencil);
