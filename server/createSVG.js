@@ -127,7 +127,7 @@ async function toSVG(obj, writeable) {
 		await Promise.resolve(); // Do not block the event loop
 		const renderFun = Tools[elem.tool];
 		if (renderFun) writeable.write(renderFun(elem));
-		else console.warn("Missing render function for tool", elem.tool);
+		//else console.warn("Missing render function for tool", elem.tool);
 	}));
 	writeable.write('</svg>');
 }
