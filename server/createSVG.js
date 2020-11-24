@@ -108,7 +108,6 @@ async function toSVG(obj, writeable) {
 	const elems = Object.values(obj);
 	const dim = elems.reduce(function (dim, elem) {
 		if (elem._children) elem = elem._children[0];
-		console.log(elem);
 		let e = elem || {};
 		return [
 			Math.max(e.x + mX + e.deltax | 0, dim[0]),
