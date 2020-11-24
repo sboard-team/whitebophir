@@ -12,7 +12,9 @@ var app = require('http').createServer(handler)
 	, polyfillLibrary = require('polyfill-library')
 	, bd = require('./boardData.js')
 	, dotenv = require('dotenv')
-	, db = require('./db/db.js');
+	, db = require('./db/db.js')
+	, Sentry = require("@sentry/node")
+	, Tracing = require("@sentry/tracing");
 
 var MIN_NODE_VERSION = 8.0;
 
@@ -22,10 +24,15 @@ if (parseFloat(process.versions.node) < MIN_NODE_VERSION) {
 		", wbo requires at least " + MIN_NODE_VERSION + " !!!");
 }
 
+Sentry.init({
+	dsn: "https://e7e2cad7d90d4576a1dfecff29e7a48d@o449315.ingest.sentry.io/5531034",
+	tracesSampleRate: 1.0,
+});
+
 var io = sockets.start(app);
 
 app.listen(config.PORT);
-log("server started", { port: config.PORT });
+log("server started", {port: config.PORT});
 
 var CSP = "default-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss:";
 
