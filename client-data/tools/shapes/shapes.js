@@ -201,7 +201,6 @@
 	}
 
 	function draw(data) {
-		console.log(data)
 		Tools.drawingEvent = true;
 		if (data.index === 0 || data.index === 1) {
 			switch (data.type) {
