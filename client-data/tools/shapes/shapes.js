@@ -344,8 +344,8 @@
 		if (data.color) el.setAttribute("stroke", data.color);
 		if (data.size) el.setAttribute("stroke-width", data.size);
 		//el.setAttribute("points", `${data.x} ${data.y}, ${data.x + ((data.x2 - data.x) / 2)} ${data.y2}, ${data.x2} ${data.y}`) - равнобедренный
-		var x3 = (data.x + data.x2) / 2 + Math.sqrt(3) / 2 * (data.y - data.y2)
-		var y3 = (data.y + data.y2) / 2 + Math.sqrt(3) / 2 * (data.x2 - data.x)
+		var x3 = (data.x2 + data.x) / 2 + Math.sqrt(3) / 2 * (data.y2 - data.y)
+		var y3 = (data.y2 + data.y) / 2 + Math.sqrt(3) / 2 * (data.x - data.x2)
 		el.setAttribute("points", `${data.x} ${data.y}, ${x3} ${y3}, ${data.x2} ${data.y2}`);
 		el.classList.add('triangle');
 		if (data.transform) {
