@@ -74,6 +74,22 @@
 			curUpdate.x = x;
 			curUpdate.y = y;
 			curUpdate.index = index;
+		} else if(index === 4 || index === 5) {
+			curUpdate.id = Tools.generateUID();
+			Tools.drawAndSend({
+				'type': 'triangle',
+				'id': curUpdate.id,
+				'color': Tools.getColor(),
+				'size': Tools.getSize(),
+				'x': x,
+				'y': y,
+				'x2': x,// + 0.001,
+				'y2': y,
+				'index': index,
+			});
+			curUpdate.x = x;
+			curUpdate.y = y;
+			curUpdate.index = index;
 		} else {
 			curUpdate.id = Tools.generateUID("e"); //"e" for ellipse
 			Tools.drawAndSend({
@@ -121,6 +137,16 @@
 					} else {
 						draw(curUpdate);
 					}
+				}
+			} else if (curUpdate.index === 4) {
+				if (!curUpdate.id) return;
+				curUpdate.x2 = x;
+				curUpdate.y2 = y;
+				if (performance.now() - lastTime > 50 || end) {
+					Tools.drawAndSend(curUpdate);
+					lastTime = performance.now();
+				} else {
+					draw(curUpdate);
 				}
 			} else {
 				if (!curUpdate.id) return; // Not currently drawing
@@ -197,6 +223,22 @@
 					console.error("Straight shape: Draw instruction with unknown type. ", data);
 					break;
 			}
+		} else if (data.index === 4) {
+			switch (data.type) {
+				case "triangle":
+					drawEquilateralTriangle(data);
+					break;
+				case "update":
+					drawEquilateralTriangle(data);
+			}
+		} else if (data.index === 5) {
+			switch (data.type) {
+				case "triangle":
+					drawRightTriangle(data);
+					break;
+				case "update":
+					drawRightTriangle(data);
+			}
 		} else {
 			switch (data.type) {
 				case "ellipse":
@@ -271,6 +313,48 @@
 		}
 
 	}
+
+	function drawRightTriangle(data) {
+		var isNew = true
+		if (svg.getElementById(data.id)) isNew = false
+		var el = svg.getElementById(data.id) || Tools.createSVGElement("polygon");
+		el.id = data.id;
+		if (data.color) el.setAttribute("stroke", data.color);
+		if (data.size) el.setAttribute("stroke-width", data.size);
+		var x3 = data.x
+		var y3 = data.y2
+		if (y3 < data.y) {
+			x3 = data.x2
+			y3 = data.y
+		}
+		el.setAttribute("points", `${data.x} ${data.y}, ${x3} ${y3}, ${data.x2} ${data.y2}`);
+		el.classList.add('triangle');
+		if (data.transform) {
+			el.style.transform = data.transform;
+			el.style.transformOrigin = data.transformOrigin;
+		}
+		if (isNew) Tools.drawingArea.appendChild(el)
+	}
+
+	function drawEquilateralTriangle(data) {
+		var isNew = true
+		if (svg.getElementById(data.id)) isNew = false
+		var el = svg.getElementById(data.id) || Tools.createSVGElement("polygon");
+		el.id = data.id;
+		if (data.color) el.setAttribute("stroke", data.color);
+		if (data.size) el.setAttribute("stroke-width", data.size);
+		//el.setAttribute("points", `${data.x} ${data.y}, ${data.x + ((data.x2 - data.x) / 2)} ${data.y2}, ${data.x2} ${data.y}`) - равнобедренный
+		var x3 = (data.x2 + data.x) / 2 + Math.sqrt(3) / 2 * (data.y2 - data.y)
+		var y3 = (data.y2 + data.y) / 2 + Math.sqrt(3) / 2 * (data.x - data.x2)
+		el.setAttribute("points", `${data.x} ${data.y}, ${x3} ${y3}, ${data.x2} ${data.y2}`);
+		el.classList.add('triangle');
+		if (data.transform) {
+			el.style.transform = data.transform;
+			el.style.transformOrigin = data.transformOrigin;
+		}
+		if (isNew) Tools.drawingArea.appendChild(el)
+	}
+
 
 	function setIndex(newIndex) {
 		index = +newIndex || 0;

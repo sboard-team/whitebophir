@@ -938,15 +938,17 @@ function resizeCanvas(m) {
     top: initial;
 }
 
+.tooltip-top[data-tooltip]::after {
+    top: -40px;
+    bottom: initial;
+    left: 0;
+}
+
 .tooltip-toLeft[data-tooltip]::after {
     right: 0;
     left: initial;
 }
 
-.tooltip-top[data-tooltip]::after {
-    top: -40px;
-    bottom: initial;
-}
 
 *[data-tooltip]:hover::after {
     opacity: 1;

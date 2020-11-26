@@ -761,6 +761,22 @@
   background-color: rgb(101, 188, 243);
 }
 
+.shapes-overlay {
+  position: absolute;
+  top: 40px;
+  left: -20px;
+  padding-left: 20px;
+}
+
+.shapes-panel {
+  width: 80px;
+  display: flex;
+  background-color: #fff;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
 @media (max-width:645px) {
     .repost-link {
         display: none;
@@ -871,6 +887,12 @@
 }
 
 @media (max-height:550px) {
+  .shapes-panel {
+    top: inherit;
+    bottom: 40px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+  }
     .text-settings-panel,
     .selected-element-panel{
         top: inherit;
