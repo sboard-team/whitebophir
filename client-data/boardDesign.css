@@ -887,6 +887,10 @@
 }
 
 @media (max-height:550px) {
+  #Tool-Shapes + .sub-tool-panel {
+    bottom: 80px;
+  }
+
   .shapes-panel {
     top: inherit;
     bottom: 40px;
