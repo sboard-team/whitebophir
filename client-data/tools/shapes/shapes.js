@@ -387,14 +387,14 @@
 		el.id = data.id;
 		if (data.color) el.setAttribute("stroke", data.color);
 		if (data.size) el.setAttribute("stroke-width", data.size);
-		const Bx = (3 * data.x + data.x2 + 2 * data.y - 2 * data.y2) / 4;
-		const By = (3 * data.y + data.y2 + 2 * data.x2 - 2 * data.x) / 4;
-		const Cx = (data.x + 3 * data.x2 + 2 * data.y - 2 * data.y2) / 4;
-		const Cy = (data.y + 3 * data.y2 + 2 * data.x2 - 2 * data.x) / 4;
-		const Ex = (3 * data.x2 + data.x - 2 * data.y + 2 * data.y2) / 4;
-		const Ey = (3 * data.y2 + data.y - 2 * data.x2 + 2 * data.x) / 4;
-		const Fx = (3 * data.x + data.x2 - 2 * data.y + 2 * data.y2) / 4;
-		const Fy = (3 * data.y + data.y2 - 2 * data.x2 + 2 * data.x) / 4;
+		const Bx = (3 * data.x + data.x2 + Math.sqrt(3) * data.y - Math.sqrt(3) * data.y2) / 4;
+		const By = (3 * data.y + data.y2 + Math.sqrt(3) * data.x2 - Math.sqrt(3) * data.x) / 4;
+		const Cx = (3 * data.x2 + data.x + Math.sqrt(3) * data.y - Math.sqrt(3) * data.y2) / 4;
+		const Cy = (3 * data.y2 + data.y + Math.sqrt(3) * data.x2 - Math.sqrt(3) * data.x) / 4;
+		const Ex = (3 * data.x2 + data.x - Math.sqrt(3) * data.y + Math.sqrt(3) * data.y2) / 4;
+		const Ey = (3 * data.y2 + data.y - Math.sqrt(3) * data.x2 + Math.sqrt(3) * data.x) / 4;
+		const Fx = (3 * data.x + data.x2 - Math.sqrt(3) * data.y + Math.sqrt(3) * data.y2) / 4;
+		const Fy = (3 * data.y + data.y2 - Math.sqrt(3) * data.x2 + Math.sqrt(3) * data.x) / 4;
 		//data.x data.y, Bx By, Cx Cy, data.x2 data.y2, Ex Ey, Fx Fy
 		el.setAttribute("points", `${data.x} ${data.y}, ${Bx} ${By}, ${Cx} ${Cy}, ${data.x2} ${data.y2}, ${Ex} ${Ey}, ${Fx} ${Fy}`);
 		el.classList.add('triangle');
