@@ -390,7 +390,8 @@ Tools.isMobile = function () {
 				Tools.change('Document');
 			} else if (e.keyCode === 80) { //p
 				if (Tools.curTool.name === 'Pencil') {
-					Tools.change('Pencil', getToolIndex('Pencil') === 1 ? 0 : 1);
+					const index = (getToolIndex('Pencil') + 1) % 3;
+					Tools.change('Pencil', index);
 				} else {
 					Tools.change('Pencil', getToolIndex('Pencil'));
 				}

@@ -50,11 +50,17 @@
 		}
 		cancel = false;
 		curLineId = Tools.generateUID("l"); //"l" for line
+		var size = Tools.getSize();
+		if (Tools.curTool.name === 'Eraser') {
+			size *= 3;
+		} else if (index === 2) {
+			size *= 7;
+		}
 		Tools.drawAndSend({
 			'type': 'line',
 			'id': curLineId,
 			'color': Tools.curTool.name === 'Eraser' ? '#fff' : Tools.getColor(),
-			'size': Tools.curTool.name === 'Eraser' || index === 2 ? Tools.getSize() * 3 : Tools.getSize(),
+			'size': size,
 			'opacity': index === 2 ? 0.5 : 1,
 			'dotted': Tools.curTool.name === 'Pencil' ? index === 1 : false,
 		}, Tools.list.Pencil);
