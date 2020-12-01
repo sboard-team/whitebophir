@@ -91,9 +91,9 @@
 		if (checkElementIsDraw(target)) {
       targetID = target.id;
 			msg.id = targetID;
-			if (erasing && !target.classList.contains('selectedEl')) {
+			if (erasing && target.tagName !== 'image' && !target.classList.contains('selectedEl')) {
 				if (msg.id) Tools.drawAndSend(msg);
-			} else if (!target.classList.contains('selectedEl')) {
+			} else if (target.tagName !== 'image' && !target.classList.contains('selectedEl')) {
 				target.classList.add('forErasing');
 			}
 		} else {
@@ -101,7 +101,7 @@
 				const coordinates = generateCoordinates(evt.x, evt.y, 11);
 				for (let i of coordinates) {
 					const el = document.elementFromPoint(i[0], i[1]);
-					if (el && checkElementIsDraw(el) && !el.classList.contains('selectedEl')) {
+					if (el && checkElementIsDraw(el) && el.tagName !== 'image' && !el.classList.contains('selectedEl')) {
 						msg.id = el.id;
 						if (msg.id) Tools.drawAndSend(msg);
 					}

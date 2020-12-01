@@ -109,10 +109,10 @@
 			ctrl_pressed = true;
 			if (evt.target.tagName === 'INPUT' || evt.target.tagName === 'TEXTAREA') return;
 			evt.preventDefault();
-			if (evt.key === '=') {
+			if (evt.key === '0') {
 				Tools.setScale(1);
 				resizeBoard();
-			} else if (evt.key === '+') {
+			} else if (evt.key === '=') {
 				Tools.setScale(Tools.getScale() + 0.1);
 				resizeBoard();
 			} else if (evt.key === '-') {

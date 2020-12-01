@@ -90,6 +90,22 @@
 			curUpdate.x = x;
 			curUpdate.y = y;
 			curUpdate.index = index;
+		} else if(index === 7) {
+			curUpdate.id = Tools.generateUID();
+			Tools.drawAndSend({
+				'type': 'hexagon',
+				'id': curUpdate.id,
+				'color': Tools.getColor(),
+				'size': Tools.getSize(),
+				'x': x,
+				'y': y,
+				'x2': x,// + 0.001,
+				'y2': y,
+				'index': index,
+			});
+			curUpdate.x = x;
+			curUpdate.y = y;
+			curUpdate.index = index;
 		} else {
 			curUpdate.id = Tools.generateUID("e"); //"e" for ellipse
 			Tools.drawAndSend({
@@ -239,6 +255,15 @@
 				case "update":
 					drawRightTriangle(data);
 			}
+		} else if(data.index === 7) {
+			switch (data.type) {
+				case "hexagon":
+					drawHexagon(data)
+					break;
+				case "update":
+					drawHexagon(data)
+					break;
+			}
 		} else {
 			switch (data.type) {
 				case "ellipse":
@@ -355,6 +380,30 @@
 		if (isNew) Tools.drawingArea.appendChild(el)
 	}
 
+	function drawHexagon(data) {
+		var isNew = true
+		if (svg.getElementById(data.id)) isNew = false
+		var el = svg.getElementById(data.id) || Tools.createSVGElement("polygon");
+		el.id = data.id;
+		if (data.color) el.setAttribute("stroke", data.color);
+		if (data.size) el.setAttribute("stroke-width", data.size);
+		const Bx = (3 * data.x + data.x2 + Math.sqrt(3) * data.y - Math.sqrt(3) * data.y2) / 4;
+		const By = (3 * data.y + data.y2 + Math.sqrt(3) * data.x2 - Math.sqrt(3) * data.x) / 4;
+		const Cx = (3 * data.x2 + data.x + Math.sqrt(3) * data.y - Math.sqrt(3) * data.y2) / 4;
+		const Cy = (3 * data.y2 + data.y + Math.sqrt(3) * data.x2 - Math.sqrt(3) * data.x) / 4;
+		const Ex = (3 * data.x2 + data.x - Math.sqrt(3) * data.y + Math.sqrt(3) * data.y2) / 4;
+		const Ey = (3 * data.y2 + data.y - Math.sqrt(3) * data.x2 + Math.sqrt(3) * data.x) / 4;
+		const Fx = (3 * data.x + data.x2 - Math.sqrt(3) * data.y + Math.sqrt(3) * data.y2) / 4;
+		const Fy = (3 * data.y + data.y2 - Math.sqrt(3) * data.x2 + Math.sqrt(3) * data.x) / 4;
+		//data.x data.y, Bx By, Cx Cy, data.x2 data.y2, Ex Ey, Fx Fy
+		el.setAttribute("points", `${data.x} ${data.y}, ${Bx} ${By}, ${Cx} ${Cy}, ${data.x2} ${data.y2}, ${Ex} ${Ey}, ${Fx} ${Fy}`);
+		el.classList.add('triangle');
+		if (data.transform) {
+			el.style.transform = data.transform;
+			el.style.transformOrigin = data.transformOrigin;
+		}
+		if (isNew) Tools.drawingArea.appendChild(el)
+	}
 
 	function setIndex(newIndex) {
 		index = +newIndex || 0;
