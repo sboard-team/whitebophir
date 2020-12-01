@@ -101,3 +101,7 @@ pre {
 	margin: 0;
   user-select: none;
 }
+
+.moveable-control-box  {
+  z-index: 0 !important;
+}

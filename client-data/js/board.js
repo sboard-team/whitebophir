@@ -326,8 +326,8 @@ Tools.isMobile = function () {
 			}
 		});
 		document.addEventListener('keyup', function (e) {
-			if (e.target.tagName === 'TEXTAREA') return;
-			if (e.keyCode === 86 && !e.ctrlKey && e.metaKey) { //v
+			if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+			if (e.keyCode === 86 && !e.ctrlKey && !e.metaKey) { //v
 				Tools.change('Transform');
 			} else if (e.keyCode === 70) { //f
 				Tools.change('Formula');
@@ -390,7 +390,8 @@ Tools.isMobile = function () {
 				Tools.change('Document');
 			} else if (e.keyCode === 80) { //p
 				if (Tools.curTool.name === 'Pencil') {
-					Tools.change('Pencil', getToolIndex('Pencil') === 1 ? 0 : 1);
+					const index = (getToolIndex('Pencil') + 1) % 3;
+					Tools.change('Pencil', index);
 				} else {
 					Tools.change('Pencil', getToolIndex('Pencil'));
 				}
@@ -1641,7 +1642,7 @@ function _drawLine(action) {
 		'id': action.id,
 		'color': action.color,
 		'size': action.size,
-		'opacity': 1,
+		'opacity': action.opacity,
 		'dotted': action.dotted,
 		'properties': action.properties,
 		'transform': action.transform,
