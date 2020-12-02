@@ -40,6 +40,9 @@ Tools.i18n = (function i18n() {
 Tools.server_config = JSON.parse(document.getElementById("configuration").text);
 
 document.getElementById('cabinetURL').setAttribute('href', Tools.server_config.CABINET_URL);
+document.getElementById('cabinetURL').addEventListener('click', function () {
+		Tools.sendAnalytic('Cabinet', 0);
+});
 Tools.board = document.getElementById("board");
 Tools.svg = document.getElementById("canvas");
 Tools.drawingArea = Tools.svg.getElementById("drawingArea");
@@ -283,6 +286,87 @@ Tools.isMobile = function () {
 	return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 };
 
+Tools.sendAnalytic = function (toolName, index) {
+	const CODE = 68060329;
+	const Intruments = {
+		"Pencil": {
+			"0": "pencil",
+			"1": "dash_pencil",
+			"2": "marker"
+		},
+		"Transform": {
+			"0": "choose",
+			"100": "delete_obj",
+			"101": "double_obj"
+		},
+		"Hand": {
+			"0": "mover"
+		},
+		"Eraser": {
+			"0": "eraser",
+			"1": "corrector",
+			"100": "delete_all"
+		},
+		"Line": {
+			"0": "line",
+			"1": "line_fix",
+			"2": "arrow",
+			"3": "arrow_fix",
+			"4": "dash_line",
+			"5": "dash_line_fix"
+		},
+		"Shapes": {
+			"0": "rectangle",
+			"1": "square",
+			"2": "ellipse",
+			"3": "circle",
+			"4": "regular_triangle",
+			"5": "right_triangle",
+			"6": "random_triangle",
+			"7": "regular_hexagon"
+		},
+		"Formula": {
+			"0": "formula"
+		},
+		"Text": {
+			"0": "text"
+		},
+		"Grid": {
+			"0": "back_cells",
+			"1": "back_dots",
+			"2": "back_empty"
+		},
+		"Size": {
+			"0": "size_choice"
+		},
+		"Color": {
+			"0": "color_choice"
+		},
+		"Zoom": {
+			"0": "fit",
+			"1": "scale_100",
+			"2": "zoom_in",
+			"3": "zoom_out"
+		},
+		"Help": {
+			"0": "help"
+		},
+		"History": {
+			"0": "undo",
+			"1": "redo"
+		},
+		"Export": {
+			"0": "export_pdf",
+			"1": "cut_lines",
+		},
+		"Cabinet": {
+			"0": "back_to_LK",
+			"1": "change_title",
+		},
+	};
+	ym(CODE,'reachGoal', Intruments[toolName][index]);
+};
+
 (function hotkeys() {
 	const presetsList = document.getElementsByClassName('color-preset-box');
 	const sizes = [1, 3, 5, 9, 15];
@@ -460,6 +544,7 @@ Tools.change = function (toolName, subToolIndex) {
 			Tools.HTML.toggle(newTool.name, props.name, props.icon);
 			if (newTool.secondary.switch) newTool.secondary.switch();
 		}
+		Tools.sendAnalytic(newTool.name, +subToolIndex || 0)
 		return;
 	}
 	if (!newTool.oneTouch) {
@@ -488,6 +573,9 @@ Tools.change = function (toolName, subToolIndex) {
 		//Add the new event listeners
 		Tools.addToolListeners(newTool);
 		Tools.curTool = newTool;
+		Tools.sendAnalytic(Tools.curTool.name, +subToolIndex || 0)
+	} else {
+		Tools.sendAnalytic(newTool.name, +subToolIndex || 0)
 	}
 
 	//Call the start callback of the new tool
@@ -619,6 +707,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 				modal.close(evt.target.dataset.action);
 			} else if (evt.target && evt.target.dataset.asyncaction) {
 				const newName = document.getElementById('newBoardName').value;
+				Tools.sendAnalytic('Cabinet', 1)
 				fetch(Tools.server_config.API_URL + 'boards/' + Tools.boardName + '?name=' + newName,
 					{
 						method: 'GET',
@@ -646,6 +735,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 			Tools.drawAndSend({
 				'type': 'clearBoard',
 			}, Tools.list.Eraser);
+			Tools.sendAnalytic('Eraser', 100)
 		}
 		modal.destroy();
 	}).show();
@@ -686,19 +776,23 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
     Tools.setScrollFromHash = setScrollFromHash;
 
     function scaleToFull() {
+	    Tools.sendAnalytic('Zoom', 1);
 	    scaleToCenter(1 - Tools.getScale());
     }
 
     function scaleToWidth() {
+    	Tools.sendAnalytic('Zoom', 0);
 	    scaleToCenter(document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X - Tools.getScale());
     }
 
     function minusScale() {
+	    Tools.sendAnalytic('Zoom', 3);
 	    scaleToCenter(-0.1);
     }
 
     function goToHelp() {
-        window.open(Tools.server_config.LANDING_URL + 'help');
+	    Tools.sendAnalytic('Help', 0);
+	    window.open(Tools.server_config.LANDING_URL + 'help');
     }
 
     function scaleToCenter(deltaScale) {
@@ -714,6 +808,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
     }
 
 	function plusScale() {
+		Tools.sendAnalytic('Zoom', 2);
 		scaleToCenter(0.1);
 	}
 
@@ -729,7 +824,8 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 
     function createPdf() {
         if (Tools.params.permissions.pdf) {
-            window.open(Tools.server_config.PDF_URL + 'generate/' + Tools.boardName + '?name=' + Tools.boardTitle);
+        	Tools.sendAnalytic("Export", 0)
+        	window.open(Tools.server_config.PDF_URL + 'generate/' + Tools.boardName + '?name=' + Tools.boardTitle);
         } else {
             if (Tools.params.permissions.edit) {
                 createModal(Tools.modalWindows.premiumFunctionForOwner);
@@ -746,6 +842,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 
     function togglePDFLines() {
 			document.getElementById('pdfLines').classList.toggle('hide');
+			Tools.sendAnalytic('Export', 1)
     }
 
     function showBoard() {
@@ -1237,6 +1334,7 @@ Tools.setColor = function (color) {
 	for (var node of presetsList) {
 		node.classList.remove('selected-color');
 	}
+	Tools.sendAnalytic('Color', 0)
 };
 
 Tools.getColor = (function color() {
@@ -1261,6 +1359,7 @@ document.getElementById('color-picker-btn').addEventListener('pointerdown', func
 	e.stopPropagation();
 	document.addEventListener('pointerdown', function () {
 		toolColorEl.classList.remove('opened');
+		Tools.sendAnalytic('Color', 0)
 	}, {once: true});
 });
 
@@ -1398,7 +1497,7 @@ Tools.setSize = (function size() {
 			Tools.setSize(+evt.target.innerText);
 		}
 	});
-
+	var debounceTimeout = null;
 	function update() {
 		var size = Math.max(1, Math.min(60, chooser.value | 0));
 		chooser.value = size;
@@ -1408,6 +1507,10 @@ Tools.setSize = (function size() {
 				item.classList.add('selected-width');
 			}
 		}
+		clearTimeout(debounceTimeout)
+		debounceTimeout = setTimeout(function () {
+			Tools.sendAnalytic('Size', 0);
+		}, 300)
 		Tools.sizeChangeHandlers.forEach(function (handler) {
 			handler(size);
 		});
@@ -1472,6 +1575,7 @@ Tools.undo = (function () {
 
 	function update() {
 		if (Tools.history.length) {
+			Tools.sendAnalytic('History', 0);
 			const action = Tools.history.pop();
 			if (Tools.history.length === 0) {
 				Tools.disableToolsEl('undo');
@@ -1557,6 +1661,7 @@ Tools.redo = (function () {
 
 	function update() {
 		if (Tools.historyRedo.length) {
+			Tools.sendAnalytic('History', 1);
 			const action = Tools.historyRedo.pop();
 			if (Tools.historyRedo.length === 0) {
 				Tools.disableToolsEl('redo');

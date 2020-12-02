@@ -224,6 +224,7 @@
 		});
 		Tools.send({ type: 'array', events: events });
 		Tools.addActionToHistory(dataForUndo);
+		Tools.sendAnalytic('Transform', 101)
 		moveable.request("draggable", {deltaX: 20, deltaY: 20}, true);
 	}
 
@@ -244,6 +245,7 @@
 		});
 		data.sendBack = true;
 		Tools.drawAndSend(data, Tools.list.Eraser);
+		Tools.sendAnalytic('Transform', 100)
 		targets = [];
 	}
 

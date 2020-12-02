@@ -110,15 +110,19 @@
 			if (evt.target.tagName === 'INPUT' || evt.target.tagName === 'TEXTAREA') return;
 			evt.preventDefault();
 			if (evt.key === '0') {
+				Tools.sendAnalytic('Zoom', 1);
 				Tools.setScale(1);
 				resizeBoard();
 			} else if (evt.key === '=') {
+				Tools.sendAnalytic('Zoom', 2);
 				Tools.setScale(Tools.getScale() + 0.1);
 				resizeBoard();
 			} else if (evt.key === '-') {
+				Tools.sendAnalytic('Zoom', 3);
 				Tools.setScale(Tools.getScale() - 0.1);
 				resizeBoard();
 			} else if (evt.key === '/') {
+				Tools.sendAnalytic('Zoom', 0);
 				Tools.setScale(document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X);
 				resizeBoard();
 			}
