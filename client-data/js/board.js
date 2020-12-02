@@ -364,7 +364,6 @@ Tools.sendAnalytic = function (toolName, index) {
 			"1": "change_title",
 		},
 	};
-	console.log(Intruments[toolName][index]);
 	ym(CODE,'reachGoal', Intruments[toolName][index]);
 };
 
