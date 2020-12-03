@@ -336,6 +336,9 @@ Tools.sendAnalytic = function (toolName, index) {
 			"1": "back_dots",
 			"2": "back_empty"
 		},
+		"Document": {
+			"0": "add_img",
+		},
 		"Size": {
 			"0": "size_choice"
 		},
@@ -364,6 +367,7 @@ Tools.sendAnalytic = function (toolName, index) {
 			"1": "change_title",
 		},
 	};
+	//console.log(CODE,'reachGoal', Intruments[toolName][index])
 	ym(CODE,'reachGoal', Intruments[toolName][index]);
 };
 
