@@ -990,8 +990,10 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
     window.addEventListener('mousemove', function () {
     	clearTimeout(timeoutRedirect);
 	    timeoutRedirect = setTimeout(function () {
-	    	if (!Tools.isMobile()) window.location.replace(window.location.origin + window.location.pathname + '/inactive');
-	    }, Tools.server_config.TIME_BEFORE_CLOSE * 60 * 1000 || 2*60*60*1000);
+			if (!Tools.isMobile()) {
+				window.location.replace(Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/inactive');
+			}
+		}, Tools.server_config.TIME_BEFORE_CLOSE * 60 * 1000 || 2*60*60*1000);
     });
 
 })();
