@@ -70,4 +70,6 @@ module.exports = {
     /** Maximum size of uploaded documents default 5MB */
     MAX_DOCUMENT_SIZE: parseInt(process.env['WBO_MAX_DOCUMENT_SIZE']) || 1048576 * 5,
 
+		TIME_BEFORE_CLOSE: parseInt(process.env['TIME_BEFORE_CLOSE'] || 120)
+
 };
