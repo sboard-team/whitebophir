@@ -10,7 +10,6 @@ MongoClient.connect(process.env.DB_CONN, {useUnifiedTopology: true}, function(er
 	db = database.db("boardsdb");;
 
 	console.log("DB activated");
-	start();
 });
 
 /** Обновляет доску **/
