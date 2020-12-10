@@ -4,12 +4,26 @@ const MongoClient = require('mongodb').MongoClient;
 
 var db;
 
-MongoClient.connect(process.env.DB_CONN, {useUnifiedTopology: true}, function(err, database) {
-	if(err) throw err;
+MongoClient.connect(process.env.DB_CONN, {
+    connectTimeoutMS: 30000,
+    //autoReconnect: true,
+    //reconnectTries: 30,
+    //reconnectInterval: 1000,
+    keepAlive: true,
+    keepAliveInitialDelay: 30000,
+    minPoolSize: 1,
+    maxPoolSize: 30,
+    minSize: 1,
+    poolSize: 20,
+    useUnifiedTopology: true,
+    raw: false,
+    socketTimeoutMS: 360000
+}, function (err, database) {
+    if (err) throw err;
 
-	db = database.db("boardsdb");;
+    db = database.db("boardsdb");
 
-	console.log("DB activated");
+    console.log("DB activated");
 });
 
 /** Обновляет доску **/
