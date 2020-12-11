@@ -73,7 +73,8 @@ function socketConnection(socket) {
 					log('BANNED', {
 						user_agent: request.headers['user-agent'],
 						original_ip: request.headers['x-forwarded-for'] || request.headers['forwarded'],
-						emit_count: emitCount
+						emit_count: emitCount,
+						board: message.board
 					});
 				}
 				return;
