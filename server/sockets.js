@@ -24,9 +24,26 @@ function startIO(app) {
 	return io;
 }
 
+function getStats() {
+	const boardsCount = Object.keys(boards).length;
+	let usersCount = 0;
+
+	let output = '';
+
+	for (key in boards) {
+		const b = boards[key];
+		usersCount += b.users.size;
+		output += ' -- ' + b.name + ' : ' + b.users.size + '\n';
+	}
+
+	output = 'Всего досок: ' + boardsCount + '.\nВсего пользователей (неуникальных): ' + usersCount + '\n\n' + output;
+
+	return output;
+}
+
 /** Returns a promise to a BoardData with the given name
  * @returns {Promise<BoardData>}
-*/
+ */
 async function getBoard(name) {
 	if (boards.hasOwnProperty(name)) {
 		return boards[name];
@@ -215,4 +232,5 @@ function generateUID(prefix, suffix) {
 
 if (exports) {
 	exports.start = startIO;
+	exports.getStats = getStats;
 }

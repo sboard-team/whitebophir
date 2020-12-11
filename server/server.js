@@ -121,6 +121,12 @@ function handleRequest(request, response) {
 			}
 			break;
 
+		case 'stats':
+			const stats = sockets.getStats();
+			response.writeHead(200, {'Content-Type': 'text/plain'});
+			response.end('Статистика по доскам\n\n' + stats);
+			break;
+
 		case 'preview':
 			const boardUuid = parts[1];
 
