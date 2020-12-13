@@ -30,7 +30,7 @@ MongoClient.connect(process.env.DB_CONN, {
 async function updateBoard(boardName, board) {
     const collection = db.collection('boards');
     await collection.updateOne({ name: boardName }, {$set: { board: board }}, {upsert: false});
-    log('db.board updated', { 'boardName': boardName });
+    //log('db.board updated', { 'boardName': boardName });
 }
 
 async function createBoard(boardName) {
