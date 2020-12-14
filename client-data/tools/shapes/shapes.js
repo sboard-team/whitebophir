@@ -62,13 +62,34 @@
 			'y2': y,
 			'index': index,
 		};
-		curUpdate.id = id;
-		curUpdate.x = x;
-		curUpdate.y = y;
 		curUpdate.index = index;
 		if (index === 6) {
+			if (step === 0) {
+				curUpdate.x = x;
+				curUpdate.y = y;
+				curUpdate.id = id;
+			} else if (step === 1) {
+				curUpdate.x2 = x;
+				curUpdate.y2 = y;
+				curUpdate.x3 = x;
+				curUpdate.y3 = y;
+				Tools.drawAndSend(curUpdate);
+				step++;
+				return;
+			} else if (step === 2) {
+				curUpdate.x3 = x;
+				curUpdate.y3 = y;
+				Tools.drawAndSend(curUpdate);
+				step++;
+				return;
+			}
 			data.x3 = x;
 			data.y3 = y;
+			step++;
+		} else {
+			curUpdate.id = id;
+			curUpdate.x = x;
+			curUpdate.y = y;
 		}
 		Tools.drawAndSend(data);
 	}
@@ -102,8 +123,20 @@
 			y = y0 + (deltaY > 0 ? diameter : -diameter);
 		}
 
-		curUpdate.x2 = x;
-		curUpdate.y2 = y;
+		if (index === 6) {
+			if (step === 1) {
+				curUpdate.x2 = x;
+				curUpdate.y2 = y;
+				curUpdate.x3 = x;
+				curUpdate.y3 = y;
+			} else if (step === 2) {
+				curUpdate.x3 = x;
+				curUpdate.y3 = y;
+			}
+		} else {
+			curUpdate.x2 = x;
+			curUpdate.y2 = y;
+		}
 		if (performance.now() - lastTime > 50 || isEnd) {
 			Tools.drawAndSend(curUpdate);
 			lastTime = performance.now();
@@ -117,7 +150,8 @@
 		if (!curUpdate.id) return;
 		move(x, y, null, true);
 		Tools.addActionToHistory({type: "delete", id: curUpdate.id});
-		curUpdate.id = "";
+		if (index !== 6 || step === 3) curUpdate.id = "";
+		if (step === 3) step = 0;
 	}
 
 	function draw(data) {
@@ -154,6 +188,7 @@
 	}
 
 	function renderTriangle(data) {
+		console.log(data)
 		const el = Tools.svg.getElementById(data.id) || Tools.createSVGElement('polygon');
 		el.setAttribute("points", `${data.x} ${data.y}, ${data.x3} ${data.y3}, ${data.x2} ${data.y2}`);
 		el.classList.add('triangle');
@@ -222,6 +257,18 @@
 		if (!Tools.svg.getElementById(data.id)) Tools.drawingArea.appendChild(el);
 	}
 
+	function onQuit() {
+		if (curUpdate.id) {
+			const msg = {
+				"type": "delete",
+				"id": curUpdate.id,
+				"sendBack": false,
+			};
+			Tools.drawAndSend(msg, Tools.list.Eraser);
+		}
+		step = 0;
+	}
+
 	function setIndex(newIndex) {
 		index = +newIndex || 0;
 	}
@@ -234,6 +281,7 @@
 			"move": move,
 			"release": stop,
 		},
+		"onquit": onQuit,
 		"draw": draw,
 		"mouseCursor": "crosshair",
 		"setIndex": setIndex,
