@@ -188,7 +188,6 @@
 	}
 
 	function renderTriangle(data) {
-		console.log(data)
 		const el = Tools.svg.getElementById(data.id) || Tools.createSVGElement('polygon');
 		el.setAttribute("points", `${data.x} ${data.y}, ${data.x3} ${data.y3}, ${data.x2} ${data.y2}`);
 		el.classList.add('triangle');
@@ -213,7 +212,6 @@
 	}
 
 	function renderRect(data) {
-		console.log('renderRect')
 		const el = Tools.svg.getElementById(data.id) || Tools.createSVGElement('rect');
 		el.setAttribute('x', Math.min(data['x2'], data['x']));
 		el.setAttribute('y', Math.min(data['y2'], data['y']));

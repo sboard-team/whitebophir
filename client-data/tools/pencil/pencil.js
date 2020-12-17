@@ -186,5 +186,6 @@
 		"stylesheet": "tools/pencil/pencil.css"
 	};
 	Tools.add(pencilTool);
+	Tools.change("Pencil"); // Use the Pencil tool by default
 
 })(); //End of code isolation
