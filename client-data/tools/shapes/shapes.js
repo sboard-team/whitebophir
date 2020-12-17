@@ -45,6 +45,7 @@
 		evt.preventDefault();
 		if (Tools.deleteForTouches(evt, curUpdate.id)) {
 			cancel = true;
+			step = 0;
 			curUpdate.id = "";
 			return;
 		}
