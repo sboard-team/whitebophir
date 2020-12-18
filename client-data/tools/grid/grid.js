@@ -101,7 +101,7 @@
             width: "100%", height: "100%",
             fill: states[index]
         });
-        Tools.svg.insertBefore(gridContainer, Tools.drawingArea);
+        Tools.svgWb.insertBefore(gridContainer, Tools.drawingArea);
         return gridContainer;
     })();
 

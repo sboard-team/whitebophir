@@ -96,16 +96,20 @@ foreignObject {
 }
 
 .moveable-dashed {
-  display: none;
+	display: none;
 }
 
 pre {
 	width: fit-content;
 	width: -moz-fit-content;
 	margin: 0;
-  user-select: none;
+	user-select: none;
 }
 
-.moveable-control-box  {
-  z-index: 0 !important;
+.d-none {
+	display: none;
+}
+
+.moveable-control-box {
+	z-index: 0 !important;
 }

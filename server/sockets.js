@@ -25,7 +25,7 @@ function startIO(app) {
 }
 
 function getStats() {
-	return '';
+
 	const boardsCount = Object.keys(boards).length;
 	let usersCount = 0;
 
