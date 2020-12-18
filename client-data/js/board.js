@@ -45,6 +45,7 @@ document.getElementById('cabinetURL').addEventListener('click', function () {
 });
 Tools.board = document.getElementById("board");
 Tools.svg = document.getElementById("canvas");
+Tools.svgWb = document.getElementById("wb");
 Tools.drawingArea = Tools.svg.getElementById("drawingArea");
 Tools.modalWindows = {
 	premiumFunctionForOwner: `<h2 class="modal-title">Функция недоступна!</h2>
@@ -93,7 +94,7 @@ Tools.modalWindows = {
 //Initialization
 Tools.curTool = null;
 Tools.drawingEvent = true;
-Tools.showMarker = true;
+Tools.showMarker = false;
 Tools.showOtherCursors = true;
 Tools.showMyCursor = false;
 
@@ -366,6 +367,9 @@ Tools.sendAnalytic = function (toolName, index) {
 			"0": "back_to_LK",
 			"1": "change_title",
 		},
+		"Cursors": {
+			"0": "show_cursor",
+		},
 	};
 	//console.log(CODE,'reachGoal', Intruments[toolName][index])
 	ym(CODE,'reachGoal', Intruments[toolName][index]);
@@ -611,6 +615,7 @@ Tools.send = function (data, toolName) {
 	Tools.applyHooks(Tools.messageHooks, d);
 	var message = {
 		"board": Tools.boardName,
+		"user": Tools.params.user,
 		"data": d
 	};
 	Tools.socket.emit('broadcast', message);
@@ -816,25 +821,45 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 		scaleToCenter(0.1);
 	}
 
-    function sendClearBoard() {
-        createModal(Tools.modalWindows.clearBoard);
-    }
+	function sendClearBoard() {
+		createModal(Tools.modalWindows.clearBoard);
+	}
 
-    function createModalRename() {
-        createModal(Tools.modalWindows.renameBoard, function () {
-            document.getElementById('newBoardName').value = Tools.boardTitle;
-        });
-    }
+	function createModalRename() {
+		createModal(Tools.modalWindows.renameBoard, function () {
+			document.getElementById('newBoardName').value = Tools.boardTitle;
+		});
+	}
 
-    function createPdf() {
-        if (Tools.params.permissions.pdf) {
-        	Tools.sendAnalytic("Export", 0)
-        	window.open(Tools.server_config.PDF_URL + 'generate/' + Tools.boardName + '?name=' + Tools.boardTitle);
-        } else {
-            if (Tools.params.permissions.edit) {
-                createModal(Tools.modalWindows.premiumFunctionForOwner);
-            } else {
-                createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+	function toggleCursors() {
+		if (Tools.params.permissions.cursors) {
+			Tools.sendAnalytic("Cursors", 0);
+			Tools.showMarker = !Tools.showMarker;
+			if (Tools.showMarker === false) {
+				Tools.list.Cursor.clearAll();
+			}
+			let btnCursorTitle = (Tools.showMarker)
+				? 'Скрыть курсоры участников'
+				: 'Показать курсоры участников';
+			document.getElementById('btnCursors').setAttribute('data-tooltip', btnCursorTitle);
+		} else {
+			if (Tools.params.permissions.edit) {
+				createModal(Tools.modalWindows.premiumFunctionForOwner);
+			} else {
+				createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+			}
+		}
+	}
+
+	function createPdf() {
+		if (Tools.params.permissions.pdf) {
+			Tools.sendAnalytic("Export", 0)
+			window.open(Tools.server_config.PDF_URL + 'generate/' + Tools.boardName + '?name=' + Tools.boardTitle);
+		} else {
+			if (Tools.params.permissions.edit) {
+				createModal(Tools.modalWindows.premiumFunctionForOwner);
+			} else {
+				createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
             }
         }
     }
@@ -858,26 +883,39 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
         if (Tools.params.permissions.edit) {
             document.getElementById('boardName').addEventListener('click', createModalRename, false);
         } else {
-            document.getElementById('boardName')
-                .removeAttribute('data-tooltip');
-        }
+			document.getElementById('boardName')
+				.removeAttribute('data-tooltip');
+		}
 
-        if (Tools.params.permissions.invite) {
-            document.querySelector('.js-link-text').innerText = Tools.params.invite_link;
-        } else {
-            document.querySelector('.js-link-panel').remove();
-            document.querySelector('.js-join-link').remove();
-        }
+		if (Tools.params.permissions.invite) {
+			document.querySelector('.js-link-text').innerText = Tools.params.invite_link;
+		} else {
+			document.querySelector('.js-link-panel').remove();
+			document.querySelector('.js-join-link').remove();
+		}
 
-        if (!Tools.params.permissions.image) {
-            document.getElementById('Tool-Document').classList.add('disabled-icon');
-        }
+		if (Tools.server_config.FEATURES_CURSORS && Tools.params.permissions.cursors) {
+			Tools.showMarker = true;
+		}
+		if (Tools.server_config.FEATURES_CURSORS === false) {
+			document.getElementById('btnCursors').remove();
+		} else {
+			let btnCursorTitle = (Tools.showMarker)
+				? 'Скрыть курсоры участников'
+				: 'Показать курсоры участников';
 
-        let b = document.querySelectorAll('.js-elements');
-        b.forEach((el) => {
-            el.classList.toggle('sjx-hidden');
-        });
-        //interval for send activity board
+			document.getElementById('btnCursors').setAttribute('data-tooltip', btnCursorTitle);
+		}
+
+		if (!Tools.params.permissions.image) {
+			document.getElementById('Tool-Document').classList.add('disabled-icon');
+		}
+
+		let b = document.querySelectorAll('.js-elements');
+		b.forEach((el) => {
+			el.classList.toggle('sjx-hidden');
+		});
+		//interval for send activity board
         setInterval((function () {
             var lastPosX = Tools.mousePosition.x;
             var lastPosY = Tools.mousePosition.x;
@@ -905,17 +943,17 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
         }
         if (Tools.server_config.DEV_MODE === 1 || PASS === 'dlTmsXCPwaMfTosmtDpsdf') {
             Tools.params = {
-                "status": true,
-                "board": {"name": "Dev Board"},
-                "user": {
-                    "id": "187999",
-                    "name": "John",
-                    "surname": "Smith",
-                    "full_name": "John Smith"
-                },
-                "permissions": {"edit": true, "invite": true, "image": true, "pdf": true},
-                "invite_link": "https:\/\/back.sboard.su\/cabinet\/boards\/join\/56dfgdfbh67="
-            };
+				"status": true,
+				"board": {"name": "Dev Board"},
+				"user": {
+					"id": "187999",
+					"name": "John",
+					"surname": "Smith",
+					"full_name": "John Smith"
+				},
+				"permissions": {"edit": true, "invite": true, "image": true, "pdf": true, "cursors": true},
+				"invite_link": "https:\/\/back.sboard.su\/cabinet\/boards\/join\/56dfgdfbh67="
+			};
             showBoard();
             return;
         }
@@ -961,8 +999,9 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
     document.getElementById("help").addEventListener('click', goToHelp, false);
     document.getElementById('clearBoard').addEventListener('click', sendClearBoard, false);
     document.getElementById('exportToPDF').addEventListener('click', createPdf, false);
-    document.getElementById('exportToPDFButton').addEventListener('click', createPdf, false);
-    document.getElementById('showPDFLines').addEventListener('click', togglePDFLines, false);
+	document.getElementById('exportToPDFButton').addEventListener('click', createPdf, false);
+	document.getElementById('btnCursors').addEventListener('click', toggleCursors, false);
+	document.getElementById('showPDFLines').addEventListener('click', togglePDFLines, false);
 		document.getElementById('pdfWithoutMobile').addEventListener('click', exportPDFWithoutMobile, false);//
     window.addEventListener("hashchange", setScrollFromHash, false);
     window.addEventListener("popstate", setScrollFromHash, false);
@@ -1090,11 +1129,11 @@ Tools.setScale = function setScale(scale) {
 		scale = document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X;
 	}
 	scale = Math.max(0.1, Math.min(10, scale));
-	Tools.svg.style.willChange = 'transform';
-	Tools.svg.style.transform = 'scale(' + scale + ')';
+	Tools.svgWb.style.willChange = 'transform';
+	Tools.svgWb.style.transform = 'scale(' + scale + ')';
 	clearTimeout(scaleTimeout);
 	scaleTimeout = setTimeout(function () {
-		Tools.svg.style.willChange = 'auto';
+		Tools.svgWb.style.willChange = 'auto';
 	}, 1000);
 	Tools.scale = scale;
 	scaleValueEl.innerText = Math.round(scale * 100) + '%';
