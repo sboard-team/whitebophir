@@ -104,10 +104,6 @@
 		selected = null;
 	}
 
-	function switchTool() {
-		selected = null;
-	}
-
 	var handTool = { //The new tool
 		"name": "Hand",
 		"shortcut": "h",
@@ -122,5 +118,4 @@
 	};
 
 	Tools.add(handTool);
-	Tools.change("Hand"); // Use the hand tool by default
 })(); //End of code isolation
