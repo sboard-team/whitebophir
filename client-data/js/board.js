@@ -894,14 +894,18 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 			document.querySelector('.js-join-link').remove();
 		}
 
-		if (Tools.params.permissions.cursors) {
+		if (Tools.server_config.FEATURES_CURSORS && Tools.params.permissions.cursors) {
 			Tools.showMarker = true;
 		}
-		let btnCursorTitle = (Tools.showMarker)
-			? 'Скрыть курсоры участников'
-			: 'Показать курсоры участников';
+		if (Tools.server_config.FEATURES_CURSORS === false) {
+			document.getElementById('btnCursors').remove();
+		} else {
+			let btnCursorTitle = (Tools.showMarker)
+				? 'Скрыть курсоры участников'
+				: 'Показать курсоры участников';
 
-		document.getElementById('btnCursors').setAttribute('data-tooltip', btnCursorTitle);
+			document.getElementById('btnCursors').setAttribute('data-tooltip', btnCursorTitle);
+		}
 
 		if (!Tools.params.permissions.image) {
 			document.getElementById('Tool-Document').classList.add('disabled-icon');
