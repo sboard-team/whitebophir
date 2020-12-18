@@ -25,6 +25,7 @@ function startIO(app) {
 }
 
 function getStats() {
+
 	const boardsCount = Object.keys(boards).length;
 	let usersCount = 0;
 
@@ -126,8 +127,11 @@ function socketConnection(socket) {
 		// Save the message in the board
 		handleMessage(boardName, data, socket);
 
+		let outputData = {};
+		Object.assign(outputData, data, {user: message.user})
 		//Send data to all other users connected on the same board
-		socket.broadcast.to(boardName).emit('broadcast', data);
+		socket.broadcast.to(boardName).emit('broadcast', outputData);
+		delete outputData;
 	}));
 
 	socket.on('disconnecting', function onDisconnecting(reason) {

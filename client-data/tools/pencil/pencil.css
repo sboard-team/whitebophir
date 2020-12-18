@@ -1,7 +1,7 @@
-#canvas path {
-	fill: none;
-	stroke-linecap: round;
-	stroke-linejoin: round;
+#canvas path:not(.pretty-cursor) {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 #canvas path.dotted {

@@ -769,12 +769,17 @@
 }
 
 .shapes-panel {
-  width: 120px;
+  width: 160px;
   display: flex;
   background-color: #fff;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
   box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.none-bottom-border {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 @media (max-width:645px) {
@@ -896,6 +901,7 @@
     bottom: 40px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
+    margin-bottom: 20px;
   }
     .text-settings-panel,
     .selected-element-panel{

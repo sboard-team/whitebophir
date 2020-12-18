@@ -36,10 +36,10 @@ body {
 	stroke-linejoin: round;
 }
 
-#canvas path {
-	fill: none;
-	stroke-linecap: round;
-	stroke-linejoin: round;
+#canvas path:not(.pretty-cursor) {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 #canvas text {
@@ -48,9 +48,13 @@ body {
 	-moz-user-select:none;
 }
 
-#canvas circle.opcursor {
-	pointer-events: none;
-	transition: .1s;
+#canvas .opcursor {
+    pointer-events: none;
+    transition: .1s;
+}
+
+#canvas text.pretty-name {
+    font-size: 12px;
 }
 
 #canvas .triangle {
@@ -92,16 +96,20 @@ foreignObject {
 }
 
 .moveable-dashed {
-  display: none;
+	display: none;
 }
 
 pre {
 	width: fit-content;
 	width: -moz-fit-content;
 	margin: 0;
-  user-select: none;
+	user-select: none;
 }
 
-.moveable-control-box  {
-  z-index: 0 !important;
+.d-none {
+	display: none;
+}
+
+.moveable-control-box {
+	z-index: 0 !important;
 }
