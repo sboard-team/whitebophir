@@ -611,6 +611,7 @@ Tools.send = function (data, toolName) {
 	Tools.applyHooks(Tools.messageHooks, d);
 	var message = {
 		"board": Tools.boardName,
+		"user": Tools.params.user,
 		"data": d
 	};
 	Tools.socket.emit('broadcast', message);

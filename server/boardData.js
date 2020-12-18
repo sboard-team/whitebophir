@@ -76,6 +76,7 @@ BoardData.prototype.addChild = function (parentId, child) {
 BoardData.prototype.update = function (id, data, create) {
 	delete data.type;
 	delete data.tool;
+	console.log(1, data)
 	var obj = this.board[id];
 	if (typeof obj === "object") {
 		for (var i in data) {
