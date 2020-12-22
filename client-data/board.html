@@ -185,8 +185,8 @@
 		<g id="cursors"></g>
 	</svg>
 </div>
-<div id="preloader" class="preloader">
-	<img src="preloader.gif" height="128" width="128" style="margin: auto;display: block;"/>
+<div id="preloader" class="preloader dont-hide">
+    <img src="preloader.gif" height="128" width="128" style="margin: auto;display: block;"/>
 </div>
 <div class="tutorial">
 	<div class="tutorial__wrapper">
@@ -563,14 +563,16 @@
                 <path stroke="#828282" fill="#fff" d="M2 12, 7 2, 12 10Z"/>
               </svg>
             </div>
-            <div data-tooltip="Шестиугольник" data-index="7" class="tooltip-bottom sub-tool-item">
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="20" height="20" viewBox="0 0 485.688 485.688" style="enable-background:new 0 0 485.688 485.688;" xml:space="preserve">
+              <div data-tooltip="Шестиугольник" data-index="7" class="tooltip-bottom sub-tool-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20"
+                       viewBox="0 0 485.688 485.688" style="enable-background:new 0 0 485.688 485.688;"
+                       xml:space="preserve">
                 <g xmlns="http://www.w3.org/2000/svg">
                   <path fill="#828282"
-						d="M364.269,453.155H121.416L0,242.844L121.416,32.533h242.853l121.419,210.312L364.269,453.155z M131.905,434.997h221.878    l110.939-192.152L353.783,50.691H131.905L20.966,242.844L131.905,434.997z"/>
+                        d="M364.269,453.155H121.416L0,242.844L121.416,32.533h242.853l121.419,210.312L364.269,453.155z M131.905,434.997h221.878    l110.939-192.152L353.783,50.691H131.905L20.966,242.844L131.905,434.997z"/>
                 </g>
               </svg>
-			  </div>
+              </div>
           </div>
         </div>
       </div>
@@ -652,48 +654,82 @@
 				<path d="M18.4375 4.6875H19.2188C19.6503 4.6875 20 4.33777 20 3.90625V0.78125C20 0.349731 19.6503 0 19.2188 0H16.0938C15.6622 0 15.3125 0.349731 15.3125 0.78125V1.5625H4.6875V0.78125C4.6875 0.349731 4.33777 0 3.90625 0H0.78125C0.349731 0 0 0.349731 0 0.78125V3.90625C0 4.33777 0.349731 4.6875 0.78125 4.6875H1.5625V15.3125H0.78125C0.349731 15.3125 0 15.6622 0 16.0938V19.2188C0 19.6503 0.349731 20 0.78125 20H3.90625C4.33777 20 4.6875 19.6503 4.6875 19.2188V18.4375H15.3125V19.2188C15.3125 19.6503 15.6622 20 16.0938 20H19.2188C19.6503 20 20 19.6503 20 19.2188V16.0938C20 15.6622 19.6503 15.3125 19.2188 15.3125H16.0938C15.6622 15.3125 15.3125 15.6622 15.3125 16.0938V16.875H13.3594V13.3594H17.6562C18.0878 13.3594 18.4375 13.0096 18.4375 12.5781C18.4375 12.5175 18.43 12.459 18.4169 12.4023C18.43 12.3457 18.4375 12.2871 18.4375 12.2266V4.6875ZM16.875 16.875H18.4375V18.4375H16.875V16.875ZM16.875 1.5625H18.4375V3.125H16.875V1.5625ZM16.0938 4.6875H16.875V6.64062H13.3594V3.125H15.3125V3.90625C15.3125 4.33777 15.6622 4.6875 16.0938 4.6875ZM3.125 8.20312H6.64062V11.7969H3.125V8.20312ZM8.20312 8.20312H11.7969V11.7969H8.20312V8.20312ZM8.20312 6.64062V3.125H11.7969V6.64062H8.20312ZM1.5625 1.5625H3.125V3.125H1.5625V1.5625ZM3.90625 4.6875C4.33777 4.6875 4.6875 4.33777 4.6875 3.90625V3.125H6.64062V6.64062H3.125V4.6875H3.90625ZM3.125 18.4375H1.5625V16.875H3.125V18.4375ZM3.90625 15.3125H3.125V13.3594H6.64062V16.875H4.6875V16.0938C4.6875 15.6622 4.33777 15.3125 3.90625 15.3125ZM11.7969 16.875H8.20312V13.3594H11.7969V16.875ZM13.3594 8.20312H16.875V11.7969H13.3594V8.20312Z" fill="#828282"/>
 			</svg>
 		</div>
-		<div class="sub-tool-panel">
-			<div class="sub-tool-list panel">
-				<div data-tooltip="Доска “в клетку”" data-index="0" class="tooltip-bottom sub-tool-item">
-					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M18.4375 4.6875H19.2188C19.6503 4.6875 20 4.33777 20 3.90625V0.78125C20 0.349731 19.6503 0 19.2188 0H16.0938C15.6622 0 15.3125 0.349731 15.3125 0.78125V1.5625H4.6875V0.78125C4.6875 0.349731 4.33777 0 3.90625 0H0.78125C0.349731 0 0 0.349731 0 0.78125V3.90625C0 4.33777 0.349731 4.6875 0.78125 4.6875H1.5625V15.3125H0.78125C0.349731 15.3125 0 15.6622 0 16.0938V19.2188C0 19.6503 0.349731 20 0.78125 20H3.90625C4.33777 20 4.6875 19.6503 4.6875 19.2188V18.4375H15.3125V19.2188C15.3125 19.6503 15.6622 20 16.0938 20H19.2188C19.6503 20 20 19.6503 20 19.2188V16.0938C20 15.6622 19.6503 15.3125 19.2188 15.3125H16.0938C15.6622 15.3125 15.3125 15.6622 15.3125 16.0938V16.875H13.3594V13.3594H17.6562C18.0878 13.3594 18.4375 13.0096 18.4375 12.5781C18.4375 12.5175 18.43 12.459 18.4169 12.4023C18.43 12.3457 18.4375 12.2871 18.4375 12.2266V4.6875ZM16.875 16.875H18.4375V18.4375H16.875V16.875ZM16.875 1.5625H18.4375V3.125H16.875V1.5625ZM16.0938 4.6875H16.875V6.64062H13.3594V3.125H15.3125V3.90625C15.3125 4.33777 15.6622 4.6875 16.0938 4.6875ZM3.125 8.20312H6.64062V11.7969H3.125V8.20312ZM8.20312 8.20312H11.7969V11.7969H8.20312V8.20312ZM8.20312 6.64062V3.125H11.7969V6.64062H8.20312ZM1.5625 1.5625H3.125V3.125H1.5625V1.5625ZM3.90625 4.6875C4.33777 4.6875 4.6875 4.33777 4.6875 3.90625V3.125H6.64062V6.64062H3.125V4.6875H3.90625ZM3.125 18.4375H1.5625V16.875H3.125V18.4375ZM3.90625 15.3125H3.125V13.3594H6.64062V16.875H4.6875V16.0938C4.6875 15.6622 4.33777 15.3125 3.90625 15.3125ZM11.7969 16.875H8.20312V13.3594H11.7969V16.875ZM13.3594 8.20312H16.875V11.7969H13.3594V8.20312Z" fill="#828282"/>
-					</svg>
-				</div>
-				<div data-tooltip="Доска “в точку”" data-index="1" class="tooltip-bottom sub-tool-item">
-					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<g>
-							<circle cx="1.75" cy="1.75" r="0.75" fill="#828282"/>
-							<circle cx="7.25" cy="1.75" r="0.75" fill="#828282"/>
-							<circle cx="12.75" cy="1.75" r="0.75" fill="#828282"/>
-							<circle cx="18.25" cy="1.75" r="0.75" fill="#828282"/>
-							<circle cx="1.75" cy="7.25" r="0.75" fill="#828282"/>
-							<circle cx="7.25" cy="7.25" r="0.75" fill="#828282"/>
-							<circle cx="12.75" cy="7.25" r="0.75" fill="#828282"/>
-							<circle cx="18.25" cy="7.25" r="0.75" fill="#828282"/>
+        <div class="sub-tool-panel">
+            <div class="sub-tool-list panel none-bottom-border">
+                <div data-tooltip="Доска “в клетку”" data-index="0" class="tooltip-top sub-tool-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18.4375 4.6875H19.2188C19.6503 4.6875 20 4.33777 20 3.90625V0.78125C20 0.349731 19.6503 0 19.2188 0H16.0938C15.6622 0 15.3125 0.349731 15.3125 0.78125V1.5625H4.6875V0.78125C4.6875 0.349731 4.33777 0 3.90625 0H0.78125C0.349731 0 0 0.349731 0 0.78125V3.90625C0 4.33777 0.349731 4.6875 0.78125 4.6875H1.5625V15.3125H0.78125C0.349731 15.3125 0 15.6622 0 16.0938V19.2188C0 19.6503 0.349731 20 0.78125 20H3.90625C4.33777 20 4.6875 19.6503 4.6875 19.2188V18.4375H15.3125V19.2188C15.3125 19.6503 15.6622 20 16.0938 20H19.2188C19.6503 20 20 19.6503 20 19.2188V16.0938C20 15.6622 19.6503 15.3125 19.2188 15.3125H16.0938C15.6622 15.3125 15.3125 15.6622 15.3125 16.0938V16.875H13.3594V13.3594H17.6562C18.0878 13.3594 18.4375 13.0096 18.4375 12.5781C18.4375 12.5175 18.43 12.459 18.4169 12.4023C18.43 12.3457 18.4375 12.2871 18.4375 12.2266V4.6875ZM16.875 16.875H18.4375V18.4375H16.875V16.875ZM16.875 1.5625H18.4375V3.125H16.875V1.5625ZM16.0938 4.6875H16.875V6.64062H13.3594V3.125H15.3125V3.90625C15.3125 4.33777 15.6622 4.6875 16.0938 4.6875ZM3.125 8.20312H6.64062V11.7969H3.125V8.20312ZM8.20312 8.20312H11.7969V11.7969H8.20312V8.20312ZM8.20312 6.64062V3.125H11.7969V6.64062H8.20312ZM1.5625 1.5625H3.125V3.125H1.5625V1.5625ZM3.90625 4.6875C4.33777 4.6875 4.6875 4.33777 4.6875 3.90625V3.125H6.64062V6.64062H3.125V4.6875H3.90625ZM3.125 18.4375H1.5625V16.875H3.125V18.4375ZM3.90625 15.3125H3.125V13.3594H6.64062V16.875H4.6875V16.0938C4.6875 15.6622 4.33777 15.3125 3.90625 15.3125ZM11.7969 16.875H8.20312V13.3594H11.7969V16.875ZM13.3594 8.20312H16.875V11.7969H13.3594V8.20312Z"
+                              fill="#828282"/>
+                    </svg>
+                </div>
+                <div data-tooltip="Доска “в точку”" data-index="1" class="tooltip-top sub-tool-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="1.75" cy="1.75" r="0.75" fill="#828282"/>
+                            <circle cx="7.25" cy="1.75" r="0.75" fill="#828282"/>
+                            <circle cx="12.75" cy="1.75" r="0.75" fill="#828282"/>
+                            <circle cx="18.25" cy="1.75" r="0.75" fill="#828282"/>
+                            <circle cx="1.75" cy="7.25" r="0.75" fill="#828282"/>
+                            <circle cx="7.25" cy="7.25" r="0.75" fill="#828282"/>
+                            <circle cx="12.75" cy="7.25" r="0.75" fill="#828282"/>
+                            <circle cx="18.25" cy="7.25" r="0.75" fill="#828282"/>
 							<circle cx="1.75" cy="12.75" r="0.75" fill="#828282"/>
-							<circle cx="7.25" cy="12.75" r="0.75" fill="#828282"/>
-							<circle cx="12.75" cy="12.75" r="0.75" fill="#828282"/>
-							<circle cx="18.25" cy="12.75" r="0.75" fill="#828282"/>
-							<circle cx="1.75" cy="18.25" r="0.75" fill="#828282"/>
-							<circle cx="7.25" cy="18.25" r="0.75" fill="#828282"/>
-							<circle cx="12.75" cy="18.25" r="0.75" fill="#828282"/>
-							<circle cx="18.25" cy="18.25" r="0.75" fill="#828282"/>
-						</g>
-					</svg>
-				</div>
-				<div data-tooltip="Доска без фона" data-index="2" class="tooltip-bottom sub-tool-item">
-					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<g clip-path="url(#clip0)">
-							<path d="M11.1047 10.0008L19.7709 1.33447C20.0761 1.02935 20.0761 0.534663 19.7709 0.229585C19.4658 -0.0754925 18.9711 -0.0755316 18.6661 0.229585L9.99975 8.89591L1.33347 0.229585C1.02836 -0.0755316 0.533671 -0.0755316 0.228593 0.229585C-0.0764842 0.534702 -0.0765233 1.02939 0.228593 1.33447L8.89487 10.0008L0.228593 18.6671C-0.0765233 18.9722 -0.0765233 19.4669 0.228593 19.772C0.381132 19.9245 0.581093 20.0007 0.781053 20.0007C0.981014 20.0007 1.18094 19.9245 1.33351 19.772L9.99975 11.1057L18.666 19.772C18.8186 19.9245 19.0185 20.0007 19.2185 20.0007C19.4184 20.0007 19.6184 19.9245 19.7709 19.772C20.0761 19.4668 20.0761 18.9722 19.7709 18.6671L11.1047 10.0008Z" fill="#828282"/>
-						</g>
-						<defs>
-							<clipPath id="clip0">
-								<rect width="20" height="20" fill="white"/>
-							</clipPath>
-						</defs>
-					</svg>
+                            <circle cx="7.25" cy="12.75" r="0.75" fill="#828282"/>
+                            <circle cx="12.75" cy="12.75" r="0.75" fill="#828282"/>
+                            <circle cx="18.25" cy="12.75" r="0.75" fill="#828282"/>
+                            <circle cx="1.75" cy="18.25" r="0.75" fill="#828282"/>
+                            <circle cx="7.25" cy="18.25" r="0.75" fill="#828282"/>
+                            <circle cx="12.75" cy="18.25" r="0.75" fill="#828282"/>
+                            <circle cx="18.25" cy="18.25" r="0.75" fill="#828282"/>
+                        </g>
+                    </svg>
+                </div>
+                <div data-tooltip="Доска без фона" data-index="2" class="tooltip-top sub-tool-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0)">
+                            <path d="M11.1047 10.0008L19.7709 1.33447C20.0761 1.02935 20.0761 0.534663 19.7709 0.229585C19.4658 -0.0754925 18.9711 -0.0755316 18.6661 0.229585L9.99975 8.89591L1.33347 0.229585C1.02836 -0.0755316 0.533671 -0.0755316 0.228593 0.229585C-0.0764842 0.534702 -0.0765233 1.02939 0.228593 1.33447L8.89487 10.0008L0.228593 18.6671C-0.0765233 18.9722 -0.0765233 19.4669 0.228593 19.772C0.381132 19.9245 0.581093 20.0007 0.781053 20.0007C0.981014 20.0007 1.18094 19.9245 1.33351 19.772L9.99975 11.1057L18.666 19.772C18.8186 19.9245 19.0185 20.0007 19.2185 20.0007C19.4184 20.0007 19.6184 19.9245 19.7709 19.772C20.0761 19.4668 20.0761 18.9722 19.7709 18.6671L11.1047 10.0008Z"
+                                  fill="#828282"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0">
+                                <rect width="20" height="20" fill="white"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="grid-overlay">
+                    <div class="grid-panel">
+                        <div data-tooltip="Белый фон" data-index="3" data-color="#FFF"
+                             class="tooltip-bottom sub-tool-item js-change-bgcolor">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <g>
+                                    <rect width="20" height="20" fill="white" stroke="#E0E0E0" rx="3"/>
+                                </g>
+                            </svg>
+                        </div>
 
-				</div>
+                        <div data-tooltip="Черный фон" data-index="4" data-color="#000"
+                             class="tooltip-bottom sub-tool-item js-change-bgcolor">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <g>
+                                    <rect width="20" height="20" fill="#000000" stroke="#E0E0E0" rx="3"/>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div data-tooltip="Зеленый фон" data-index="5" data-color="#1E5E25"
+                             class="tooltip-bottom sub-tool-item js-change-bgcolor">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <g>
+                                    <rect width="20" height="20" fill="#1E5E25" stroke="#E0E0E0" rx="3"/>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
 			</div>
 		</div>
 	</div>
@@ -735,27 +771,27 @@
 						<input type="color" id="color-picker" value="#000000">
 					</label>
 				</div>
-				<div class="color-preset-box">
-					<div class="color-preset border-for-white" style="background-color: #ffffff;"></div>
-				</div>
-				<div class="color-preset-box  selected-color">
-					<div class="color-preset" style="background-color: #000000;"></div>
-				</div>
-				<div class="color-preset-box">
-					<div class="color-preset" style="background-color: #EB5757;"></div>
-				</div>
-				<div class="color-preset-box">
-					<div class="color-preset" style="background-color: #F2C94C;"></div>
-				</div>
-				<div class="color-preset-box">
-					<div class="color-preset" style="background-color: #A0D746;"></div>
-				</div>
-				<div class="color-preset-box">
-					<div class="color-preset" style="background-color: #2D9CDB;"></div>
-				</div>
-				<div class="color-preset-box">
-					<div class="color-preset" style="background-color: #9B51E0;"></div>
-				</div>
+                <div class="color-preset-box">
+                    <div class="color-preset border-for-white colorFFFFFF" style="background-color: #ffffff;"></div>
+                </div>
+                <div class="color-preset-box  selected-color">
+                    <div class="color-preset color000000" style="background-color: #000000;"></div>
+                </div>
+                <div class="color-preset-box">
+                    <div class="color-preset colorEB5757" style="background-color: #EB5757;"></div>
+                </div>
+                <div class="color-preset-box">
+                    <div class="color-preset colorF2C94C" style="background-color: #F2C94C;"></div>
+                </div>
+                <div class="color-preset-box">
+                    <div class="color-preset colorA0D746" style="background-color: #A0D746;"></div>
+                </div>
+                <div class="color-preset-box">
+                    <div class="color-preset color2D9CDB" style="background-color: #2D9CDB;"></div>
+                </div>
+                <div class="color-preset-box">
+                    <div class="color-preset color9B51E0" style="background-color: #9B51E0;"></div>
+                </div>
 			</div>
 		</div>
 	</div>
