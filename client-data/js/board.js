@@ -43,6 +43,7 @@ document.getElementById('cabinetURL').setAttribute('href', Tools.server_config.C
 document.getElementById('cabinetURL').addEventListener('click', function () {
 		Tools.sendAnalytic('Cabinet', 0);
 });
+
 Tools.board = document.getElementById("board");
 Tools.svg = document.getElementById("canvas");
 Tools.svgWb = document.getElementById("wb");
@@ -335,7 +336,10 @@ Tools.sendAnalytic = function (toolName, index) {
 		"Grid": {
 			"0": "back_cells",
 			"1": "back_dots",
-			"2": "back_empty"
+			"2": "back_empty",
+			"3": "white_background",
+			"4": "black_background",
+			"5": "green_background",
 		},
 		"Document": {
 			"0": "add_img",
@@ -372,7 +376,7 @@ Tools.sendAnalytic = function (toolName, index) {
 		},
 	};
 	//console.log(CODE,'reachGoal', Intruments[toolName][index])
-	ym(CODE,'reachGoal', Intruments[toolName][index]);
+	ym(CODE, 'reachGoal', Intruments[toolName][index]);
 };
 
 (function hotkeys() {
@@ -878,13 +882,23 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
         Tools.boardTitle = Tools.params.board.name;
         updateDocumentTitle();
 
-        document.getElementById('board-name-span').innerText = Tools.boardTitle;
+		document.getElementById('board-name-span').innerText = Tools.boardTitle;
 
-        if (Tools.params.permissions.edit) {
-            document.getElementById('boardName').addEventListener('click', createModalRename, false);
-        } else {
+		if (Tools.params.permissions.edit) {
+			document.getElementById('boardName').addEventListener('click', createModalRename, false);
+		} else {
 			document.getElementById('boardName')
 				.removeAttribute('data-tooltip');
+		}
+
+		var boardBackgroundColor = Tools.params.board.settings.background.color;
+		if (boardBackgroundColor !== undefined) {
+			Tools.svg.style.backgroundColor = boardBackgroundColor;
+			if (boardBackgroundColor.toUpperCase !== '#FFFFFF') {
+				Tools.setColor('#FFFFFF');
+			}
+		} else {
+			Tools.svg.style.backgroundColor = '#FFFFFF';
 		}
 
 		if (Tools.params.permissions.invite) {
@@ -911,25 +925,35 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 			document.getElementById('Tool-Document').classList.add('disabled-icon');
 		}
 
+		if (!Tools.params.permissions.background) {
+			const bgBtns = document.querySelectorAll('.js-change-bgcolor');
+			bgBtns.forEach((el) => {
+				el.classList.add('disabled-icon');
+			});
+		}
+
 		let b = document.querySelectorAll('.js-elements');
 		b.forEach((el) => {
 			el.classList.toggle('sjx-hidden');
 		});
 		//interval for send activity board
-        setInterval((function () {
-            var lastPosX = Tools.mousePosition.x;
-            var lastPosY = Tools.mousePosition.x;
-            return function () {
-                if (lastPosX !== Tools.mousePosition.x || lastPosY !== Tools.mousePosition.y) {
-                    fetch(Tools.server_config.API_URL + `boards/${Tools.boardName}/activity`, {
-                        credentials: "include",
-                        mode: 'no-cors',
-                    });
-                }
-                lastPosX = Tools.mousePosition.x;
-                lastPosY = Tools.mousePosition.y;
-            }})(), 30000);
-    }
+		setInterval((function () {
+			var lastPosX = Tools.mousePosition.x;
+			var lastPosY = Tools.mousePosition.y;
+			return function () {
+				if (lastPosX !== Tools.mousePosition.x || lastPosY !== Tools.mousePosition.y) {
+					fetch(Tools.server_config.API_URL + `boards/${Tools.boardName}/activity`, {
+						credentials: "include",
+						mode: 'no-cors',
+					});
+				}
+				lastPosX = Tools.mousePosition.x;
+				lastPosY = Tools.mousePosition.y;
+			}
+		})(), 30000);
+
+		document.getElementById("preloader").classList.remove('dont-hide');
+	}
 
     function checkBoard() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -982,36 +1006,38 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
                 showBoard();
             })
             .catch(function (error) {
-                if (error.message === 'Unauthenticated user') {
-                    window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/reopen';
-                } else if (error.message === 'Forbidden') {
-                    window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/forbidden';
-                } else {
-                    window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/unknown';
-                }
-            })
+				console.error(error)
+				if (error.message === 'Unauthenticated user') {
+					window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/reopen';
+				} else if (error.message === 'Forbidden') {
+					window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/forbidden';
+				} else {
+					//window.location.href = Tools.server_config.CABINET_URL + 'boards/' + Tools.boardName + '/unknown';
+				}
+			})
     }
 
-    document.getElementById('scalingWidth').addEventListener('click', scaleToWidth, false);
-    document.getElementById('scalingFull').addEventListener('click', scaleToFull, false);
-    document.getElementById('minusScale').addEventListener('click', minusScale, false);
-    document.getElementById('plusScale').addEventListener('click', plusScale, false);
-    document.getElementById("help").addEventListener('click', goToHelp, false);
-    document.getElementById('clearBoard').addEventListener('click', sendClearBoard, false);
-    document.getElementById('exportToPDF').addEventListener('click', createPdf, false);
+	document.getElementById('scalingWidth').addEventListener('click', scaleToWidth, false);
+	document.getElementById('scalingFull').addEventListener('click', scaleToFull, false);
+	document.getElementById('minusScale').addEventListener('click', minusScale, false);
+	document.getElementById('plusScale').addEventListener('click', plusScale, false);
+	document.getElementById("help").addEventListener('click', goToHelp, false);
+	document.getElementById('clearBoard').addEventListener('click', sendClearBoard, false);
+	document.getElementById('exportToPDF').addEventListener('click', createPdf, false);
 	document.getElementById('exportToPDFButton').addEventListener('click', createPdf, false);
 	document.getElementById('btnCursors').addEventListener('click', toggleCursors, false);
 	document.getElementById('showPDFLines').addEventListener('click', togglePDFLines, false);
-		document.getElementById('pdfWithoutMobile').addEventListener('click', exportPDFWithoutMobile, false);//
-    window.addEventListener("hashchange", setScrollFromHash, false);
-    window.addEventListener("popstate", setScrollFromHash, false);
-    window.addEventListener("DOMContentLoaded", setScrollFromHash, false);
-    window.addEventListener("load", setScrollFromHash, false);
-    window.addEventListener("DOMContentLoaded", checkBoard, false);
-    window.addEventListener('orientationchange', function () {
-        setTimeout(function () {
-            Tools.setScale(Tools.getScale());
-            resizeBoard();
+	document.getElementById('pdfWithoutMobile').addEventListener('click', exportPDFWithoutMobile, false);
+
+	window.addEventListener("hashchange", setScrollFromHash, false);
+	window.addEventListener("popstate", setScrollFromHash, false);
+	window.addEventListener("DOMContentLoaded", setScrollFromHash, false);
+	window.addEventListener("load", setScrollFromHash, false);
+	window.addEventListener("DOMContentLoaded", checkBoard, false);
+	window.addEventListener('orientationchange', function () {
+		setTimeout(function () {
+			Tools.setScale(Tools.getScale());
+			resizeBoard();
         }, 650);
     });
     window.addEventListener('unload', function () {
@@ -1387,12 +1413,22 @@ Tools.setColor = function (color) {
 	for (var node of presetsList) {
 		node.classList.remove('selected-color');
 	}
+	const colorEl = document.querySelector('.color' + color.substring(1));
+	if (colorEl) {
+		colorEl.parentNode.classList.add('selected-color');
+	}
 	Tools.sendAnalytic('Color', 0)
 };
 
 Tools.getColor = (function color() {
 	return function () {
 		return Tools.color_chooser.value;
+	};
+})();
+
+Tools.getCorrectorColor = (function correctorColor() {
+	return function () {
+		return Tools.svg.style.backgroundColor;
 	};
 })();
 

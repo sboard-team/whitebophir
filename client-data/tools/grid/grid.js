@@ -27,11 +27,41 @@
 (function grid() { //Code isolation
 
     var index = 1; //grid on by default
-    var states = ["#fff", "url(#grid)", "url(#dots)"];
+    var states = ["url(#grid)", "url(#dots)", "#FFFFFF", "#FFFFFF", "#000000", "#1E5E25"];
 
     function toggleGrid(evt) {
-        index = (index + 1) % states.length;
-        gridContainer.setAttributeNS(null, "fill", states[index]);
+        if (!Tools.params.permissions.background) {
+            if (Tools.params.permissions.edit) {
+                createModal(Tools.modalWindows.premiumFunctionForOwner);
+            } else {
+                createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+            }
+            return;
+        }
+
+        switch (index) {
+            case 0:
+            case 1:
+                gridContainer.setAttributeNS(null, "fill", states[index]);
+                break;
+            case 2:
+                gridContainer.setAttributeNS(null, "fill", "none");
+                Tools.setColor('#000000');
+                Tools.svg.style.backgroundColor = states[index];
+                break;
+            case 4:
+                Tools.setColor('#000000');
+                Tools.svg.style.backgroundColor = states[index];
+                break;
+            case 5:
+                Tools.setColor('#FFFFFF');
+                Tools.svg.style.backgroundColor = states[index];
+                break;
+            case 3:
+                Tools.setColor('#FFFFFF');
+                Tools.svg.style.backgroundColor = states[index];
+                break;
+        }
     }
 
     function createPatterns() {

@@ -59,7 +59,7 @@
 		Tools.drawAndSend({
 			'type': 'line',
 			'id': curLineId,
-			'color': Tools.curTool.name === 'Eraser' ? '#fff' : Tools.getColor(),
+			'color': Tools.curTool.name === 'Eraser' ? Tools.getCorrectorColor() : Tools.getColor(),
 			'size': size,
 			'opacity': (index === 2 && Tools.curTool.name !== 'Eraser') ? 0.5 : 1,
 			'dotted': Tools.curTool.name === 'Pencil' ? index === 1 : false,
