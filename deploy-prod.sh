@@ -1,0 +1,1 @@
+git fetch origin production; git reset --hard origin/production; npm install; service pm2-app restart;

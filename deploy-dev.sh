@@ -1,0 +1,1 @@
+git fetch origin master; git reset --hard origin/master; npm install; service pm2-forge restart;
