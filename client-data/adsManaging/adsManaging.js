@@ -8,33 +8,33 @@
 
     // Doing request that returns 2 things, show banner or not, and delay of showing that banner
 
-    async function getShowAdBanner() {
+    function getShowAdBanner() {
         let url = Tools.server_config.API_URL + 'ads/can-show';
-        let response = await fetch(url,
+        fetch(url,
         {
-            
-            headers: new Headers({
-                'Accept': 'application/json',
-            }),
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json, text-plain, */*",
+                "X-Requested-With": "XMLHttpRequest",
+            },
             method: 'GET',
-            credentials: 'include',
-        });
+            credentials: 'same-origin',
+        })
+        .then(response => response.json())
+        .then(data => {
+            let showAdBanner = new Timer(1000, data.intervalSeconds);
 
-        let adData = await response.json();
+            console.log(data.intervalSeconds);
 
-        return {
-            showAd: adData.canShow,
-            delay: adData.intervalSeconds
-        }
+            closeAd.addEventListener('click', () => { showPopup(showAdBanner) });
+            closeAdBanner.addEventListener('click', () => { closePopup(showAdBanner) });
+            disableAdsBtn.addEventListener('click', () => { disableAdsForSession(showAdBanner) });
+        })
     }
 
-    const { showAd, delay } = getShowAdBanner();
+    getShowAdBanner();
 
     // If request returned showAd-false don't set timer and don't show ad banner
-
-    if (!showAd) {
-        return;
-    }
 
     // Set nextShowTime in session storage
 
@@ -50,8 +50,9 @@
     
     // Function for starting, stopping and reseting timer (interval), to check current time and compare it to nextShowTime
 
-    function Timer(dateUpd) {
-        let nextShowTime = new Date(new Date().getTime() + delay * 1000).getTime();
+    function Timer(dateUpd , intervalSeconds) {
+        let nextShowTime = new Date(new Date().getTime() + intervalSeconds * 1000).getTime();
+
 
         // Storing nextShowTime in session storage (if we already didn't have one)
 
@@ -60,6 +61,9 @@
         // Timer function, when current date equal to nextShowDate (current date + delay from request, getting from session storage), we'll show ad banner and stop timer
 
         let func = () => {
+            console.log((Date.now() - getNextShowTime()));
+            console.log(Date.now(), getNextShowTime());
+        console.log(nextShowTime);
             if (!((Date.now() - getNextShowTime()) < 9 > 0)) {
                 adBanner.classList.remove('hide');
                 this.stop();
@@ -89,25 +93,15 @@
         // Start with new or original interval, stop current interval
         this.reset = function(newTimer = dateUpd) {
             dateUpd = newTimer;
-            nextShowTime = new Date(new Date().getTime() + delay * 1000).getTime();
+            nextShowTime = new Date(new Date().getTime() + intervalSeconds * 1000).getTime();
             setNextShowTime(nextShowTime);
             return this.stop().start();
         }
     }
 
-    // Showing ad banner after sum delay (from request) of page load
-
-    let showAdBanner = new Timer(1000);
-
-    // If we already have nextShowTime and its smaller than current time - show banner
-    
-    if (new Date().getTime() > getNextShowTime()) {
-        adBanner.classList.remove('hide');
-    }
-
     // Show popup
 
-    function showPopup() {
+    function showPopup(showAdBanner) {
         adBanner.classList.add('hide');
         closedAdBanner.classList.remove('hide');
         showAdBanner.stop();
@@ -115,20 +109,18 @@
 
     // Close popup and set timer to show banner sum delay (from request) after its closing
 
-    function closePopup() {
+    function closePopup(showAdBanner) {
         closedAdBanner.classList.add('hide');
         showAdBanner.reset();
     }
 
     // If user clicked on 'Отключить насовсем', clear interval and dont show ad banner for session, remove nextShowTime from session storage
 
-    function disableAdsForSession() {
+    function disableAdsForSession(showAdBanner) {
         closedAdBanner.classList.add('hide');
         sessionStorage.removeItem('nextShowTime');
         showAdBanner.stop();
     }
 
-    closeAd.addEventListener('click', showPopup);
-    closeAdBanner.addEventListener('click', closePopup);
-    disableAdsBtn.addEventListener('click', disableAdsForSession);
+    
 })() 
