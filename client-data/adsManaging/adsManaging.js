@@ -11,30 +11,28 @@
     function getShowAdBanner() {
         let url = Tools.server_config.API_URL + 'ads/can-show';
         fetch(url,
-        {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json, text-plain, */*",
-                "X-Requested-With": "XMLHttpRequest",
-            },
-            method: 'GET',
-            credentials: 'same-origin',
+        {   
+                headers: new Headers({
+                    'Accept': 'application/json',
+                }),
+                method: 'GET',
+                credentials: 'include',
+            
         })
         .then(response => response.json())
         .then(data => {
-            let showAdBanner = new Timer(1000, data.intervalSeconds);
+            if (!data.canShow) return;
+            else {
+                let showAdBanner = new Timer(1000, data.intervalSeconds);
 
-            console.log(data.intervalSeconds);
-
-            closeAd.addEventListener('click', () => { showPopup(showAdBanner) });
-            closeAdBanner.addEventListener('click', () => { closePopup(showAdBanner) });
-            disableAdsBtn.addEventListener('click', () => { disableAdsForSession(showAdBanner) });
+                closeAd.addEventListener('click', () => { showPopup(showAdBanner) });
+                closeAdBanner.addEventListener('click', () => { closePopup(showAdBanner) });
+                disableAdsBtn.addEventListener('click', () => { disableAdsForSession(showAdBanner) });
+            }
         })
     }
 
     getShowAdBanner();
-
-    // If request returned showAd-false don't set timer and don't show ad banner
 
     // Set nextShowTime in session storage
 
@@ -61,9 +59,6 @@
         // Timer function, when current date equal to nextShowDate (current date + delay from request, getting from session storage), we'll show ad banner and stop timer
 
         let func = () => {
-            console.log((Date.now() - getNextShowTime()));
-            console.log(Date.now(), getNextShowTime());
-        console.log(nextShowTime);
             if (!((Date.now() - getNextShowTime()) < 9 > 0)) {
                 adBanner.classList.remove('hide');
                 this.stop();
@@ -101,26 +96,24 @@
 
     // Show popup
 
-    function showPopup(showAdBanner) {
+    function showPopup(bannerInterval) {
         adBanner.classList.add('hide');
         closedAdBanner.classList.remove('hide');
-        showAdBanner.stop();
+        bannerInterval.stop();
     }
 
     // Close popup and set timer to show banner sum delay (from request) after its closing
 
-    function closePopup(showAdBanner) {
+    function closePopup(bannerInterval) {
         closedAdBanner.classList.add('hide');
-        showAdBanner.reset();
+        bannerInterval.reset();
     }
 
     // If user clicked on 'Отключить насовсем', clear interval and dont show ad banner for session, remove nextShowTime from session storage
 
-    function disableAdsForSession(showAdBanner) {
+    function disableAdsForSession(bannerInterval) {
         closedAdBanner.classList.add('hide');
         sessionStorage.removeItem('nextShowTime');
-        showAdBanner.stop();
+        bannerInterval.stop();
     }
-
-    
 })() 
