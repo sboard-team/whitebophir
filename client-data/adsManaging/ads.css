@@ -2,10 +2,12 @@
     width: 735px;
     height: 140px;
     position: fixed;
-    bottom: 10%;
+    bottom: 1%;
     display: flex;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
     justify-content: center;
-    align-items: center;
     background-color: #C4C4C4;
     border-radius: 10px;
 }
@@ -50,19 +52,22 @@
     color: #828282;
 }
 
-.closedBanner .disableAds .disableAdsBtn {
-    background: #2FB59D;
-    border-radius: 10px;
+.closedBanner .disableAds {
     width: 210px;
     height: 40px;
-    border: none;
-    outline: none;
+    background: #2FB59D;
+    cursor: pointer;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} 
+
+.closedBanner .disableAds .disableAdsLink {
+    text-decoration: none;
     font-family: Montserrat;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
-    line-height: 20px;
-    text-align: center;
     color: #FFFFFF;
-    cursor: pointer;
 }

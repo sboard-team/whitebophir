@@ -3,32 +3,27 @@
     const closeAd = adBanner.querySelector('.closeAd');
     const closedAdBanner = document.querySelector('.closedBanner');
     const closeAdBanner = closedAdBanner.querySelector('.closeAd');
-    const disableAdsBtn = closedAdBanner.querySelector('.disableAdsBtn');
-   
 
     // Doing request that returns 2 things, show banner or not, and delay of showing that banner
 
     function getShowAdBanner() {
-        let url = Tools.server_config.API_URL + 'ads/can-show';
+        let url = Tools.server_config.API_URL + `ads/can-show?boardId=${Tools.boardName}`;
         fetch(url,
-        {   
-                headers: new Headers({
-                    'Accept': 'application/json',
-                }),
-                method: 'GET',
-                credentials: 'include',
-            
+        {
+            headers: new Headers({
+                'Accept': 'application/json',
+            }),
+            method: 'GET',
+            credentials: "include",
         })
         .then(response => response.json())
         .then(data => {
             if (!data.canShow) return;
-            else {
-                let showAdBanner = new Timer(1000, data.intervalSeconds);
 
-                closeAd.addEventListener('click', () => { showPopup(showAdBanner) });
-                closeAdBanner.addEventListener('click', () => { closePopup(showAdBanner) });
-                disableAdsBtn.addEventListener('click', () => { disableAdsForSession(showAdBanner) });
-            }
+            let showAdBanner = new Timer(1000, data.intervalSeconds);
+
+            closeAd.addEventListener('click', () => { showPopup(showAdBanner) });
+            closeAdBanner.addEventListener('click', () => { closePopup(showAdBanner) });
         })
     }
 
@@ -55,6 +50,12 @@
         // Storing nextShowTime in session storage (if we already didn't have one)
 
         setNextShowTime(sessionStorage.getItem('nextShowTime') || nextShowTime);
+
+        // If current time is bigger than nextShowTime (in session storage) show ad banner immediately
+
+        if (Date.now() > getNextShowTime()) {
+            adBanner.classList.remove('hide');
+        }
 
         // Timer function, when current date equal to nextShowDate (current date + delay from request, getting from session storage), we'll show ad banner and stop timer
 
@@ -107,13 +108,5 @@
     function closePopup(bannerInterval) {
         closedAdBanner.classList.add('hide');
         bannerInterval.reset();
-    }
-
-    // If user clicked on 'Отключить насовсем', clear interval and dont show ad banner for session, remove nextShowTime from session storage
-
-    function disableAdsForSession(bannerInterval) {
-        closedAdBanner.classList.add('hide');
-        sessionStorage.removeItem('nextShowTime');
-        bannerInterval.stop();
     }
 })() 
