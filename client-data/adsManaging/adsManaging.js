@@ -3,6 +3,7 @@
     const closeAd = adBanner.querySelector('.closeAd');
     const closedAdBanner = document.querySelector('.closedBanner');
     const closeAdBanner = closedAdBanner.querySelector('.closeAd');
+    const actualTime = 2*60*60*1000; //2h
 
     // Doing request that returns 2 things, show banner or not, and delay of showing that banner
 
@@ -48,19 +49,25 @@
 
 
         // Storing nextShowTime in session storage (if we already didn't have one)
-
-        setNextShowTime(sessionStorage.getItem('nextShowTime') || nextShowTime);
+        if (
+            !sessionStorage.getItem('nextShowTime')
+            || sessionStorage.getItem('nextShowTime') < (Date.now() - actualTime)
+        ) {
+            setNextShowTime(nextShowTime);
+        }
 
         // If current time is bigger than nextShowTime (in session storage) show ad banner immediately
 
-        if (Date.now() > getNextShowTime()) {
-            adBanner.classList.remove('hide');
-        }
+        // if (Date.now() > getNextShowTime()) {
+        //     adBanner.classList.remove('hide');
+        // }
 
         // Timer function, when current date equal to nextShowDate (current date + delay from request, getting from session storage), we'll show ad banner and stop timer
 
         let func = () => {
-            if (!((Date.now() - getNextShowTime()) < 9 > 0)) {
+            let now = Date.now();
+
+            if ((now - getNextShowTime()) > 0 && (now - getNextShowTime()) < actualTime) {
                 adBanner.classList.remove('hide');
                 this.stop();
             }
@@ -96,7 +103,6 @@
     }
 
     // Show popup
-
     function showPopup(bannerInterval) {
         adBanner.classList.add('hide');
         closedAdBanner.classList.remove('hide');
