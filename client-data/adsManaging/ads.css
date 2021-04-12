@@ -37,10 +37,13 @@
     box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.05);
     border-radius: 20px;
     position: fixed;
-    bottom: 12%;
+    bottom: 5%;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
 }
 
 .closedBanner .closedBannerText {
