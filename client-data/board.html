@@ -23,9 +23,21 @@
 	{{/languages}}
 	<link rel="stylesheet" href="range.css?v={{v}}">
 	<script src="../polyfill.min.js?v={{v}}"></script>
+	<link rel="stylesheet" href="adsManaging/ads.css?v={{v}}">
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
 		  rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?&family=Lora&family=Open+Sans&family=Roboto+Condensed&display=swap" rel="stylesheet">
+	<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+	<script>
+		window.googletag = window.googletag || {cmd: []};
+      	googletag.cmd.push(function() {
+			googletag
+				.defineSlot(
+					'/6355419/Travel/Europe', [728, 90], 'fixed-size-ad')
+				.addService(googletag.pubads());
+			googletag.enableServices();
+		});
+	</script>
 </head>
 
 <body style="display: flex; justify-content: center;">
@@ -845,6 +857,37 @@
 </div>
 </div>
 
+<div id="banner-ad" class="hide">
+	<div class="closeAd">
+		<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M1 1L6 6M6 6L11 1M6 6L1 11M6 6L11 11" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg>
+	</div>
+    <div class="ad-container">
+      <div id="fixed-size-ad" class="ad-slot"></div>
+    </div>
+</div>
+
+<div class="closedBanner hide">
+	<div class="closeAd">
+		<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M1 1L6 6M6 6L11 1M6 6L1 11M6 6L11 11" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg>
+	</div>
+	<div class="closedBannerText">
+		Реклама скрыта
+	</div>
+	<div class="disableAds">
+		<button class="disableAdsBtn">Отключить насовсем</button>
+	</div>
+</div>
+
+<script>
+	googletag.cmd.push(function() {
+        googletag.display('fixed-size-ad');
+    });
+</script>
+
 <script type="application/json" id="translations">{{{ json translations }}}</script>
 <script type="application/json" id="configuration">{{{ json configuration }}}</script>
 <!-- Yandex.Metrika counter -->
@@ -894,6 +937,7 @@
 <script type="module" src="../tools/formula/formula.js?v={{v}}"></script>
 <script src="../tools/hand/hand.js?v={{v}}"></script>
 <script src="../js/picoModal-3.0.0.min.js"></script>
+<script src="./adsManaging/adsManaging.js?v={{v}}"></script>
 
 </body>
 
