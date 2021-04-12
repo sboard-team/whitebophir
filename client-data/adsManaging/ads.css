@@ -71,3 +71,9 @@
     font-size: 16px;
     color: #FFFFFF;
 }
+
+@media (max-width: 768px) {
+    #banner-ad {
+        display: none;
+    }
+}
