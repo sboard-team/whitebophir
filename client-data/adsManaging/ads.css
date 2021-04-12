@@ -1,8 +1,8 @@
 #banner-ad {
-    width: 735px;
-    height: 140px;
+    width: 728px;
+    height: 90px;
     position: fixed;
-    bottom: 1%;
+    bottom: 5%;
     display: flex;
     left: 50%;
     margin-right: -50%;
