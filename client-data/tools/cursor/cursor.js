@@ -29,7 +29,7 @@
 	// Allocate half of the maximum server updates to cursor updates
 	var MAX_CURSOR_UPDATES_INTERVAL_MS = 64;
 
-	var CURSOR_DELETE_AFTER_MS = 1000 * 5;
+	var CURSOR_DELETE_AFTER_MS = 1000 * 1600;
 
 	var lastCursorUpdate = 0;
 	var sending = true;
@@ -42,7 +42,7 @@
 		"name": "Cursor",
 		"listeners": {
 			"press": function () {
-				sending = false
+				sending = true
 			},
 			"move": handleMarker,
 			"release": function () {
@@ -166,5 +166,6 @@
 				cursorGroup.setAttributeNS(null, "fill", message.color);
 			}
 		}
+		console.log('cursor draw');
 	}
 })();
