@@ -66,7 +66,7 @@
 	};
 
 	function clearAll() {
-		const gs = document.querySelector('.js-cursor-g');
+		const gs = document.querySelector('.js-cursors');
 		gs.classList.toggle('d-none');
 	}
 
