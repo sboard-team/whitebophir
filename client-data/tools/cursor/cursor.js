@@ -156,16 +156,15 @@
 		} else {
 			if (Tools.showMarker) {
 				var cursorGroup = getCursor("cursor-" + (message.user.id || 'me'), message.user.full_name);
-				cursorGroup.style.transform = "translate(" + message.x + "px, " + message.y + "px)";
+				cursorGroup.style.transform = "translate(" + message.x * Tools.getScale() + "px, " + message.y * Tools.getScale() + "px)";
 				var curImg = cursorGroup.getElementsByTagName('path')[0];
 				if (curImg) {
 					curImg.style.transform = "translate(" + 0 + "px, " + 0 + "px)";
 				}
-				if (Tools.isIE) cursorGroup.setAttributeNS(null, "transform", "translate(" + message.x + " " + message.y + ")");
+				if (Tools.isIE) cursorGroup.setAttributeNS(null, "transform", "translate(" + message.x * Tools.getScale() + " " + message.y * Tools.getScale()  + ")");
 				if (Tools.isIE) curImg.setAttributeNS(null, "transform", "translate(0 0)");
 				cursorGroup.setAttributeNS(null, "fill", message.color);
 			}
 		}
-		console.log('cursor draw');
 	}
 })();
