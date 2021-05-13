@@ -1028,6 +1028,20 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 	document.getElementById('btnCursors').addEventListener('click', toggleCursors, false);
 	document.getElementById('showPDFLines').addEventListener('click', togglePDFLines, false);
 	document.getElementById('pdfWithoutMobile').addEventListener('click', exportPDFWithoutMobile, false);
+	document.addEventListener('mouseleave', function(event) {
+		if (event.clientY <= 0 || event.clientX <= 0 || (event.clientX >= window.innerWidth || event.clientY >= window.innerHeight)) {
+			Tools.send({
+				showCursor: false
+			}, "Cursor")
+		}
+	});
+	document.addEventListener('visibilitychange', function() {
+		if (document.visibilityState === 'hidden') {
+			Tools.send({
+				showCursor: false
+			}, "Cursor")
+		}
+	});
 
 	window.addEventListener("hashchange", setScrollFromHash, false);
 	window.addEventListener("popstate", setScrollFromHash, false);

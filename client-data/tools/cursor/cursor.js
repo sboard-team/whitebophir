@@ -29,7 +29,6 @@
 	// Allocate half of the maximum server updates to cursor updates
 	var MAX_CURSOR_UPDATES_INTERVAL_MS = 64;
 
-	var CURSOR_DELETE_AFTER_MS = 1000 * 1600;
 
 	var lastCursorUpdate = 0;
 	var sending = true;
@@ -62,8 +61,7 @@
 		x: 0,
 		y: 0,
 		color: Tools.getColor(),
-		size: Tools.getSize(),
-	};
+		size: Tools.getSize(),	};
 
 	function clearAll() {
 		const gs = document.querySelector('.js-cursors');
@@ -123,9 +121,6 @@
 
 		cursorsElem.appendChild(g);
 
-		setTimeout(function () {
-			cursorsElem.removeChild(g);
-		}, CURSOR_DELETE_AFTER_MS);
 		return cursor;
 	}
 
@@ -164,6 +159,9 @@
 				if (Tools.isIE) cursorGroup.setAttributeNS(null, "transform", "translate(" + message.x * Tools.getScale() + " " + message.y * Tools.getScale()  + ")");
 				if (Tools.isIE) curImg.setAttributeNS(null, "transform", "translate(0 0)");
 				cursorGroup.setAttributeNS(null, "fill", message.color);
+			}
+			if (!message.showCursor) {
+				cursorGroup.remove();
 			}
 		}
 	}
