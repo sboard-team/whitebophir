@@ -160,8 +160,10 @@
 				if (Tools.isIE) curImg.setAttributeNS(null, "transform", "translate(0 0)");
 				cursorGroup.setAttributeNS(null, "fill", message.color);
 			}
-			if (!message.showCursor) {
-				cursorGroup.remove();
+			if ('showCursor' in message) {
+				if (!message.showCusror) {
+					cursorGroup.remove();
+				}
 			}
 		}
 	}
