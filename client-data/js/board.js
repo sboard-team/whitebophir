@@ -976,7 +976,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 					"full_name": "John Smith"
 				},
 				"permissions": {"edit": true, "invite": true, "image": true, "pdf": true, "cursors": true, "background": true},
-				"invite_link": "https:\/\/back.sboard.su\/cabinet\/boards\/join\/56dfgdfbh67="
+				"invite_link": "https:\/\/sboard.su\/cabinet\/boards\/join\/56dfgdfbh67="
 			};
             showBoard();
             return;
