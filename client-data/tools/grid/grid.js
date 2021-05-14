@@ -52,14 +52,17 @@
             case 4:
                 Tools.setColor('#000000');
                 Tools.svg.style.backgroundColor = states[index];
+                ym(68060329,'reachGoal','black_background');
                 break;
             case 5:
                 Tools.setColor('#FFFFFF');
                 Tools.svg.style.backgroundColor = states[index];
+                ym(68060329,'reachGoal','green_background');
                 break;
             case 3:
                 Tools.setColor('#FFFFFF');
                 Tools.svg.style.backgroundColor = states[index];
+                ym(68060329,'reachGoal','white_background');
                 break;
         }
     }
@@ -137,6 +140,9 @@
 
     function setIndex(newIndex) {
         index = +newIndex || 0;
+        Tools.send({
+            gridIndex: index
+        }, "Grid")
     }
 
     Tools.add({ //The new tool
@@ -144,9 +150,45 @@
         "shortcut": "g",
         "listeners": {},
         "oneTouch": true,
+        "draw": draw,
         "onstart": toggleGrid,
         "mouseCursor": "crosshair",
         "setIndex": setIndex,
     });
+
+    function draw(message) {
+        if (!Tools.params.permissions.background) {
+            if (Tools.params.permissions.edit) {
+                createModal(Tools.modalWindows.premiumFunctionForOwner);
+            } else {
+                createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+            }
+            return;
+        }
+
+        switch (message.gridIndex) {
+            case 0:
+            case 1:
+                gridContainer.setAttributeNS(null, "fill", states[message.gridIndex]);
+                break;
+            case 2:
+                gridContainer.setAttributeNS(null, "fill", "none");
+                Tools.setColor('#000000');
+                Tools.svg.style.backgroundColor = states[message.gridIndex];
+                break;
+            case 4:
+                Tools.setColor('#000000');
+                Tools.svg.style.backgroundColor = states[message.gridIndex];
+                break;
+            case 5:
+                Tools.setColor('#FFFFFF');
+                Tools.svg.style.backgroundColor = states[message.gridIndex];
+                break;
+            case 3:
+                Tools.setColor('#FFFFFF');
+                Tools.svg.style.backgroundColor = states[message.gridIndex];
+                break;
+        }
+    }
 
 })(); //End of code isolation

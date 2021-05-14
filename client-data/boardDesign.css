@@ -402,6 +402,7 @@
 .objectTransfrom-item {
     border-bottom: none;
     border-right: 1px solid #F2F2F2;
+    border-top-right-radius: 10px;
     position: relative;
     cursor: pointer;
 }
