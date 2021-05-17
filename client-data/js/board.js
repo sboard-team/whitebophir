@@ -836,11 +836,15 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 	}
 
 	function toggleCursors() {
+		const cursor = document.querySelector('.js-cursor-g');
 		if (Tools.params.permissions.cursors) {
 			Tools.sendAnalytic("Cursors", 0);
 			Tools.showMarker = !Tools.showMarker;
 			if (Tools.showMarker === false) {
 				Tools.list.Cursor.clearAll();
+			}
+			if (Tools.showMarker && cursor && cursor.classList.contains('d-none')) {
+				cursor.classList.remove('d-none');
 			}
 			let btnCursorTitle = (Tools.showMarker)
 				? 'Скрыть курсоры участников'

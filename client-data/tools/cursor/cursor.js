@@ -64,8 +64,10 @@
 		size: Tools.getSize(),	};
 
 	function clearAll() {
-		const gs = document.querySelector('.js-cursors');
-		gs.classList.toggle('d-none');
+		const gs = document.querySelector('.js-cursor-g');
+		if (gs) {
+			gs.classList.add('d-none');
+		}
 	}
 
 	function handleMarker(x, y, evt) {
@@ -160,10 +162,8 @@
 				if (Tools.isIE) curImg.setAttributeNS(null, "transform", "translate(0 0)");
 				cursorGroup.setAttributeNS(null, "fill", message.color);
 			}
-			if ('showCursor' in message) {
-				if (!message.showCusror) {
-					cursorGroup.remove();
-				}
+			if ('showCursor' in message && !message.showCusror) {
+				cursorGroup.remove();
 			}
 		}
 	}
