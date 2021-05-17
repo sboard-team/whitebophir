@@ -1,5 +1,6 @@
 (function adsManaging() {
     const adBanner = document.getElementById('banner-ad');
+    adBanner.onclick = bannerClick;
     const closeAd = adBanner.querySelector('.closeAd');
     const closedAdBanner = document.querySelector('.closedBanner');
     const closeAdBanner = closedAdBanner.querySelector('.closeAd');
@@ -106,6 +107,7 @@
     // Show popup
 
     function showPopup(bannerInterval) {
+        ym(67204918,'reachGoal','f_clck_close banner');
         adBanner.classList.add('hide');
         closedAdBanner.classList.remove('hide');
         bannerInterval.stop();
@@ -114,7 +116,15 @@
     // Close popup and set timer to show banner sum delay (from request) after its closing
 
     function closePopup(bannerInterval) {
+        ym(67204918,'reachGoal','clck_no_ads');
         closedAdBanner.classList.add('hide');
         bannerInterval.reset();
+    }
+
+    function bannerClick(e) {
+        if (e.target.getAttribute('id') === 'banner-ad') {
+            ym(67204918,'reachGoal','banner_board_clck');
+            window.open('https://sboard.online/cabinet/tariff');//todo get from .env
+        }
     }
 })()
