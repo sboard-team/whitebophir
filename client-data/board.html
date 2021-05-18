@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="../style/tutorial.css?v={{v}}"/>
 	<link rel="stylesheet" type="text/css" href="../board.css?v={{v}}"/>
     <link rel="stylesheet" href="boardDesign.css?v={{v}}">
+    <link rel="stylesheet" href="adsManaging/adsManaging.css?v={{v}}">
 	<script src="../socket.io/socket.io.js?v={{v}}"></script>
 	<meta name="description" content="{{translations.tagline}}"/>
 	<meta name="keywords"
@@ -845,6 +846,31 @@
 </div>
 </div>
 
+<div id="banner-ad" class="hide">
+    <div class="closeAd">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1L6 6M6 6L11 1M6 6L1 11M6 6L11 11" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <div class="ad-container">
+        <div id="fixed-size-ad" class="ad-slot"></div>
+    </div>
+</div>
+
+<div class="closedBanner hide">
+    <div class="closeAd">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1L6 6M6 6L11 1M6 6L1 11M6 6L11 11" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <div class="closedBannerText">
+        Реклама скрыта
+    </div>
+    <div class="disableAds">
+        <a class="disableAdsLink" target="_blank" href="https://sboard.online/cabinet/tariff">Отключить насовсем</a>
+    </div>
+</div>
+
 <script type="application/json" id="translations">{{{ json translations }}}</script>
 <script type="application/json" id="configuration">{{{ json configuration }}}</script>
 <!-- Yandex.Metrika counter -->
@@ -894,6 +920,8 @@
 <script type="module" src="../tools/formula/formula.js?v={{v}}"></script>
 <script src="../tools/hand/hand.js?v={{v}}"></script>
 <script src="../js/picoModal-3.0.0.min.js"></script>
+<script src="./adsManaging/adsManaging.js?v={{v}}"></script>
+
 
 </body>
 
