@@ -140,12 +140,18 @@
 
     function setIndex(newIndex) {
         index = +newIndex || 0;
-        Tools.send({
-            gridIndex: index
-        }, "Grid")
+
+        var data = {
+            'type': "grid",
+            'id': Tools.generateUID("g"),
+            'color': states[index],
+            'index': index,
+        }
+
+        Tools.drawAndSend(data, Tools.list.Grid);
     }
 
-    Tools.add({ //The new tool
+    Tools.add({ //add the new tool
         "name": "Grid",
         "shortcut": "g",
         "listeners": {},
@@ -166,27 +172,27 @@
             return;
         }
 
-        switch (message.gridIndex) {
+        switch (message.index) {
             case 0:
             case 1:
-                gridContainer.setAttributeNS(null, "fill", states[message.gridIndex]);
+                gridContainer.setAttributeNS(null, "fill", states[message.index]);
                 break;
             case 2:
                 gridContainer.setAttributeNS(null, "fill", "none");
                 Tools.setColor('#000000');
-                Tools.svg.style.backgroundColor = states[message.gridIndex];
+                Tools.svg.style.backgroundColor = states[message.index];
                 break;
             case 4:
                 Tools.setColor('#000000');
-                Tools.svg.style.backgroundColor = states[message.gridIndex];
+                Tools.svg.style.backgroundColor = states[message.index];
                 break;
             case 5:
                 Tools.setColor('#FFFFFF');
-                Tools.svg.style.backgroundColor = states[message.gridIndex];
+                Tools.svg.style.backgroundColor = states[message.index];
                 break;
             case 3:
                 Tools.setColor('#FFFFFF');
-                Tools.svg.style.backgroundColor = states[message.gridIndex];
+                Tools.svg.style.backgroundColor = states[message.index];
                 break;
         }
     }
