@@ -111,7 +111,7 @@
     }
 
     function StoreGrid(index) {
-        this.type = 'update';
+        this.type = data.type;
         this.id = data.id;
         this.color = states[index];
         this.index = index;
@@ -173,8 +173,6 @@
         defs.appendChild(smallGrid);
         defs.appendChild(grid);
         defs.appendChild(dots);
-
-        Tools.drawAndSend(data, Tools.list.Grid);
     }
 
     var gridContainer = (function init() {
@@ -196,44 +194,9 @@
         Tools.drawAndSend(new StoreGrid(index), Tools.list.Grid);
     }
 
-    function draw(message) {
-        // if (!Tools.params.permissions.background) {
-        //     if (Tools.params.permissions.edit) {
-        //         createModal(Tools.modalWindows.premiumFunctionForOwner);
-        //     } else {
-        //         createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
-        //     }
-        //     return;
-        // }
-
-        if (message.tool === 'Grid') {
-            switchGrid(message.index);
-        }
-
-        if (gridContainer) {
-            switch (message.index) {
-                case 0:
-                case 1:
-                    gridContainer.setAttributeNS(null, "fill", message.color);
-                    break;
-                case 2:
-                    gridContainer.setAttributeNS(null, "fill", "none");
-                    Tools.setColor('#000000');
-                    Tools.svg.style.backgroundColor = message.color;
-                    break;
-                case 4:
-                    Tools.setColor('#000000');
-                    Tools.svg.style.backgroundColor = message.color;
-                    break;
-                case 5:
-                    Tools.setColor('#FFFFFF');
-                    Tools.svg.style.backgroundColor = message.color;
-                    break;
-                case 3:
-                    Tools.setColor('#FFFFFF');
-                    Tools.svg.style.backgroundColor = message.color;
-                    break;
-            }
+    function draw(data) {
+        if (data.index) {
+            switchGrid(data.index);
         }
     }
 
