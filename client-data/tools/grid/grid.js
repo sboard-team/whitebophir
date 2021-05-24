@@ -35,6 +35,43 @@
         'index': index,
     }
 
+    Tools.add({ //add the new tool
+        "name": "Grid",
+        "shortcut": "g",
+        "listeners": {},
+        "oneTouch": true,
+        "draw": draw,
+        "onstart": toggleGrid,
+        "mouseCursor": "crosshair",
+        "setIndex": setIndex,
+    });
+
+    function switchGrid(index) {
+        switch (index) {
+            case 0:
+            case 1:
+                gridContainer.setAttributeNS(null, "fill", states[index]);
+                break;
+            case 2:
+                gridContainer.setAttributeNS(null, "fill", "none");
+                Tools.setColor('#000000');
+                Tools.svg.style.backgroundColor = states[index];
+                break;
+            case 4:
+                Tools.setColor('#000000');
+                Tools.svg.style.backgroundColor = states[index];
+                break;
+            case 5:
+                Tools.setColor('#FFFFFF');
+                Tools.svg.style.backgroundColor = states[index];
+                break;
+            case 3:
+                Tools.setColor('#FFFFFF');
+                Tools.svg.style.backgroundColor = states[index];
+                break;
+        }
+    }
+
     function toggleGrid(evt) {
         if (!Tools.params.permissions.background) {
             if (Tools.params.permissions.edit) {
@@ -153,17 +190,6 @@
         return gridContainer;
     })();
 
-    Tools.add({ //add the new tool
-        "name": "Grid",
-        "shortcut": "g",
-        "listeners": {},
-        "oneTouch": true,
-        "draw": draw,
-        "onstart": toggleGrid,
-        "mouseCursor": "crosshair",
-        "setIndex": setIndex,
-    });
-
     function setIndex(newIndex) {
         index = +newIndex || 0;
 
@@ -180,28 +206,34 @@
         //     return;
         // }
 
-        switch (message.index) {
-            case 0:
-            case 1:
-                gridContainer.setAttributeNS(null, "fill", states[message.index]);
-                break;
-            case 2:
-                gridContainer.setAttributeNS(null, "fill", "none");
-                Tools.setColor('#000000');
-                Tools.svg.style.backgroundColor = states[message.index];
-                break;
-            case 4:
-                Tools.setColor('#000000');
-                Tools.svg.style.backgroundColor = states[message.index];
-                break;
-            case 5:
-                Tools.setColor('#FFFFFF');
-                Tools.svg.style.backgroundColor = states[message.index];
-                break;
-            case 3:
-                Tools.setColor('#FFFFFF');
-                Tools.svg.style.backgroundColor = states[message.index];
-                break;
+        if (message.tool === 'Grid') {
+            switchGrid(message.index);
+        }
+
+        if (gridContainer) {
+            switch (message.index) {
+                case 0:
+                case 1:
+                    gridContainer.setAttributeNS(null, "fill", message.color);
+                    break;
+                case 2:
+                    gridContainer.setAttributeNS(null, "fill", "none");
+                    Tools.setColor('#000000');
+                    Tools.svg.style.backgroundColor = message.color;
+                    break;
+                case 4:
+                    Tools.setColor('#000000');
+                    Tools.svg.style.backgroundColor = message.color;
+                    break;
+                case 5:
+                    Tools.setColor('#FFFFFF');
+                    Tools.svg.style.backgroundColor = message.color;
+                    break;
+                case 3:
+                    Tools.setColor('#FFFFFF');
+                    Tools.svg.style.backgroundColor = message.color;
+                    break;
+            }
         }
     }
 
