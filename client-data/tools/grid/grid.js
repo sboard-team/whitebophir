@@ -28,6 +28,12 @@
 
     var index = 0; //grid on by default
     var states = ["url(#grid)", "url(#dots)", "#FFFFFF", "#FFFFFF", "#000000", "#1E5E25"];
+    var data = {
+        'type': 'grid',
+        'id': 'bb',
+        'color': states[index],
+        'index': index,
+    }
 
     function toggleGrid(evt) {
         if (!Tools.params.permissions.background) {
@@ -65,6 +71,13 @@
                 ym(68060329,'reachGoal','white_background');
                 break;
         }
+    }
+
+    function StoreGrid(index) {
+        this.type = 'update';
+        this.id = data.id;
+        this.color = states[index];
+        this.index = index;
     }
 
     function createPatterns() {
@@ -123,6 +136,8 @@
         defs.appendChild(smallGrid);
         defs.appendChild(grid);
         defs.appendChild(dots);
+
+        Tools.drawAndSend(data, Tools.list.Grid);
     }
 
     var gridContainer = (function init() {
@@ -138,19 +153,6 @@
         return gridContainer;
     })();
 
-    function setIndex(newIndex) {
-        index = +newIndex || 0;
-
-        var data = {
-            'type': "grid",
-            'id': Tools.generateUID("g"),
-            'color': states[index],
-            'index': index,
-        }
-
-        Tools.drawAndSend(data, Tools.list.Grid);
-    }
-
     Tools.add({ //add the new tool
         "name": "Grid",
         "shortcut": "g",
@@ -162,15 +164,21 @@
         "setIndex": setIndex,
     });
 
+    function setIndex(newIndex) {
+        index = +newIndex || 0;
+
+        Tools.drawAndSend(new StoreGrid(index), Tools.list.Grid);
+    }
+
     function draw(message) {
-        if (!Tools.params.permissions.background) {
-            if (Tools.params.permissions.edit) {
-                createModal(Tools.modalWindows.premiumFunctionForOwner);
-            } else {
-                createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
-            }
-            return;
-        }
+        // if (!Tools.params.permissions.background) {
+        //     if (Tools.params.permissions.edit) {
+        //         createModal(Tools.modalWindows.premiumFunctionForOwner);
+        //     } else {
+        //         createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+        //     }
+        //     return;
+        // }
 
         switch (message.index) {
             case 0:
