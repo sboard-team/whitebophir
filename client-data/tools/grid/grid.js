@@ -28,13 +28,7 @@
 
     var index = 0; //grid on by default
     var states = ["url(#grid)", "url(#dots)", "#FFFFFF", "#FFFFFF", "#000000", "#1E5E25"];
-    var data = {
-        'type': 'grid',
-        'id': 'bb',
-        'color': states[index],
-        'index': index,
-    }
-
+    
     Tools.add({ //add the new tool
         "name": "Grid",
         "shortcut": "g",
@@ -111,8 +105,8 @@
     }
 
     function StoreGrid(index) {
-        this.type = data.type;
-        this.id = data.id;
+        this.type = [0, 1, 2].includes(index) ? 'grid' : 'background';
+        this.id = [0, 1, 2].includes(index) ? 'gridType' : 'backgroundColor';
         this.color = states[index];
         this.index = index;
     }
@@ -195,8 +189,12 @@
     }
 
     function draw(data) {
-        if (data.index) {
-            switchGrid(data.index);
+        switch(data.type) {
+            case 'grid':
+                switchGrid(data.index);
+            case 'background':
+                switchGrid(data.index);
+                Tools.boardBackgroundColor = data.color;
         }
     }
 
