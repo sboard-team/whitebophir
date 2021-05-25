@@ -51,7 +51,7 @@ Tools.drawingArea = Tools.svg.getElementById("drawingArea");
 Tools.modalWindows = {
 	premiumFunctionForOwner: `<h2 class="modal-title">Функция недоступна!</h2>
                 <div class="modal-description">
-                    Эта функция не доступна на базовом тарифе.
+                    Эта функция не доступна на Вашем тарифе.
                 </div>
                 <a href="${Tools.server_config.LANDING_URL}cabinet/tariff" class="btn btn-green">
                 Управлять тарифом
