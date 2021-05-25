@@ -28,18 +28,10 @@
 
     var index = 0; //grid on by default
     var states = ["url(#grid)", "url(#dots)", "#FFFFFF", "#FFFFFF", "#000000", "#1E5E25"];
+    const basicGrid = [0, 1, 2];
 
-    function toggleGrid(evt) {
-        if (!Tools.params.permissions.background) {
-            if (Tools.params.permissions.edit) {
-                createModal(Tools.modalWindows.premiumFunctionForOwner);
-            } else {
-                createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
-            }
-            return;
-        }
-
-        switch (index) {
+    function switchGrid(index) {
+        switch(index) {
             case 0:
             case 1:
                 gridContainer.setAttributeNS(null, "fill", states[index]);
@@ -65,6 +57,24 @@
                 ym(68060329,'reachGoal','white_background');
                 break;
         }
+    }
+
+    function toggleGrid(evt) {
+        if (!Tools.params.permissions.background) {
+            if (basicGrid.includes(index)) {
+                switchGrid(index);
+            }
+            else {
+                if (Tools.params.permissions.edit) {
+                    createModal(Tools.modalWindows.premiumFunctionForOwner);
+                } else {
+                    createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
+                }
+            }
+            return;
+        }
+
+        switchGrid(index);
     }
 
     function createPatterns() {
