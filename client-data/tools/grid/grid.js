@@ -157,15 +157,6 @@
     });
 
     function draw(message) {
-        if (!Tools.params.permissions.background) {
-            if (Tools.params.permissions.edit) {
-                createModal(Tools.modalWindows.premiumFunctionForOwner);
-            } else {
-                createModal(Tools.modalWindows.premiumFunctionForDefaultUser);
-            }
-            return;
-        }
-
         switch (message.gridIndex) {
             case 0:
             case 1:
