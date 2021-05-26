@@ -929,6 +929,10 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 			document.getElementById('Tool-Document').classList.add('disabled-icon');
 		}
 
+		if (!Tools.params.permissions.cursors) {
+			document.getElementById('btnCursors').classList.add('disabled-icon');
+		}
+
 		if (!Tools.params.permissions.background) {
 			const bgBtns = document.querySelectorAll('.js-change-bgcolor');
 			bgBtns.forEach((el) => {
