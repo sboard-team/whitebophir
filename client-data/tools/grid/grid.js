@@ -173,6 +173,8 @@
     }
 
     function draw(data) {
+        if (Tools.params.permissions && !Tools.params.permissions.background) return;
+
         switch(data.type) {
             case 'grid':
                 switchGrid(data.index);

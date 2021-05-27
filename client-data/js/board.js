@@ -897,15 +897,15 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 		}
 
 		// var boardBackgroundColor = Tools.params.board.settings?.background?.color;
-		if (Tools.boardBackgroundColor !== null) {
+		if (Tools.params.permissions.background && Tools.boardBackgroundColor) {
 			Tools.svg.style.backgroundColor = Tools.boardBackgroundColor;
 			if (Tools.boardBackgroundColor.toUpperCase !== '#FFFFFF') {
 				Tools.setColor('#FFFFFF');
 			}
-		} else {
-			Tools.svg.style.backgroundColor = '#FFFFFF';
+			else {
+				Tools.svg.style.backgroundColor = '#FFFFFF';
+			}
 		}
-
 		if (Tools.params.permissions.invite) {
 			document.querySelector('.js-link-text').innerText = Tools.params.invite_link;
 		} else {
