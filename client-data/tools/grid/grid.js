@@ -169,12 +169,12 @@
     function setIndex(newIndex) {
         index = +newIndex || 0;
 
+        if (!Tools.params.permissions.background && !basicGrid.includes(index)) return;
+
         Tools.drawAndSend(new StoreGrid(index), Tools.list.Grid);
     }
 
     function draw(data) {
-        if (Tools.params.permissions && !Tools.params.permissions.background) return;
-
         switch(data.type) {
             case 'grid':
                 switchGrid(data.index);
