@@ -898,7 +898,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 
 		// var boardBackgroundColor = Tools.params.board.settings?.background?.color;
 		if (Tools.boardBackgroundColor !== null) {
-			Tools.svg.style.backgroundColor = boardBackgroundColor;
+			Tools.svg.style.backgroundColor = Tools.boardBackgroundColor;
 			if (Tools.boardBackgroundColor.toUpperCase !== '#FFFFFF') {
 				Tools.setColor('#FFFFFF');
 			}
