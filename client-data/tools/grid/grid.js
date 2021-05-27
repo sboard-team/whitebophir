@@ -30,6 +30,17 @@
     var states = ["url(#grid)", "url(#dots)", "#FFFFFF", "#FFFFFF", "#000000", "#1E5E25"];
     const basicGrid = [0, 1, 2];
 
+    Tools.add({ //add the new tool
+        "name": "Grid",
+        "shortcut": "g",
+        "listeners": {},
+        "oneTouch": true,
+        "draw": draw,
+        "onstart": toggleGrid,
+        "mouseCursor": "crosshair",
+        "setIndex": setIndex,
+    });
+
     function switchGrid(index) {
         switch(index) {
             case 0:
@@ -75,6 +86,13 @@
         }
 
         switchGrid(index);
+    }
+
+    function StoreGrid(index) {
+        this.type = [0, 1, 2].includes(index) ? 'grid' : 'background';
+        this.id = [0, 1, 2].includes(index) ? 'gridType' : 'backgroundColor';
+        this.color = states[index];
+        this.index = index;
     }
 
     function createPatterns() {
@@ -150,45 +168,17 @@
 
     function setIndex(newIndex) {
         index = +newIndex || 0;
-        Tools.send({
-            gridIndex: index
-        }, "Grid")
+
+        Tools.drawAndSend(new StoreGrid(index), Tools.list.Grid);
     }
 
-    Tools.add({ //The new tool
-        "name": "Grid",
-        "shortcut": "g",
-        "listeners": {},
-        "oneTouch": true,
-        "draw": draw,
-        "onstart": toggleGrid,
-        "mouseCursor": "crosshair",
-        "setIndex": setIndex,
-    });
-
-    function draw(message) {
-        switch (message.gridIndex) {
-            case 0:
-            case 1:
-                gridContainer.setAttributeNS(null, "fill", states[message.gridIndex]);
-                break;
-            case 2:
-                gridContainer.setAttributeNS(null, "fill", "none");
-                Tools.setColor('#000000');
-                Tools.svg.style.backgroundColor = states[message.gridIndex];
-                break;
-            case 4:
-                Tools.setColor('#000000');
-                Tools.svg.style.backgroundColor = states[message.gridIndex];
-                break;
-            case 5:
-                Tools.setColor('#FFFFFF');
-                Tools.svg.style.backgroundColor = states[message.gridIndex];
-                break;
-            case 3:
-                Tools.setColor('#FFFFFF');
-                Tools.svg.style.backgroundColor = states[message.gridIndex];
-                break;
+    function draw(data) {
+        switch(data.type) {
+            case 'grid':
+                switchGrid(data.index);
+            case 'background':
+                switchGrid(data.index);
+                Tools.boardBackgroundColor = data.color;
         }
     }
 
