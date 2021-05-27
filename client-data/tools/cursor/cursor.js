@@ -61,7 +61,8 @@
 		x: 0,
 		y: 0,
 		color: Tools.getColor(),
-		size: Tools.getSize(),	};
+		size: Tools.getSize(),	
+	};
 
 	function clearAll() {
 		const gs = document.querySelector('.js-cursor-g');
@@ -160,8 +161,8 @@
 				}
 				if (Tools.isIE) cursorGroup.setAttributeNS(null, "transform", "translate(" + message.x * Tools.getScale() + " " + message.y * Tools.getScale()  + ")");
 				if (Tools.isIE) curImg.setAttributeNS(null, "transform", "translate(0 0)");
-				curImg.setAttributeNS(null, "fill", message.color);
 				cursorGroup.setAttributeNS(null, "fill", message.color);
+				curImg.setAttributeNS(null, "fill", message.color);
 			}
 			if ('showCursor' in message && !message.showCusror) {
 				cursorGroup.remove();

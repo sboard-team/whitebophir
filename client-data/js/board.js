@@ -98,6 +98,7 @@ Tools.drawingEvent = true;
 Tools.showMarker = false;
 Tools.showOtherCursors = true;
 Tools.showMyCursor = false;
+Tools.boardBackgroundColor = null;
 
 Tools.isIE = /MSIE|Trident/.test(window.navigator.userAgent);
 
@@ -895,10 +896,9 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 				.removeAttribute('data-tooltip');
 		}
 
-		var boardBackgroundColor = Tools.params.board.settings?.background?.color;
-		if (boardBackgroundColor !== undefined) {
-			Tools.svg.style.backgroundColor = boardBackgroundColor;
-			if (boardBackgroundColor.toUpperCase !== '#FFFFFF') {
+		if (Tools.boardBackgroundColor !== null) {
+			Tools.svg.style.backgroundColor = Tools.boardBackgroundColor;
+			if (Tools.boardBackgroundColor.toUpperCase !== '#FFFFFF') {
 				Tools.setColor('#FFFFFF');
 			}
 		} else {
