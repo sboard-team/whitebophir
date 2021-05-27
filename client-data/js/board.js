@@ -896,9 +896,10 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 				.removeAttribute('data-tooltip');
 		}
 
-		if (Tools.boardBackgroundColor !== null) {
-			Tools.svg.style.backgroundColor = Tools.boardBackgroundColor;
-			if (Tools.boardBackgroundColor.toUpperCase !== '#FFFFFF') {
+		var boardBackgroundColor = Tools.params.board.settings?.background?.color;
+		if (boardBackgroundColor !== undefined) {
+			Tools.svg.style.backgroundColor = boardBackgroundColor;
+			if (boardBackgroundColor.toUpperCase !== '#FFFFFF') {
 				Tools.setColor('#FFFFFF');
 			}
 		} else {
