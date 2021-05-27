@@ -202,14 +202,15 @@
 			x3 = data.x2
 			y3 = data.y
 		}
-		return Object.assign({ x3: x3, y3: y3 }, data);
+		data.x3 = x3;
+		data.y3 = y3;
+		return data;
 	}
 
 	function calculateEquilateralTriangle(data) {
-		const coordinates = {};
-		coordinates.x3 = (data.x2 + data.x) / 2 + Math.sqrt(3) / 2 * (data.y2 - data.y)
-		coordinates.y3 = (data.y2 + data.y) / 2 + Math.sqrt(3) / 2 * (data.x - data.x2)
-		return Object.assign(coordinates, data);
+		data.x3 = (data.x2 + data.x) / 2 + Math.sqrt(3) / 2 * (data.y2 - data.y)
+		data.y3 = (data.y2 + data.y) / 2 + Math.sqrt(3) / 2 * (data.x - data.x2)
+		return data;
 	}
 
 	function renderRect(data) {
