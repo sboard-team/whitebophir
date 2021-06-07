@@ -1,0 +1,51 @@
+.upgrate-board {
+    position: fixed;
+    top: 20px;
+    left: 440px;
+    height: 40px;
+    padding: 10px;
+    background: #EFE26D;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.upgrate-board-icon {
+    margin-right: 10px;
+}
+
+.upgrate-board-text {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 20px;
+    color: #828282;
+}
+
+@media(max-width: 768px) {      
+    .upgrate-board-text {
+        display: none;
+    }
+      
+    .upgrate-board-icon {
+        margin: 0;
+    }
+}
+
+@media(max-width: 640px) {
+    .upgrate-board {
+        top: 10px;
+        left: 430px;
+    }
+}
+
+@media(max-width: 411px) {
+    .upgrate-board {
+        top: 130px;
+        left: 310px;
+    }
+}
