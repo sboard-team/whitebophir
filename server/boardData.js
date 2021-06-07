@@ -44,11 +44,12 @@ var BoardData = function (name) {
 
 /** Adds data to the board */
 BoardData.prototype.set = function (id, data) {
+	console.log('BoardData.prototype.set ', id)
 	//KISS
 	data.time = Date.now();
 	this.validate(data);
 	this.board[id] = data;
-	this.delaySave();
+	this.addDataToBoard(id, data);
 };
 
 /** Adds a child to an element that is already in the board
@@ -58,13 +59,17 @@ BoardData.prototype.set = function (id, data) {
  * @returns {boolean} - True if the child was added, else false
 */
 BoardData.prototype.addChild = function (parentId, child) {
+	console.log('BoardData.prototype.addChild', parentId);
+
 	var obj = this.board[parentId];
 	if (typeof obj !== "object") return false;
 	if (Array.isArray(obj._children)) obj._children.push(child);
 	else obj._children = [child];
 
 	this.validate(obj);
-	this.delaySave();
+
+	console.log('obj', obj);
+	this.updateBoardData(parentId, obj);
 	return true;
 };
 
@@ -76,7 +81,6 @@ BoardData.prototype.addChild = function (parentId, child) {
 BoardData.prototype.update = function (id, data, create) {
 	delete data.type;
 	delete data.tool;
-	console.log(1, data)
 	var obj = this.board[id];
 	if (typeof obj === "object") {
 		for (var i in data) {
@@ -136,16 +140,28 @@ BoardData.prototype.addUser = function addUser(userId) {
 
 /** Delays the triggering of auto-save by SAVE_INTERVAL seconds
 */
-BoardData.prototype.delaySave = function () {
-	if (this.saveTimeoutId !== undefined) clearTimeout(this.saveTimeoutId);
-	this.saveTimeoutId = setTimeout(this.save.bind(this), config.SAVE_INTERVAL);
-	if (Date.now() - this.lastSaveDate > config.MAX_SAVE_DELAY) setTimeout(this.save.bind(this), 0);
+BoardData.prototype.delaySave = function (id, data) {
+	this.save.bind(this);
+	this.save(id, data);
+	// if (this.saveTimeoutId !== undefined) clearTimeout(this.saveTimeoutId);
+	// this.saveTimeoutId = setTimeout(this.save.bind(this), config.SAVE_INTERVAL);
+	// if (Date.now() - this.lastSaveDate > config.MAX_SAVE_DELAY) setTimeout(this.save.bind(this), 0);
 };
 
 /** Saves the data in the board to a mongodb. */
-BoardData.prototype.save = async function () {
-	this.lastSaveDate = Date.now();
-	db.updateBoard(this.name, this.board);
+BoardData.prototype.save = async function (id, data) {
+	// this.lastSaveDate = Date.now();
+	db.addDataToBoard(this.name, id, data);
+};
+
+/** Saves the data in the board to a mongodb. */
+BoardData.prototype.addDataToBoard = async function (id, data) {
+	db.addDataToBoard(this.name, id, data);
+};
+
+/** Saves the data in the board to a mongodb. */
+BoardData.prototype.updateBoardData = async function (id, data) {
+	db.updateBoardData(this.name, id, data);
 };
 
 /** Remove old elements from the board */
@@ -204,12 +220,25 @@ BoardData.prototype.validate = function validate(item, parent) {
 BoardData.load = async function loadBoard(name) {
 	var boardData = new BoardData(name);
 	const boardFromDb = await db.getBoard(name);
+	const boardDataObj = await db.getBoardData(name)
+	console.log('boardDataObj', boardDataObj)
+
 	boardData.board = boardFromDb ? boardFromDb.board : null;
 	if (!boardData.board) {
+		console.log('!boardData.board', boardData.board)
+
 		boardData.board = {};
 	} else {
 		for (id in boardData.board) boardData.validate(boardData.board[id]);
+		for (id in boardDataObj) {
+			console.log('id in boardDataObj', id, boardDataObj[id])
+			// boardData.validate(boardDataObj[id]);
+			boardData.board[boardDataObj[id].id] = boardDataObj[id];
+		}
 	}
+
+	console.log('boardData', boardData)
+
 	return boardData;
 };
 

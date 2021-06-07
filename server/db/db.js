@@ -28,12 +28,32 @@ MongoClient.connect(process.env.DB_CONN, {
 
 /** Обновляет доску **/
 async function updateBoard(boardName, board) {
+    // log('updateBoard')
+    // log('updateBoard', board, boardName)
     const collection = db.collection('boards');
     await collection.updateOne({ name: boardName }, {$set: { board: board }}, {upsert: false});
     //log('db.board updated', { 'boardName': boardName });
 }
 
+/** Обновляет доску **/
+async function addDataToBoard(boardName, id, data) {
+    console.log('addDataToBoard', id, data)
+    const collection = db.collection('boardData');
+    await collection.updateOne({ name: boardName, 'id': id }, {$set: { data: data }}, {upsert: true});
+    console.log('addDataToBoard added')
+}
+
+/** Обновляет доску **/
+async function updateBoardData(boardName, id, data) {
+    console.log('updateBoardData', id, data)
+    const collection = db.collection('boardData');
+    await collection.updateOne({ name: boardName, 'id': id }, {$set: { data: data }}, {upsert: false});
+    console.log('updateBoardData updated')
+}
+
 async function createBoard(boardName) {
+    log('createBoard', boardName)
+
     const collection = db.collection('boards');
     await collection.updateOne({ name: boardName }, {$set: { board: {} }}, {upsert: true});
     log('db.board created', { 'boardName': boardName });
@@ -41,13 +61,19 @@ async function createBoard(boardName) {
 
 /** Удаляет доску по имени **/
 async function deleteBoard(boardName) {
+    log('deleteBoard', boardName)
+
     const collection = db.collection('boards');
     await collection.deleteOne({ name: boardName }, true);
     log('db.board deleted', { 'boardName': boardName });
 }
 
 async function clearBoard(boardName) {
+    log('clearBoard', boardName)
+
     const collection = db.collection('boards');
+    log('clearBoard collection', collection)
+
     await collection.deleteOne({ name: boardName }, true);
     await collection.updateOne({ name: boardName }, {$set: { board: {} }}, {upsert: true});
     log('db.board cleared', { 'boardName': boardName });
@@ -70,11 +96,27 @@ async function getBoard(boardName) {
     return result;
 }
 
+/** Получает доску по имени, если такой доски не существует возвращает null **/
+async function getBoardData(boardName) {
+    const collection = db.collection('boardData');
+
+    let result = await collection.find({name: boardName}).toArray();
+
+    for(id in result) {
+        delete result[id]._id;
+    }
+
+    return result
+}
+
 module.exports = {
     updateBoard,
     createBoard,
     deleteBoard,
     clearBoard,
     boardExists,
-    getBoard
+    getBoard,
+    addDataToBoard,
+    updateBoardData,
+    getBoardData,
 };
