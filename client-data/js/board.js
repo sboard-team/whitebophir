@@ -896,16 +896,16 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 				.removeAttribute('data-tooltip');
 		}
 
-		var boardBackgroundColor = Tools.params.board.settings?.background?.color;
-		if (boardBackgroundColor !== undefined) {
-			Tools.svg.style.backgroundColor = boardBackgroundColor;
-			if (boardBackgroundColor.toUpperCase !== '#FFFFFF') {
+		// var boardBackgroundColor = Tools.params.board.settings?.background?.color;
+		if (Tools.params.permissions.background && Tools.boardBackgroundColor) {
+			Tools.svg.style.backgroundColor = Tools.boardBackgroundColor;
+			if (Tools.boardBackgroundColor.toUpperCase !== '#FFFFFF') {
 				Tools.setColor('#FFFFFF');
 			}
-		} else {
-			Tools.svg.style.backgroundColor = '#FFFFFF';
+			else {
+				Tools.svg.style.backgroundColor = '#FFFFFF';
+			}
 		}
-
 		if (Tools.params.permissions.invite) {
 			document.querySelector('.js-link-text').innerText = Tools.params.invite_link;
 		} else {
@@ -931,7 +931,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 		}
 
 		if (!Tools.params.permissions.cursors) {
-			document.getElementById('btnCursors').classList.add('disabled-icon');
+			document.querySelector('.js-cursors').classList.add('disabled-icon');
 		}
 
 		if (!Tools.params.permissions.background) {

@@ -169,6 +169,8 @@
     function setIndex(newIndex) {
         index = +newIndex || 0;
 
+        if (!Tools.params.permissions.background && !basicGrid.includes(index)) return;
+
         Tools.drawAndSend(new StoreGrid(index), Tools.list.Grid);
     }
 
