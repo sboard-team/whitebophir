@@ -1451,7 +1451,7 @@ Tools.getColor = (function color() {
 
 Tools.getCorrectorColor = (function correctorColor() {
 	return function () {
-		return Tools.svg.style.backgroundColor;
+		return Tools.svg.style.backgroundColor || '#ffffff';
 	};
 })();
 
