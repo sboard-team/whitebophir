@@ -24,6 +24,8 @@ async function showUpgradeButton() {
     }
 }
 
+showUpgradeButton();
+
 openUpgradeModal = (event) => {
     createModal(Tools.modalWindows.upgradeBoard);
     ym(68060329,'reachGoal','upgrade');
