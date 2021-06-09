@@ -931,7 +931,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 		}
 
 		if (!Tools.params.permissions.cursors) {
-			document.getElementById('btnCursors').classList.add('disabled-icon');
+			document.querySelector('.js-cursors').classList.add('disabled-icon');
 		}
 
 		if (!Tools.params.permissions.background) {
@@ -1451,7 +1451,7 @@ Tools.getColor = (function color() {
 
 Tools.getCorrectorColor = (function correctorColor() {
 	return function () {
-		return Tools.svg.style.backgroundColor;
+		return Tools.svg.style.backgroundColor || '#ffffff';
 	};
 })();
 
