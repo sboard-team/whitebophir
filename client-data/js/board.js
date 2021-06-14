@@ -900,6 +900,8 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
     }
 
     function showBoard() {
+		const userData = Tools.params.user;
+
         Tools.boardTitle = Tools.params.board.name;
         updateDocumentTitle();
 
@@ -950,7 +952,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 			document.querySelector('.js-cursors').classList.add('disabled-icon');
 		}
 
-		if (Tools.params.user.role === 'tutor' && Tools.params.user.tariffId === 1) {
+		if (userData.role === 'tutor' && userData.tariffId === 1 && !userData.hasTrial) {
 			document.getElementById('upgrade-board-btn').classList.remove('hide');
 		}
 
@@ -1004,6 +1006,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 					"surname": "Smith",
 					"full_name": "John Smith",
 					"role": "tutor",
+					"hasTrial": false,
 					"tariffId": 1,
 				},
 				"permissions": {"edit": true, "invite": true, "image": true, "pdf": true, "cursors": true, "background": true},
