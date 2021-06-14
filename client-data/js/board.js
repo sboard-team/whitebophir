@@ -103,11 +103,9 @@ Tools.modalWindows = {
 						</ol>
 						Пробный период любого тарифа Вы можете активировать бесплатно прямо сейчас!
 					</div>
-					<a href="https://vk.cc/c2HzRJ" class="upgradeRedirect">
-						<div class="upgrade-button">
-							Выбрать тариф
-						</div>
-					</a>`
+					<div class="upgrade-button">
+						Выбрать тариф
+					</div>`
 };
 
 //Initialization
@@ -952,6 +950,10 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 			document.querySelector('.js-cursors').classList.add('disabled-icon');
 		}
 
+		if (Tools.params.user.role === 'tutor' && Tools.params.user.tariffId === 1) {
+			document.getElementById('upgrade-board-btn').classList.remove('hide');
+		}
+
 		if (!Tools.params.permissions.background) {
 			const bgBtns = document.querySelectorAll('.js-change-bgcolor');
 			bgBtns.forEach((el) => {
@@ -1000,7 +1002,9 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 					"id": "187999",
 					"name": "John",
 					"surname": "Smith",
-					"full_name": "John Smith"
+					"full_name": "John Smith",
+					"role": "tutor",
+					"tariffId": 1,
 				},
 				"permissions": {"edit": true, "invite": true, "image": true, "pdf": true, "cursors": true, "background": true},
 				"invite_link": "https:\/\/sboard.su\/cabinet\/boards\/join\/56dfgdfbh67="
@@ -1030,6 +1034,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
             })
             .then(data => {
                 Tools.params = data;
+				console.log(Tools.params, 'params data');
                 showBoard();
             })
             .catch(function (error) {
