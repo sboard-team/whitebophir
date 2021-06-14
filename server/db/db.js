@@ -67,7 +67,7 @@ async function deleteBoard(boardName) {
     await collection.deleteOne({ name: boardName }, true);
     log('db.board deleted', { 'boardName': boardName });
 }
-
+//todo delete
 async function clearBoard(boardName) {
     log('clearBoard', boardName)
 
@@ -109,6 +109,19 @@ async function getBoardData(boardName) {
     return result
 }
 
+/** Получает доску по имени, если такой доски не существует возвращает null **/
+async function deleteBoardData(id) {
+    const collection = db.collection('boardData');
+
+    collection.remove({id: id});
+}
+
+async function deleteAllBoardData(boardName) {
+    const collection = db.collection('boardData');
+
+    collection.remove({name: boardName});
+}
+
 module.exports = {
     updateBoard,
     createBoard,
@@ -119,4 +132,6 @@ module.exports = {
     addDataToBoard,
     updateBoardData,
     getBoardData,
+    deleteBoardData,
+    deleteAllBoardData,
 };

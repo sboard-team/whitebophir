@@ -52,12 +52,26 @@ BoardData.prototype.set = function (id, data) {
 	this.addDataToBoard(id, data);
 };
 
+/** Adds data to the board */
+BoardData.prototype.updateBoard = async function (id, data) {
+	this.validate(data);
+
+	console.log('BoardData.prototype.updateBoard ', id)
+	let board = await db.getBoard(this.name);
+	console.log('BoardData.prototype.updateBoard board', board)
+
+	board.board[id] = data;
+
+	console.log('BoardData.prototype.updateBoard board 2', board)
+
+	db.updateBoard(this.name, board.board);
+};
+
 /** Adds a child to an element that is already in the board
- * @param {string} id - Identifier of the parent element.
+ * @param {string} parentId - Identifier of the parent element.
  * @param {object} child - Object containing the the values to update.
- * @param {boolean} [create=true] - Whether to create an empty parent if it doesn't exist
  * @returns {boolean} - True if the child was added, else false
-*/
+ */
 BoardData.prototype.addChild = function (parentId, child) {
 	console.log('BoardData.prototype.addChild', parentId);
 
@@ -79,6 +93,7 @@ BoardData.prototype.addChild = function (parentId, child) {
  * @param {boolean} create - True if the object should be created if it's not currently in the DB.
 */
 BoardData.prototype.update = function (id, data, create) {
+	console.log('BoardData.prototype.update', id, data, create)
 	delete data.type;
 	delete data.tool;
 	var obj = this.board[id];
@@ -86,10 +101,14 @@ BoardData.prototype.update = function (id, data, create) {
 		for (var i in data) {
 			obj[i] = data[i];
 		}
-	} else if (create || obj !== undefined) {
-		this.board[id] = data;
 	}
-	this.delaySave();
+
+	if (create || obj === undefined) {
+		this.board[id] = data;
+		this.addDataToBoard(id, data);
+	} else {
+		this.updateBoardData(id, obj);
+	}
 };
 
 /** Removes data from the board
@@ -98,7 +117,7 @@ BoardData.prototype.update = function (id, data, create) {
 BoardData.prototype.delete = function (id) {
 	//KISS
 	delete this.board[id];
-	this.delaySave();
+	db.deleteBoardData(id);
 };
 
 /** Reads data from the board
@@ -179,9 +198,10 @@ BoardData.prototype.clean = function cleanBoard() {
 
 /** Remove all elements from the board */
 BoardData.prototype.clearAll = function() {
-	for (var i in this.board) {
-		this.delete(i);
-	}
+	console.log('BoardData.prototype.clearAll', this.name)
+
+	db.deleteAllBoardData(this.name)
+	this.board = {};
 }
 
 /** Reformats an item if necessary in order to make it follow the boards' policy 
@@ -221,23 +241,28 @@ BoardData.load = async function loadBoard(name) {
 	var boardData = new BoardData(name);
 	const boardFromDb = await db.getBoard(name);
 	const boardDataObj = await db.getBoardData(name)
+
 	console.log('boardDataObj', boardDataObj)
 
 	boardData.board = boardFromDb ? boardFromDb.board : null;
+	console.log('BoardData.load', boardData.board, boardFromDb)
 	if (!boardData.board) {
-		console.log('!boardData.board', boardData.board)
-
 		boardData.board = {};
 	} else {
-		for (id in boardData.board) boardData.validate(boardData.board[id]);
 		for (id in boardDataObj) {
-			console.log('id in boardDataObj', id, boardDataObj[id])
-			// boardData.validate(boardDataObj[id]);
-			boardData.board[boardDataObj[id].id] = boardDataObj[id];
+			if (boardDataObj[id] && boardDataObj[id].data) {
+				boardData.board[boardDataObj[id].id] = boardDataObj[id].data;
+			}
+		}
+
+		console.log('boardData.board', boardData.board)
+
+		for (id in boardData.board) {
+			boardData.validate(boardData.board[id]);
 		}
 	}
 
-	console.log('boardData', boardData)
+	console.log('BoardData.load end', boardData.board)
 
 	return boardData;
 };
