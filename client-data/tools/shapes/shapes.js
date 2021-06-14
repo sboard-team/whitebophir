@@ -252,35 +252,33 @@
 	}
 
 	function renderCircle(data){
-		let g;
-		if (Tools.svg.getElementById(data.id)) {
-			g = Tools.svg.getElementById(data.id);
-		} else {
-			g = Tools.createSVGElement('g');
-			g.setAttribute("id", data.id )
-		}
+		let g = Tools.svg.getElementById(data.id) || Tools.createSVGElement('g');
+		g.setAttribute('id', data.id);
+
 		let ellipse = Tools.createSVGElement('ellipse');
 		ellipse.cx.baseVal.value = data.x;
 		ellipse.cy.baseVal.value = data.y;
 		ellipse.rx.baseVal.value = Math.abs(data['x2'] - data['x']);
 		ellipse.ry.baseVal.value = Math.abs(data['y2'] - data['y']);
-		ellipse.id = data.id
+		ellipse.setAttribute('id', data.id);
 		g.innerHTML = '';
 		g.appendChild(ellipse);
+
 		let circle = Tools.createSVGElement('circle');
 		circle.cx.baseVal.value = data.x;
 		circle.cy.baseVal.value = data.y;
-		circle.setAttribute("r","4")
-		circle.id = data.id
-		g.appendChild(circle)
-		return g
+		circle.r.baseVal.value = 4;
+		circle.setAttribute('id', data.id);
+		g.appendChild(circle);
+
+		return g;
 	}
 
 	function renderShape(data, el) {
 		el.id = data.id;
 		if (data.color) {
 			el.setAttribute("stroke", data.color);
-			el.setAttribute("fill",data.color)
+			el.setAttribute("fill", data.color);
 		}
 		if (data.size) el.setAttribute("stroke-width", data.size);
 		if (data.transform) {
