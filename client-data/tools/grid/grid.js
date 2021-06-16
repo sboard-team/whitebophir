@@ -175,12 +175,18 @@
     }
 
     function draw(data) {
+        let corrector = document.querySelectorAll('.corrector-tool');
+
         switch(data.type) {
             case 'grid':
                 switchGrid(data.index);
             case 'background':
                 switchGrid(data.index);
                 Tools.boardBackgroundColor = data.color;
+
+                corrector.forEach((elem) => {
+                    elem.setAttribute('stroke', states[index])
+                })
         }
     }
 

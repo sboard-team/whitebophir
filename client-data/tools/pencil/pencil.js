@@ -38,6 +38,7 @@
 		this.parent = curLineId;
 		this.x = x;
 		this.y = y;
+		this.corrector = Tools.curTool.name === 'Eraser' ? true : false;
 	}
 
 	function startLine(x, y, evt) {
@@ -63,6 +64,7 @@
 			'size': size,
 			'opacity': (index === 2 && Tools.curTool.name !== 'Eraser') ? 0.5 : 1,
 			'dotted': Tools.curTool.name === 'Pencil' ? index === 1 : false,
+			'corrector': Tools.curTool.name === 'Eraser' ? true : false,
 		}, Tools.list.Pencil);
 
 		//Immediatly add a point to the line
@@ -108,6 +110,10 @@
 			case "child":
 				if (!elementsWithoutChild[data.parent]) {
 					var line = (renderingLine.id === data.parent) ? renderingLine : svg.getElementById(data.parent);
+					if (data.corrector) {
+						line.setAttribute('stroke', Tools.boardBackgroundColor || Tools.getCorrectorColor());
+						line.setAttribute('class', 'corrector-tool');
+					}
 					if (!line) {
 						console.error("Pencil: Hmmm... I received a point of a line that has not been created (%s).", data.parent);
 						line = renderingLine = createLine({ "id": data.parent }); //create a new line in order not to loose the points
