@@ -89,7 +89,23 @@ Tools.modalWindows = {
                     <div class="modal-description">
                        Произошла ошибка при обновлении названия доски.
                        Пожалуйста попробуйте еще раз.
-                     </div>`
+                     </div>`,
+	upgradeBoard: `<h2 class="modal-title">Активируйте пробный период</h2>
+					<div class="modal-description">
+						<div class="upgradeTitle">Получите доступ ко всем функциям sBoard!</div>
+						Вы и Ваши ученики получите:
+						<ol class="upgradeDesc">
+							<li>Возможность добавлять изображения на доску</li>
+							<li>Возможность сохранять доску в формате pdf</li>
+							<li>Видеть курсоры учеников на доске и возможность использовать свой курсор в качестве указки</li>
+							<li>Возможность менять фон доски на чёрный или тёмно-зеленый</li>
+							<li>Возможность заниматься на доске без рекламы</li>
+						</ol>
+						Пробный период любого тарифа Вы можете активировать бесплатно прямо сейчас!
+					</div>
+					<div class="upgrade-button">
+						Выбрать тариф
+					</div>`
 };
 
 //Initialization
@@ -884,6 +900,8 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
     }
 
     function showBoard() {
+		const userData = Tools.params.user;
+
         Tools.boardTitle = Tools.params.board.name;
         updateDocumentTitle();
 
@@ -934,6 +952,10 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 			document.querySelector('.js-cursors').classList.add('disabled-icon');
 		}
 
+		if (userData.role === 'tutor' && userData.tariffId === 1 && !userData.hasTrial) {
+			document.getElementById('upgrade-board-btn').classList.remove('hide');
+		}
+
 		if (!Tools.params.permissions.background) {
 			const bgBtns = document.querySelectorAll('.js-change-bgcolor');
 			bgBtns.forEach((el) => {
@@ -982,7 +1004,10 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
 					"id": "187999",
 					"name": "John",
 					"surname": "Smith",
-					"full_name": "John Smith"
+					"full_name": "John Smith",
+					"role": "tutor",
+					"hasTrial": false,
+					"tariffId": 1,
 				},
 				"permissions": {"edit": true, "invite": true, "image": true, "pdf": true, "cursors": true, "background": true},
 				"invite_link": "https:\/\/sboard.su\/cabinet\/boards\/join\/56dfgdfbh67="
@@ -1012,6 +1037,7 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
             })
             .then(data => {
                 Tools.params = data;
+				console.log(Tools.params, 'params data');
                 showBoard();
             })
             .catch(function (error) {
