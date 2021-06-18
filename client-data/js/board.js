@@ -1037,7 +1037,6 @@ function createModal(htmlContent, functionAfterCreate, functionAfterClose) {
             })
             .then(data => {
                 Tools.params = data;
-				console.log(Tools.params, 'params data');
                 showBoard();
             })
             .catch(function (error) {
