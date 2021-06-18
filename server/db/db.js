@@ -110,10 +110,10 @@ async function getBoardData(boardName) {
 }
 
 /** Получает доску по имени, если такой доски не существует возвращает null **/
-async function deleteBoardData(id) {
+async function deleteBoardData(boardName, id) {
     const collection = db.collection('boardData');
 
-    collection.remove({id: id});
+    collection.remove({name: boardName, id: id});
 }
 
 async function deleteAllBoardData(boardName) {

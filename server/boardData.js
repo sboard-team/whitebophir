@@ -117,7 +117,7 @@ BoardData.prototype.update = function (id, data, create) {
 BoardData.prototype.delete = function (id) {
 	//KISS
 	delete this.board[id];
-	db.deleteBoardData(id);
+	db.deleteBoardData(this.name, id);
 };
 
 /** Reads data from the board
@@ -242,10 +242,7 @@ BoardData.load = async function loadBoard(name) {
 	const boardFromDb = await db.getBoard(name);
 	const boardDataObj = await db.getBoardData(name)
 
-	console.log('boardDataObj', boardDataObj)
-
 	boardData.board = boardFromDb ? boardFromDb.board : null;
-	console.log('BoardData.load', boardData.board, boardFromDb)
 	if (!boardData.board) {
 		boardData.board = {};
 	} else {
@@ -255,14 +252,10 @@ BoardData.load = async function loadBoard(name) {
 			}
 		}
 
-		console.log('boardData.board', boardData.board)
-
 		for (id in boardData.board) {
 			boardData.validate(boardData.board[id]);
 		}
 	}
-
-	console.log('BoardData.load end', boardData.board)
 
 	return boardData;
 };
