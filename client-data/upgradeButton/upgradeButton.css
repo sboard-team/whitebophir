@@ -61,7 +61,7 @@
     outline: none;
 }
 
-@media(max-width: 768px) {      
+@media(max-width: 986px) {      
     .upgrade-board-text {
         display: none;
     }
@@ -71,7 +71,7 @@
     }
 }
 
-@media(max-width: 640px) {
+@media(max-width: 650px) {
     .upgrade-board {
         top: 10px;
         left: 430px;
@@ -82,5 +82,11 @@
     .upgrade-board {
         top: 130px;
         left: 310px;
+    }
+}
+
+@media(max-width: 360px) {
+    .upgrade-board {
+        display: none;
     }
 }
