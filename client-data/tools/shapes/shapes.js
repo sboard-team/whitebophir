@@ -224,10 +224,14 @@
 
 	function renderEllipse(data) {
 		const el = Tools.svg.getElementById(data.id) || Tools.createSVGElement('ellipse');
-		el.cx.baseVal.value = Math.round((data['x2'] + data['x']) / 2);
-		el.cy.baseVal.value = Math.round((data['y2'] + data['y']) / 2);
-		el.rx.baseVal.value = Math.abs(data['x2'] - data['x']) / 2;
-		el.ry.baseVal.value = Math.abs(data['y2'] - data['y']) / 2;
+		el.cx.baseVal.value = data.x;
+		el.cy.baseVal.value = data.y;
+		el.rx.baseVal.value = Math.abs(data['x2'] - data['x']);
+		el.ry.baseVal.value = Math.abs(data['y2'] - data['y']);
+		// el.rx.baseVal.value = Math.abs(data['x2'] - data['x']) / 2;
+		// el.ry.baseVal.value = Math.abs(data['y2'] - data['y']) / 2;
+		// el.cx.baseVal.value = Math.round((data['x2'] + data['x']) / 2);
+		// el.cy.baseVal.value = Math.round((data['y2'] + data['y']) / 2);
 		renderShape(data, el);
 	}
 
