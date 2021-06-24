@@ -220,6 +220,9 @@ async function saveHistory(boardName, message, socket) {
 			board.clearAll();
 			socket.broadcast.to(board.name).emit('clearBoard');
 			break;
+		case "background":
+			board.updateBoard(board.name, message);
+			break;
 		default: //Add data
 			if (!id) throw new Error("Invalid message: ", message);
 			board.set(id, message);
