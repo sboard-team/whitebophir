@@ -60,9 +60,9 @@
 // }
 //
 // /** Обновляет доску **/
-// async function addDataToNewBoard(boardName, id, data) {
+// function addDataToNewBoard(boardName, id, data) {
 //     const collection = newDb.collection('boardData');
-//     await collection.updateOne({ name: boardName, 'id': id }, {$set: { data: data }}, {upsert: true});
+//     collection.updateOne({ name: boardName, 'id': id }, {$set: { data: data }}, {upsert: true});
 // }
 //
 // async function setIsConverted(boardName) {
@@ -71,8 +71,11 @@
 // }
 //
 // async function convert() {
+//     console.log('start convert')
 //     const boardsCollection = db.collection('boards');
-//     let boards = await boardsCollection.find({isConverted: { $ne: true }}).toArray()
+//     let boards = await boardsCollection.find({isConverted: { $ne: true }}).limit(100).toArray()
+//
+//     console.log('received board data')
 //
 //     const newBoardsCollection = newDb.collection('boards');
 //
@@ -80,7 +83,7 @@
 //         let board = boards[id];
 //         await updateBoardInNewDB(board.name, {})
 //         for (boardDataIndex in board.board) {
-//             await addDataToNewBoard(board.name, board.board[boardDataIndex].id, board.board[boardDataIndex])
+//             addDataToNewBoard(board.name, board.board[boardDataIndex].id, board.board[boardDataIndex])
 //         }
 //
 //         await setIsConverted(board.name)
@@ -89,6 +92,10 @@
 //     }
 //
 //     console.log('end convert')
+//
+//     if (boards.length && boards.length > 0) {
+//         convert()
+//     }
 // }
 //
 //
