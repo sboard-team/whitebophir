@@ -38,9 +38,9 @@ body {
 }
 
 #canvas path:not(.pretty-cursor) {
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+	fill: none;
+	stroke-linecap: round;
+	stroke-linejoin: round;
 }
 
 #canvas text {
@@ -50,16 +50,16 @@ body {
 }
 
 #canvas .opcursor {
-    pointer-events: none;
-    transition: .1s;
+	pointer-events: none;
+	transition: .1s;
 }
 
 #canvas text.pretty-name {
-    font-size: 12px;
+	font-size: 12px;
 }
 
 #canvas .triangle {
-  fill: none;
+	fill: none;
 }
 #cursor-me {
 	transition: 0s;
@@ -113,4 +113,31 @@ pre {
 
 .moveable-control-box {
 	z-index: 0 !important;
+}
+
+.main-tool-color{
+	background: #FC4D4D;
+	width: 12px;
+	height: 12px;
+	border: 1px solid #828282;
+	border-radius: 50%;
+	margin-bottom: 5px;
+	margin-right: 5px;
+	box-sizing: border-box;
+}
+
+.main-tool{
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.main-tool-width{
+	width: 10px;
+	height: 10px;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 11px;
+	margin-right: 3px;
 }
