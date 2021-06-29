@@ -134,6 +134,7 @@ pre {
 }
 
 .main-tool-width{
+	position: absolute;
 	width: 10px;
 	height: 10px;
 	font-family: Montserrat;
@@ -142,5 +143,5 @@ pre {
 	line-height: 11px;
 	margin-right: 1px;
 	margin-bottom: 10px;
-
+    margin-top: 29px
 }
