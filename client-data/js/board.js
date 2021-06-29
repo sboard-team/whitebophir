@@ -1630,6 +1630,7 @@ Tools.setSize = (function size() {
 	const chooser = document.getElementById("width-range");
 	const sizeListElement = document.getElementById('width-list');
 	const listAllItems = document.getElementsByClassName('width-item');
+	let currentToolWidth = document.querySelector('.main-tool-width');
 
 	sizeListElement.addEventListener('click', function (evt) {
 		evt.stopPropagation();
@@ -1639,7 +1640,6 @@ Tools.setSize = (function size() {
 			}
 			evt.composedPath()[0].classList.add('selected-width');
 			Tools.setSize(+evt.target.innerText);
-			let currentToolWidth = document.querySelector('.main-tool-width')
 			currentToolWidth.innerHTML = chooser.value;
 		}
 	});
@@ -1647,9 +1647,9 @@ Tools.setSize = (function size() {
 	var debounceTimeout = null;
 	function update() {
 		var size = Math.max(1, Math.min(60, chooser.value | 0));
-		chooser.value = size;
 		let currentToolWidth = document.querySelector('.main-tool-width');
-		currentToolWidth.innerHTML = chooser.value
+		chooser.value = size;
+		currentToolWidth.innerHTML = chooser.value;
 		for (var item of listAllItems) {
 			item.classList.remove('selected-width');
 			if (item.innerText == size) {
