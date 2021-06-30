@@ -198,8 +198,6 @@ BoardData.prototype.clean = function cleanBoard() {
 
 /** Remove all elements from the board */
 BoardData.prototype.clearAll = function() {
-	console.log('BoardData.prototype.clearAll', this.name)
-
 	db.deleteAllBoardData(this.name)
 	this.board = {};
 }
