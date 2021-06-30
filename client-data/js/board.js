@@ -1215,6 +1215,7 @@ Tools.setScale = function setScale(scale) {
 	clearTimeout(scaleTimeout);
 	scaleTimeout = setTimeout(function () {
 		Tools.svg.style.willChange = 'auto';
+		Tools.svgWb.style.willChange = 'auto';
 	}, 800);
 	Tools.scale = scale;
 	scaleValueEl.innerText = Math.round(scale * 100) + '%';
