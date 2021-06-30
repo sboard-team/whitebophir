@@ -1647,7 +1647,6 @@ Tools.setSize = (function size() {
 	var debounceTimeout = null;
 	function update() {
 		var size = Math.max(1, Math.min(60, chooser.value | 0));
-		let currentToolWidth = document.querySelector('.main-tool-width');
 		chooser.value = size;
 		currentToolWidth.innerHTML = chooser.value;
 		for (var item of listAllItems) {
