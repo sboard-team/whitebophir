@@ -1203,12 +1203,12 @@ Tools.setScale = function setScale(scale) {
 		scale = document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X;
 	}
 	scale = Math.max(0.1, Math.min(10, scale));
-	Tools.svgWb.style.willChange = 'transform';
-	Tools.svgWb.style.transform = 'scale(' + scale + ')';
+	Tools.svg.style.willChange = 'transform';
+	Tools.svg.style.transform = 'scale(' + scale + ')';
 	clearTimeout(scaleTimeout);
 	scaleTimeout = setTimeout(function () {
-		Tools.svgWb.style.willChange = 'auto';
-	}, 1000);
+		Tools.svg.style.willChange = 'auto';
+	}, 800);
 	Tools.scale = scale;
 	scaleValueEl.innerText = Math.round(scale * 100) + '%';
 	if (scale < document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X) {
