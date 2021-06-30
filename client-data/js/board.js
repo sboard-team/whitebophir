@@ -1452,12 +1452,14 @@ Tools.positionElement = function (elem, x, y) {
 };
 
 Tools.color_chooser = document.getElementById("color-picker");
+Tools.current_color = document.getElementById('current-color');
 
 document.getElementById('color-picker').addEventListener("change", watchColorPicker, false);
 
 Tools.setColor = function (color) {
 	Tools.color_chooser.value = color;
 	const presetsList = document.getElementsByClassName('color-preset-box');
+
 	for (var node of presetsList) {
 		node.classList.remove('selected-color');
 	}
@@ -1465,13 +1467,14 @@ Tools.setColor = function (color) {
 	if (colorEl) {
 		colorEl.parentNode.classList.add('selected-color');
 	}
-	let currentColor =  document.querySelector(".main-tool-color");
-	currentColor.style.backgroundColor = color
+
+	Tools.current_color.style.backgroundColor = color;
 
 	Tools.sendAnalytic('Color', 0)
 };
 
 Tools.getColor = (function color() {
+	Tools.current_color.style.backgroundColor = Tools.color_chooser.value;
 	return function () {
 		return Tools.color_chooser.value;
 	};
@@ -1491,9 +1494,7 @@ function watchColorPicker(e) {
 		node.classList.remove('selected-color');
 	}
 	presetsList[0].classList.add('selected-color');
-	let currentColor =  document.querySelector(".main-tool-color");
-	currentColor.style.backgroundColor = e.target.value
-
+	Tools.current_color.style.backgroundColor = e.target.value;
 }
 
 document.getElementById('color-picker-btn').addEventListener('pointerdown', function (e) {
