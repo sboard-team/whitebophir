@@ -104,6 +104,17 @@
 		selected = null;
 	}
 
+	Tools.svg.addEventListener('mousedown', function (e) {
+		if (e.which === 2) {
+			Tools.change('Hand');
+		}
+	});
+	Tools.svg.addEventListener('mouseup', function (e) {
+		if (e.which === 2) {
+			Tools.change(Tools.oldTool.name);
+		}
+	});
+
 	var handTool = { //The new tool
 		"name": "Hand",
 		"shortcut": "h",

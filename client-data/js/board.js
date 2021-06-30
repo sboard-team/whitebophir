@@ -110,6 +110,7 @@ Tools.modalWindows = {
 
 //Initialization
 Tools.curTool = null;
+Tools.oldTool = null;
 Tools.drawingEvent = true;
 Tools.showMarker = false;
 Tools.showOtherCursors = true;
@@ -436,6 +437,9 @@ Tools.sendAnalytic = function (toolName, index) {
 				}).catch(function () {
 					createModal(Tools.modalWindows.errorOnPasteFromClipboard);
 				});
+			} else if (e.keyCode === 32) {
+				e.preventDefault();
+				Tools.change('Hand');
 			}
 		});
 		document.addEventListener('keyup', function (e) {
@@ -512,6 +516,8 @@ Tools.sendAnalytic = function (toolName, index) {
 				Tools.redo();
 			} else if (e.keyCode === 90 && e.ctrlKey) {
 				Tools.undo();
+			} else if (e.keyCode === 32 && e.target == document.body) { // space
+				Tools.change(Tools.oldTool.name);
 			}
 		}, false);
 	}
@@ -602,6 +608,7 @@ Tools.change = function (toolName, subToolIndex) {
 		//Add the new event listeners
 		Tools.addToolListeners(newTool);
 		Tools.curTool = newTool;
+		Tools.oldTool = oldTool;
 		Tools.sendAnalytic(Tools.curTool.name, +subToolIndex || 0)
 	} else {
 		Tools.sendAnalytic(newTool.name, +subToolIndex || 0)
