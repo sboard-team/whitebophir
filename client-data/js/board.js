@@ -1465,6 +1465,9 @@ Tools.setColor = function (color) {
 	if (colorEl) {
 		colorEl.parentNode.classList.add('selected-color');
 	}
+	let currentColor =  document.querySelector(".main-tool-color");
+	currentColor.style.backgroundColor = color
+
 	Tools.sendAnalytic('Color', 0)
 };
 
@@ -1488,6 +1491,9 @@ function watchColorPicker(e) {
 		node.classList.remove('selected-color');
 	}
 	presetsList[0].classList.add('selected-color');
+	let currentColor =  document.querySelector(".main-tool-color");
+	currentColor.style.backgroundColor = e.target.value
+
 }
 
 document.getElementById('color-picker-btn').addEventListener('pointerdown', function (e) {
@@ -1624,6 +1630,8 @@ Tools.setSize = (function size() {
 	const chooser = document.getElementById("width-range");
 	const sizeListElement = document.getElementById('width-list');
 	const listAllItems = document.getElementsByClassName('width-item');
+	let currentToolWidth = document.querySelector('.main-tool-width');
+
 	sizeListElement.addEventListener('click', function (evt) {
 		evt.stopPropagation();
 		if (evt.target.classList.contains('width-item')) {
@@ -1632,12 +1640,16 @@ Tools.setSize = (function size() {
 			}
 			evt.composedPath()[0].classList.add('selected-width');
 			Tools.setSize(+evt.target.innerText);
+			currentToolWidth.innerHTML = chooser.value;
 		}
 	});
+
 	var debounceTimeout = null;
 	function update() {
 		var size = Math.max(1, Math.min(60, chooser.value | 0));
+		let currentToolWidth = document.querySelector('.main-tool-width');
 		chooser.value = size;
+		currentToolWidth.innerHTML = chooser.value;
 		for (var item of listAllItems) {
 			item.classList.remove('selected-width');
 			if (item.innerText == size) {
