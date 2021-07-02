@@ -88,6 +88,7 @@
 			e.added.forEach(function(el) {
 				if (el.tagName === 'foreignObject' && isSafari()) return;
 				targets.push(el);
+				Tools.targets = targets;
 				el.classList.add("localSelectedEl");
 			});
 			e.removed.forEach(function (el) {

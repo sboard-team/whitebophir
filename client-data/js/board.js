@@ -1455,6 +1455,7 @@ Tools.color_chooser = document.getElementById("color-picker");
 Tools.current_color = document.getElementById('current-color');
 
 document.getElementById('color-picker').addEventListener("change", watchColorPicker, false);
+Tools.targets = null;
 
 Tools.setColor = function (color) {
 	Tools.color_chooser.value = color;
@@ -1469,7 +1470,11 @@ Tools.setColor = function (color) {
 	}
 
 	Tools.current_color.style.backgroundColor = color;
-
+    if(Tools.targets){
+    	Tools.targets.forEach((elem)=>{
+    		elem.setAttribute('stroke',color)
+		})
+	}
 	Tools.sendAnalytic('Color', 0)
 };
 
