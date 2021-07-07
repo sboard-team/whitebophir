@@ -1465,7 +1465,7 @@ Tools.current_color = document.getElementById('current-color');
 document.getElementById('color-picker').addEventListener("change", watchColorPicker, false);
 Tools.targets = null;
 
-Tools.setColor = function (color) {
+Tools.setDrawColor = function (color) {
 	Tools.color_chooser.value = color;
 	const presetsList = document.getElementsByClassName('color-preset-box');
 
@@ -1478,6 +1478,13 @@ Tools.setColor = function (color) {
 	}
 
 	Tools.current_color.style.backgroundColor = color;
+
+	Tools.sendAnalytic('Color', 0)
+}
+
+Tools.setColor = function (color) {
+	Tools.setDrawColor(color);
+
     if (Tools.targets) {
     	Tools.targets.forEach((elem) => {
     		if(elem.tagName === 'foreignObject'){
@@ -1487,7 +1494,6 @@ Tools.setColor = function (color) {
 		})
 		colorUpdate(Tools.targets);
 	}
-	Tools.sendAnalytic('Color', 0)
 };
 
 Tools.getColor = (function color() {
