@@ -1,0 +1,17 @@
+name: app-sboard-prod
+
+on:
+  push:
+    branches: [ production ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Deploy to production
+        uses: appleboy/ssh-action@master
+        with:
+          username: root
+          host: 5.188.116.33
+          password: ${{ secrets.PROD_SSH_PASSWORD }}
+          script: 'cd /home/app/app.sboard.online/ && ./deploy-prod.sh'
