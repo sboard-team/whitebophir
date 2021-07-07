@@ -116,6 +116,8 @@
 		Tools.targets = targets;
 		if (targets.length > 0 && moveable === null) {
 			panel.classList.remove('hide');
+			const horizontal = targets[0].getAttribute('x2') - targets[0].getAttribute('x1') < 5;
+			const vertical = targets[0].getAttribute('y2') - targets[0].getAttribute('y1') < 5;
 			var single = targets.length === 1;
 			var padding = single ? 10 : 0;
 			targets.map(function (el) {
@@ -141,6 +143,9 @@
 				throttleScale: 0.01,
 				padding: {"left": padding, "top": padding, "right": padding, "bottom": padding},
 			});
+			if (single && targets[0].tagName === 'line' && (vertical || horizontal)) {
+				moveable.dragArea = false;
+			}
 			moveable.on('dragGroupStart', groupTransformStart)
 					.on('dragGroup', groupTransform)
 					.on('dragStart', singleTransformStart)
