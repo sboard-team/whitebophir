@@ -95,6 +95,7 @@
 				targets.splice(targets.findIndex(function (item) {
 					return item === el;
 				}), 1);
+				Tools.targets = targets;
 				el.classList.remove("localSelectedEl");
 			});
 		});
