@@ -1487,9 +1487,12 @@ Tools.setColor = function (color) {
 
     if (Tools.targets) {
     	Tools.targets.forEach((elem) => {
-    		if(elem.tagName === 'foreignObject'){
-				elem.childNodes[0].style.color = color
+    		if (elem.tagName === 'foreignObject') {
+				elem.childNodes[0].style.color = color;
+			} else if (elem.tagName === 'g') {
+				elem.childNodes[1].setAttribute('fill', color);
 			}
+			
     		elem.setAttribute('stroke', color)
 		})
 		colorUpdate(Tools.targets);
