@@ -113,6 +113,7 @@
 			if (isSafari() && el.tagName === 'foreignObject') return false;
 			return !el.classList.contains('selectedEl');
 		});
+		Tools.targets = targets;
 		if (targets.length > 0 && moveable === null) {
 			panel.classList.remove('hide');
 			var single = targets.length === 1;

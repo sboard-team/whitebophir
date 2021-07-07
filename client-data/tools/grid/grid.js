@@ -53,7 +53,7 @@
                 Tools.svg.style.backgroundColor = states[index];
                 break;
             case 4:
-                Tools.setDrawColor('#000000');
+                Tools.setDrawColor('#FFFFFF');
                 Tools.svg.style.backgroundColor = states[index];
                 ym(68060329,'reachGoal','black_background');
                 break;
@@ -63,7 +63,7 @@
                 ym(68060329,'reachGoal','green_background');
                 break;
             case 3:
-                Tools.setDrawColor('#FFFFFF');
+                Tools.setDrawColor('#000000');
                 Tools.svg.style.backgroundColor = states[index];
                 ym(68060329,'reachGoal','white_background');
                 break;
