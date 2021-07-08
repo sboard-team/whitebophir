@@ -1531,13 +1531,17 @@ function watchColorPicker(e) {
 		node.classList.remove('selected-color');
 	}
 	presetsList[0].classList.add('selected-color');
-	Tools.current_color.style.backgroundColor = e.target.value
+	Tools.current_color.style.backgroundColor = e.target.value;
+
 	if (Tools.targets) {
 		Tools.targets.forEach((elem) => {
-			if(elem.tagName === 'foreignObject'){
-				elem.childNodes[0].style.color = e.target.value
+			if (elem.tagName === 'foreignObject') {
+				elem.childNodes[0].style.color = e.target.value;
+			} else if (elem.tagName === 'g') {
+				elem.childNodes[1].setAttribute('fill', color);
 			}
-			elem.setAttribute('stroke', e.target.value)
+			
+			elem.setAttribute('stroke', e.target.value);
 		})
 		colorUpdate(Tools.targets);
 	}

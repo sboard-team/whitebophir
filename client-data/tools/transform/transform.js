@@ -146,12 +146,12 @@
 					.on('dragStart', singleTransformStart)
 					.on('pinchStart', singleTransformStart)
 					.on('scaleStart', singleTransformStart)
-					.on('scaleGroupStart', groupTransformStart)
+					// .on('scaleGroupStart', groupTransformStart)
 					.on('rotateStart', singleTransformStart)
 					.on('drag', singleTransform)
 					.on('pinch', singleTransform)
 					.on('scale', singleTransform)
-					.on('scaleGroup', groupTransform)
+					// .on('scaleGroup', groupTransform)
 					.on('rotate', singleTransform);
 			moveable.updateRect();
 		}
