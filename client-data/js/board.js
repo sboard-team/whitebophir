@@ -1538,7 +1538,7 @@ function watchColorPicker(e) {
 			if (elem.tagName === 'foreignObject') {
 				elem.childNodes[0].style.color = e.target.value;
 			} else if (elem.tagName === 'g') {
-				elem.childNodes[1].setAttribute('fill', color);
+				elem.childNodes[1].setAttribute('fill', e.target.value);
 			}
 			
 			elem.setAttribute('stroke', e.target.value);
