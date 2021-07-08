@@ -1465,8 +1465,9 @@ Tools.color_chooser = document.getElementById("color-picker");
 Tools.current_color = document.getElementById('current-color');
 
 document.getElementById('color-picker').addEventListener("change", watchColorPicker, false);
+Tools.targets = null;
 
-Tools.setColor = function (color) {
+Tools.setDrawColor = function (color) {
 	Tools.color_chooser.value = color;
 	const presetsList = document.getElementsByClassName('color-preset-box');
 
@@ -1481,6 +1482,23 @@ Tools.setColor = function (color) {
 	Tools.current_color.style.backgroundColor = color;
 
 	Tools.sendAnalytic('Color', 0)
+}
+
+Tools.setColor = function (color) {
+	Tools.setDrawColor(color);
+
+    if (Tools.targets) {
+    	Tools.targets.forEach((elem) => {
+    		if (elem.tagName === 'foreignObject') {
+				elem.childNodes[0].style.color = color;
+			} else if (elem.tagName === 'g') {
+				elem.childNodes[1].setAttribute('fill', color);
+			}
+			
+    		elem.setAttribute('stroke', color)
+		})
+		colorUpdate(Tools.targets);
+	}
 };
 
 Tools.getColor = (function color() {
@@ -1496,6 +1514,17 @@ Tools.getCorrectorColor = (function correctorColor() {
 	};
 })();
 
+function colorUpdate(data){
+	for (let elem of data) {
+	  let msg = {
+	    "type": 'update',
+	    "id": elem.id,
+	    "color": elem.getAttribute('stroke')
+	  }
+	  Tools.drawAndSend(msg, Tools.list.Transform);
+	}
+}
+
 function watchColorPicker(e) {
 	// e.target.value
 	colorMouseLeaveClose = true;
@@ -1504,7 +1533,16 @@ function watchColorPicker(e) {
 		node.classList.remove('selected-color');
 	}
 	presetsList[0].classList.add('selected-color');
-	Tools.current_color.style.backgroundColor = e.target.value;
+	Tools.current_color.style.backgroundColor = e.target.value
+	if (Tools.targets) {
+		Tools.targets.forEach((elem) => {
+			if(elem.tagName === 'foreignObject'){
+				elem.childNodes[0].style.color = e.target.value
+			}
+			elem.setAttribute('stroke', e.target.value)
+		})
+		colorUpdate(Tools.targets);
+	}
 }
 
 document.getElementById('color-picker-btn').addEventListener('pointerdown', function (e) {

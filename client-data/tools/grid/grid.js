@@ -49,21 +49,21 @@
                 break;
             case 2:
                 gridContainer.setAttributeNS(null, "fill", "none");
-                Tools.setColor('#000000');
+                Tools.setDrawColor('#000000');
                 Tools.svg.style.backgroundColor = states[index];
                 break;
             case 4:
-                Tools.setColor('#000000');
+                Tools.setDrawColor('#FFFFFF');
                 Tools.svg.style.backgroundColor = states[index];
                 ym(68060329,'reachGoal','black_background');
                 break;
             case 5:
-                Tools.setColor('#FFFFFF');
+                Tools.setDrawColor('#FFFFFF');
                 Tools.svg.style.backgroundColor = states[index];
                 ym(68060329,'reachGoal','green_background');
                 break;
             case 3:
-                Tools.setColor('#FFFFFF');
+                Tools.setDrawColor('#000000');
                 Tools.svg.style.backgroundColor = states[index];
                 ym(68060329,'reachGoal','white_background');
                 break;

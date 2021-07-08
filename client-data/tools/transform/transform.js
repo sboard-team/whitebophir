@@ -88,12 +88,14 @@
 			e.added.forEach(function(el) {
 				if (el.tagName === 'foreignObject' && isSafari()) return;
 				targets.push(el);
+				Tools.targets = targets;
 				el.classList.add("localSelectedEl");
 			});
 			e.removed.forEach(function (el) {
 				targets.splice(targets.findIndex(function (item) {
 					return item === el;
 				}), 1);
+				Tools.targets = targets;
 				el.classList.remove("localSelectedEl");
 			});
 		});
@@ -111,6 +113,7 @@
 			if (isSafari() && el.tagName === 'foreignObject') return false;
 			return !el.classList.contains('selectedEl');
 		});
+		Tools.targets = targets;
 		if (targets.length > 0 && moveable === null) {
 			panel.classList.remove('hide');
 			var single = targets.length === 1;
@@ -126,7 +129,7 @@
 				dragArea: true,
 				draggable: true,
 				pinchable: single,
-				scalable: single,
+				scalable: true,
 				rotatable: single,
 				origin: true,
 				keepRatio: true,
@@ -138,43 +141,18 @@
 				throttleScale: 0.01,
 				padding: {"left": padding, "top": padding, "right": padding, "bottom": padding},
 			});
-			moveable.on("dragGroupStart", function({events}) {
-				const messageForSend = { type: 'array', events: [] };
-				for (var ev of events) {
-					var msg = {
-						type: "update",
-						id: ev.target.id,
-						transform: ev.target.style.transform,
-						transformOrigin: ev.target.style.transformOrigin
-					};
-					messageForSend.events.push(msg);
-				}
-				Tools.addActionToHistory(messageForSend);
-			}).on("dragGroup", function({events}) {
-				var sendOrDraw = draw;
-				const messageForSend = { type: 'array', events: [] };
-				if (performance.now() - lastSend > 50) {
-					lastSend = performance.now();
-					sendOrDraw = Tools.drawAndSend;
-				}
-				for (var ev of events) {
-					var msg = {
-						type: "update",
-						id: ev.target.id,
-						transform: ev.transform,
-						transformOrigin: ev.target.style.transformOrigin
-					};
-					messageForSend.events.push(msg);
-				}
-				sendOrDraw(messageForSend);
-			}).on("dragStart", singleTransformStart)
-				.on("pinchStart", singleTransformStart)
-				.on("scaleStart", singleTransformStart)
-				.on("rotateStart", singleTransformStart)
-				.on("drag", singleTransform)
-				.on("pinch", singleTransform)
-				.on("scale", singleTransform)
-				.on("rotate", singleTransform);
+			moveable.on('dragGroupStart', groupTransformStart)
+					.on('dragGroup', groupTransform)
+					.on('dragStart', singleTransformStart)
+					.on('pinchStart', singleTransformStart)
+					.on('scaleStart', singleTransformStart)
+					.on('scaleGroupStart', groupTransformStart)
+					.on('rotateStart', singleTransformStart)
+					.on('drag', singleTransform)
+					.on('pinch', singleTransform)
+					.on('scale', singleTransform)
+					.on('scaleGroup', groupTransform)
+					.on('rotate', singleTransform);
 			moveable.updateRect();
 		}
 	}
@@ -206,6 +184,44 @@
 		}
 		sendOrDraw(msg);
 		updateRect();
+	}
+
+	function groupTransformStart(data) {
+		const messageForSend = { type: 'array', events: [] };
+		const events = data.events;
+
+		for (let ev of events) {
+			let msg = {
+				type: 'update',
+				id: ev.target.id,
+				transform: ev.target.style.transform,
+				transformOrigin: ev.target.style.transformOrigin
+			};
+			messageForSend.events.push(msg);
+		}
+		Tools.addActionToHistory(messageForSend);
+	}
+
+	function groupTransform(data) {
+		const messageForSend = { type: 'array', events: [] };
+		const events = data.events;
+		let sendOrDraw = draw;
+
+		if (performance.now() - lastSend > 50) {
+			lastSend = performance.now();
+			sendOrDraw = Tools.drawAndSend;
+		}
+
+		for (let ev of events) {
+			let msg = {
+				type: "update",
+				id: ev.target.id,
+				transform: ev.transform,
+				transformOrigin: ev.target.style.transformOrigin
+			};
+			messageForSend.events.push(msg);
+		}
+		sendOrDraw(messageForSend);
 	}
 
 	function sendInInterval() {
