@@ -1205,6 +1205,7 @@ Tools.messageHooks = [resizeCanvas, updateUnreadCount];
 var scaleTimeout = null;
 const scaleValueEl = document.getElementById('scaleValue');
 const htmlBodyEl = document.getElementsByTagName('body')[0];
+const cursors = document.getElementById('cursors');
 Tools.setScale = function setScale(scale) {
 	if (isNaN(scale)) {
 		scale = document.body.clientWidth / Tools.server_config.MAX_BOARD_SIZE_X;
@@ -1212,6 +1213,7 @@ Tools.setScale = function setScale(scale) {
 	scale = Math.max(0.1, Math.min(10, scale));
 	Tools.svg.style.willChange = 'transform';
 	Tools.svg.style.transform = 'scale(' + scale + ')';
+	cursors.style.transform = `scale(${1 / scale})`;
 	clearTimeout(scaleTimeout);
 	scaleTimeout = setTimeout(function () {
 		Tools.svg.style.willChange = 'auto';
